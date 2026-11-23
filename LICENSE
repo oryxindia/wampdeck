@@ -1,0 +1,36 @@
+Copyright (c) 2026 Oryx India. All rights reserved.
+
+WAMDECK SOURCE CODE - PROPRIETARY, SOURCE-AVAILABLE LICENSE
+
+This repository contains the source code of WampDeck. The source is published
+for public inspection and reference only. It is NOT open-source software.
+
+OWNERSHIP
+All rights, title and interest in and to WampDeck - including its source code,
+design, documentation, trademarks and installer - are owned exclusively by
+Oryx India. No rights are granted except those expressly stated below.
+
+WHAT YOU MAY DO
+1. View, read and reference the source code for evaluation and learning.
+2. Download and use the official, compiled WampDeck release free of charge for
+   local development, subject to the Terms of Use at https://wampdeck.com/terms.
+
+WHAT YOU MAY NOT DO
+Without prior written permission from Oryx India, you may not:
+1. Copy, reproduce or redistribute the source code, in whole or in part.
+2. Modify, adapt, translate or create derivative works from the source code.
+3. Fork this repository, publish a public copy, or mirror it.
+4. Compile the source into a competing product or bundle it with another app.
+5. Use the WampDeck name, logos or trademarks in your own product or marketing.
+6. Sell, sublicense, lease or otherwise commercialise the source code.
+
+FREE PRODUCT, RESERVED RIGHTS
+WampDeck the application is free to download and use. Free does not mean
+open-source: the copyright and all rights to the source remain with Oryx India.
+
+NO WARRANTY
+The software and source are provided "as is", without warranty of any kind.
+Oryx India is not liable for any damages arising from their use.
+
+CONTACT
+For permission requests or licensing enquiries: support@oryxindia.in
