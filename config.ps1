@@ -2,7 +2,7 @@
 # Every script dot-sources this file, then lib\common.ps1.
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
-$WampDeckVersion = '2.0.0-beta.15'
+$WampDeckVersion = '2.0.0'
 
 $BinDir      = Join-Path $Root 'bin'
 $EtcDir      = Join-Path $Root 'etc'

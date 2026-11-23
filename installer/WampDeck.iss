@@ -10,7 +10,7 @@
 ; regenerate every config for the real install path and initialize MySQL.
 
 #define AppName "WampDeck"
-#define AppVersion "2.0.0-beta.15"
+#define AppVersion "2.0.0"
 #define AppPublisher "Oryx India"
 #define AppExe "WampDeck.exe"
 
