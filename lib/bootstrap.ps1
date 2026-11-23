@@ -15,5 +15,7 @@
 . (Join-Path $PSScriptRoot 'snapshots.ps1')
 . (Join-Path $PSScriptRoot 'bundle.ps1')
 . (Join-Path $PSScriptRoot 'doctor.ps1')
+. (Join-Path $PSScriptRoot 'doctor-fix.ps1')
+. (Join-Path $PSScriptRoot 'update.ps1')
 . (Join-Path $PSScriptRoot 'cli.ps1')
 . (Join-Path $PSScriptRoot 'tools.ps1')

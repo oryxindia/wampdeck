@@ -1,9 +1,9 @@
 # WampDeck
 
-**WampDeck** is a free, portable local development stack for Windows — PHP, Apache/nginx, MySQL, Composer, Node and more, with a native tray panel and a Laragon-style terminal.
+**WampDeck** is a free, portable local development stack for Windows â€” PHP, Apache/nginx, MySQL, Composer, Node and more, with a native tray panel and a Laragon-style terminal.
 
 - Website: https://wampdeck.com
-- Publisher: **Oryx India** — https://oryxindia.in
+- Publisher: **Oryx India** â€” https://oryxindia.in
 - Platform: Windows 10/11, x64
 - Price: **Free** for download and use
 
@@ -30,7 +30,7 @@ Get the official release from the website. The installer is a single self-contai
 
 - Nine one-click CMS installers (Drupal, WordPress, TYPO3, Joomla, ProcessWire, Concrete CMS, Grav, Winter CMS, Twill) with credentials shown once and passwords redacted from logs.
 - Per-project PHP version pinning, database snapshots, export/import bundles.
-- `wampdeck` command line: `status`, `start`, `stop`, `doctor`, `cms`, `php`, `snapshot`, `deploy` and more.
+- `wampdeck` command line: `status`, `start`, `stop`, `doctor`, `doctor --fix` (safe config fixes), `update --check` (free public updater with SHA-256 verification), `cms`, `php`, `snapshot`, `deploy` and more.
 - Worker supervisor that restarts dead `php-cgi` processes.
 - 27 UI languages including Hindi.
 
@@ -50,4 +50,4 @@ The source is visible for inspection. You may not copy, modify, fork, redistribu
 
 ## Support
 
-support@wampdeck.com · support@oryxindia.in
+support@wampdeck.com Â· support@oryxindia.in

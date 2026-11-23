@@ -5,7 +5,8 @@
 #
 #   wampdeck status
 #   wampdeck list
-#   wampdeck doctor [--project blog]
+#   wampdeck doctor [--project blog] [--fix]
+#   wampdeck update [--check] [--yes]
 #   wampdeck start | stop | restart
 #   wampdeck php blog 8.2 | wampdeck php blog --clear
 #   wampdeck snapshot blog --label before-update
@@ -20,7 +21,7 @@
 $CliCommands = @(
     'status', 'list', 'doctor', 'start', 'stop', 'restart', 'open', 'php',
     'snapshot', 'snapshots', 'restore', 'export', 'import', 'deploy', 'new', 'cms', 'hosts',
-    'logs', 'help', 'version'
+    'logs', 'update', 'help', 'version'
 )
 
 function Split-CommandLine {
@@ -63,7 +64,8 @@ function Get-CliUsage {
     php <project> --clear      go back to the stack default
 
   Health
-    doctor [--json] [--project <name>]
+    doctor [--json] [--project <name>] [--fix]
+    update [--check] [--yes]  check/download a free public update
     logs <nginx|mysql|php|supervisor|mailpit> [--tail 40]
 
   Data
@@ -312,8 +314,35 @@ function Invoke-CliDoctor {
     elseif ($warn -gt 0) { Write-Host $line -ForegroundColor Yellow }
     else { Write-Host $line -ForegroundColor Green }
     Write-Host ''
+    if ($Parsed.Options.ContainsKey('fix')) {
+        Write-Host '  Applying safe fixes (config and hosts only) ...' -ForegroundColor Cyan
+        $fixes = @(Invoke-DoctorFix -Checks $checks)
+        foreach ($fix in $fixes) {
+            if ($fix.Applied) {
+                Write-Host ('    [fixed] ' + $fix.Id + ' - ' + $fix.Detail) -ForegroundColor Green
+            } else {
+                Write-Host ('    [skip]  ' + $fix.Id + ' - ' + $fix.Detail) -ForegroundColor DarkGray
+            }
+        }
+        $after = @(Invoke-Doctor -Project $filter)
+        $fail2 = @($after | Where-Object { $_.Status -eq 'fail' }).Count
+        $warn2 = @($after | Where-Object { $_.Status -eq 'warn' }).Count
+        Write-Host ''
+        Write-Host ('  After fixes: ' + @($after).Count + ' checks, ' + $warn2 + ' warnings, ' + $fail2 + ' failed') -ForegroundColor 
+            $(if ($fail2 -gt 0) { 'Red' } elseif ($warn2 -gt 0) { 'Yellow' } else { 'Green' })
+        Write-Host ''
+        if ($fail2 -gt 0) { return 2 }
+        return 0
+    }
+
     if ($fail -gt 0) { return 2 }
     return 0
+}
+
+# ---------------------------------------------------------------- update
+function Invoke-CliUpdate {
+    param($Parsed)
+    return (Invoke-WampDeckUpdate -Check:$($Parsed.Options.ContainsKey('check')) -Yes:$($Parsed.Options.ContainsKey('yes')))
 }
 
 # ---------------------------------------------------------------- deploy pre-check
@@ -952,6 +981,7 @@ function Invoke-WampDeckCli {
             'cms' { return (Invoke-CliCms -Parsed $parsed) }
             'hosts' { return (Invoke-CliHosts -Parsed $parsed) }
             'logs' { return (Invoke-CliLogs -Parsed $parsed) }
+            'update' { return (Invoke-CliUpdate -Parsed $parsed) }
             'version' {
                 Write-Host "  WampDeck $WampDeckVersion"
                 return 0
