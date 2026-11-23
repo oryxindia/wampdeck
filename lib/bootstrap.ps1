@@ -17,5 +17,6 @@
 . (Join-Path $PSScriptRoot 'doctor.ps1')
 . (Join-Path $PSScriptRoot 'doctor-fix.ps1')
 . (Join-Path $PSScriptRoot 'update.ps1')
+. (Join-Path $PSScriptRoot 'onboarding.ps1')
 . (Join-Path $PSScriptRoot 'cli.ps1')
 . (Join-Path $PSScriptRoot 'tools.ps1')

@@ -7,6 +7,7 @@
 #   wampdeck list
 #   wampdeck doctor [--project blog] [--fix]
 #   wampdeck update [--check] [--yes]
+#   wampdeck wizard [--force]
 #   wampdeck start | stop | restart
 #   wampdeck php blog 8.2 | wampdeck php blog --clear
 #   wampdeck snapshot blog --label before-update
@@ -21,7 +22,7 @@
 $CliCommands = @(
     'status', 'list', 'doctor', 'start', 'stop', 'restart', 'open', 'php',
     'snapshot', 'snapshots', 'restore', 'export', 'import', 'deploy', 'new', 'cms', 'hosts',
-    'logs', 'update', 'help', 'version'
+    'logs', 'update', 'wizard', 'help', 'version'
 )
 
 function Split-CommandLine {
@@ -66,6 +67,7 @@ function Get-CliUsage {
   Health
     doctor [--json] [--project <name>] [--fix]
     update [--check] [--yes]  check/download a free public update
+    wizard [--force]          three-step first-run setup
     logs <nginx|mysql|php|supervisor|mailpit> [--tail 40]
 
   Data
@@ -982,6 +984,7 @@ function Invoke-WampDeckCli {
             'hosts' { return (Invoke-CliHosts -Parsed $parsed) }
             'logs' { return (Invoke-CliLogs -Parsed $parsed) }
             'update' { return (Invoke-CliUpdate -Parsed $parsed) }
+            'wizard' { return (Invoke-FirstRunWizard -Force:$($parsed.Options.ContainsKey('force'))) }
             'version' {
                 Write-Host "  WampDeck $WampDeckVersion"
                 return 0
