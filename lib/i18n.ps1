@@ -70,7 +70,7 @@ $script:UiStrings = @{
     ProjectPhpChanged = @{ en = '{0} now runs PHP {1}.'; hi = '{0} अब PHP {1} पर चलता है।' }
     ProjectPhpColumn  = @{ en = 'PHP'; hi = 'PHP' }
     HeidiSql         = @{ en = 'HeidiSQL';         hi = 'HeidiSQL' }
-    MailpitInbox     = @{ en = 'Mailpit inbox';   hi = 'मेलपिट इनबॉक्स' }
+    MailpitInbox     = @{ en = 'Mailpit (web inbox)';   hi = 'मेलपिट इनबॉक्स' }
     Adminer          = @{ en = 'Adminer';          hi = 'Adminer' }
     Phpinfo          = @{ en = 'phpinfo()';        hi = 'phpinfo()' }
     Notepad          = @{ en = 'Notepad++';       hi = 'Notepad++' }

@@ -246,7 +246,7 @@ if ($proInstalled) {
     @{ Label = 'Backups & Schedule...'; Name = 'backups' },
     @{ Label = 'Xdebug Toggle...'; Name = 'xdebug' },
     @{ Label = 'Git Tools...'; Name = 'git' },
-    @{ Label = 'Mailpit Inbox...'; Name = 'mailpit' },
+    @{ Label = 'Mailpit Pro - captured mail...'; Name = 'mailpit' },
     @{ Label = 'Add-ons, Vault & Team...'; Name = 'more' }
 )
     foreach ($entry in $proTabs) {
