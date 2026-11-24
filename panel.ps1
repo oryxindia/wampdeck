@@ -413,6 +413,17 @@ $script:headerBadge.ForeColor = $script:GuiColors.Muted
 $script:headerBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
 $script:headerBadge.Enabled = $false
 $menuStrip.Items.Add($script:headerBadge) | Out-Null
+# Paid add-on badge - visible only when the Pro folder and a licence are
+# present. The free panel is unchanged for users without Pro.
+$script:proBadge = New-Object System.Windows.Forms.ToolStripMenuItem
+$script:proBadge.Name = 'proBadge'
+$script:proBadge.Text = 'PRO'
+$script:proBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
+$script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
+$script:proBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
+$script:proBadge.Enabled = $false
+$script:proBadge.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
+$menuStrip.Items.Add($script:proBadge) | Out-Null
 
 $script:terminalButton = New-FlatButton -Text (Get-WampDeckString 'Terminal') -Width 100 -Height 34
 $script:terminalButton.Location = New-Object System.Drawing.Point(480, 68)
