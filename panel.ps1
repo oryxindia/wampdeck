@@ -432,6 +432,15 @@ $proHost = New-Object System.Windows.Forms.ToolStripControlHost($script:proBadge
 $proHost.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
 $proHost.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
 $menuStrip.Items.Add($proHost) | Out-Null
+$script:proBadge.Cursor = [System.Windows.Forms.Cursors]::Hand
+$script:proBadge.Add_Click({
+    $gui = Join-Path $Root 'pro\wampdeck-pro-gui.ps1'
+    if (Test-Path $gui) {
+        Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $gui + '"')
+        )
+    }
+})
 
 $script:terminalButton = New-FlatButton -Text (Get-WampDeckString 'Terminal') -Width 100 -Height 34
 $script:terminalButton.Location = New-Object System.Drawing.Point(480, 68)
