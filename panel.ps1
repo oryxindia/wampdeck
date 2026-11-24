@@ -405,25 +405,33 @@ $subtitle.AutoSize = $true
 $subtitle.Location = New-Object System.Drawing.Point(88, 62)
 $form.Controls.Add($subtitle)
 
-$script:headerBadge = New-Object System.Windows.Forms.ToolStripLabel
+# Badges are real Label controls hosted in the menu strip. ToolStripLabel lets
+# the menu renderer override ForeColor, so the ONLINE/PRO colours were lost.
+$script:headerBadge = New-Object System.Windows.Forms.Label
 $script:headerBadge.Name = 'headerBadge'
 $script:headerBadge.Text = 'CHECKING'
 $script:headerBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
 $script:headerBadge.ForeColor = $script:GuiColors.Muted
-$script:headerBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
-$script:headerBadge.Enabled = $true
-$menuStrip.Items.Add($script:headerBadge) | Out-Null
-# Paid add-on badge - visible only when the Pro folder and a licence are
-# present. The free panel is unchanged for users without Pro.
-$script:proBadge = New-Object System.Windows.Forms.ToolStripLabel
+$script:headerBadge.BackColor = $menuStrip.BackColor
+$script:headerBadge.AutoSize = $true
+$script:headerBadge.Padding = New-Object System.Windows.Forms.Padding(0, 0, 8, 0)
+$headerHost = New-Object System.Windows.Forms.ToolStripControlHost($script:headerBadge)
+$headerHost.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
+$menuStrip.Items.Add($headerHost) | Out-Null
+
+# Paid add-on badge - visible only when Pro and a licence are installed.
+$script:proBadge = New-Object System.Windows.Forms.Label
 $script:proBadge.Name = 'proBadge'
 $script:proBadge.Text = 'PRO'
 $script:proBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
 $script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
-$script:proBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
-$script:proBadge.Enabled = $true
-$script:proBadge.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
-$menuStrip.Items.Add($script:proBadge) | Out-Null
+$script:proBadge.BackColor = $menuStrip.BackColor
+$script:proBadge.AutoSize = $true
+$script:proBadge.Padding = New-Object System.Windows.Forms.Padding(0, 0, 8, 0)
+$proHost = New-Object System.Windows.Forms.ToolStripControlHost($script:proBadge)
+$proHost.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
+$proHost.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
+$menuStrip.Items.Add($proHost) | Out-Null
 
 $script:terminalButton = New-FlatButton -Text (Get-WampDeckString 'Terminal') -Width 100 -Height 34
 $script:terminalButton.Location = New-Object System.Drawing.Point(480, 68)
