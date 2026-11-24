@@ -104,14 +104,14 @@ $form.ForeColor = $script:GuiColors.Text
 $form.Font = $script:GuiFont
 $script:form = $form
 
-function Start-ProHub {
-    $hub = Join-Path $Root 'pro\wampdeck-pro-hub.ps1'
-    if (Test-Path $hub) {
-        Start-Process -FilePath 'powershell.exe' -ArgumentList @(
-            '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $hub + '"')
-        )
-    }
+function Show-ProHubWindow {
+    param([int]$Tab = 0)
+    $script:proHubStartTab = $Tab
+    try {
+        . (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')
+    } catch { Show-GuiError $_.Exception.Message }
 }
+function Start-ProHub { Show-ProHubWindow -Tab 0 }
 function Exit-WampDeck {
     $script:exiting = $true
     if ($script:trayIcon) { $script:trayIcon.Visible = $false }
@@ -238,15 +238,39 @@ $settingsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 
 $helpMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Help')
 $proInstalled = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')))
 if ($proInstalled) {
+    try { . (Join-Path $Root 'pro\lib\pro-backup.ps1') } catch { }
     $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
-    $proHubItem = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'WampDeck Pro Dashboard...'
-    $proHubItem.Add_Click({ Start-ProHub })
-    [void]$proMenu.DropDownItems.Add($proHubItem)
+    $proMenu.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
+    $proTabs = @(
+        @{ Label = 'Health Dashboard...'; Tab = 0 },
+        @{ Label = 'Backups & Schedule...'; Tab = 1 },
+        @{ Label = 'Xdebug Toggle...'; Tab = 2 },
+        @{ Label = 'Git Tools...'; Tab = 3 },
+        @{ Label = 'Mailpit Inbox...'; Tab = 4 },
+        @{ Label = 'Add-ons, Vault & Team...'; Tab = 5 }
+    )
+    foreach ($entry in $proTabs) {
+        $mi = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList $entry.Label
+        $tabIndex = [int]$entry.Tab
+        $clickBlock = { param($sender, $e) Show-ProHubWindow -Tab $tabIndex }.GetNewClosure()
+        $mi.Add_Click($clickBlock)
+        [void]$proMenu.DropDownItems.Add($mi)
+    }
+    [void]$proMenu.DropDownItems.Add((New-Object System.Windows.Forms.ToolStripSeparator))
+    $backupNow = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Run backup now'
+    $backupNow.Add_Click({
+        try { Invoke-ProBackup -Keep 7; [System.Windows.Forms.MessageBox]::Show('Backup completed.', 'WampDeck Pro') }
+        catch { Show-GuiError $_.Exception.Message }
+    })
+    [void]$proMenu.DropDownItems.Add($backupNow)
+    $licenceItem = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Licence info...'
+    $licenceItem.Add_Click({
+        $l = Test-ProLicense
+        $text = if ($l.Valid) { "Plan: $($l.Plan)`r`nSerial: $($l.Serial)`r`nSeats: $($l.Seats)`r`nExpires: $(if (-not $l.Expires) { 'lifetime' } else { $l.Expires.ToString('yyyy-MM-dd') })" } else { "Not valid: $($l.Reason)" }
+        [System.Windows.Forms.MessageBox]::Show($text, 'WampDeck Pro licence')
+    })
+    [void]$proMenu.DropDownItems.Add($licenceItem)
 }
-foreach ($item in @($stackMenu, $projectMenu, $toolsMenu)) {
-    [void]$menuStrip.Items.Add($item)
-}
-if ($proInstalled) { [void]$menuStrip.Items.Add($proMenu) }
 foreach ($item in @($settingsMenu, $helpMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
