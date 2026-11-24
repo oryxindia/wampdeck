@@ -106,12 +106,12 @@ $script:form = $form
 
 function Show-ProHubWindow {
     param([int]$Tab = 0)
-    $script:proHubStartTab = $Tab
-    try {
-        . (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')
-    } catch { Show-GuiError $_.Exception.Message }
+    $map = @('health','backups','xdebug','git','mailpit','more')
+    $name = $map[0]
+    if ($Tab -ge 0 -and $Tab -lt $map.Count) { $name = $map[$Tab] }
+    try { Show-ProWindow -Name $name } catch { Show-GuiError $_.Exception.Message }
 }
-function Start-ProHub { Show-ProHubWindow -Tab 0 }
+function Start-ProHub { Show-ProWindow -Name health }
 function Exit-WampDeck {
     $script:exiting = $true
     if ($script:trayIcon) { $script:trayIcon.Visible = $false }
@@ -238,21 +238,21 @@ $settingsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 
 $helpMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Help')
 $proInstalled = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')))
 if ($proInstalled) {
-    try { . (Join-Path $Root 'pro\lib\pro-backup.ps1') } catch { }
+    try { . (Join-Path $Root 'pro\wampdeck-pro-windows.ps1') } catch { }
     $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
     $proMenu.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
     $proTabs = @(
-        @{ Label = 'Health Dashboard...'; Tab = 0 },
-        @{ Label = 'Backups & Schedule...'; Tab = 1 },
-        @{ Label = 'Xdebug Toggle...'; Tab = 2 },
-        @{ Label = 'Git Tools...'; Tab = 3 },
-        @{ Label = 'Mailpit Inbox...'; Tab = 4 },
-        @{ Label = 'Add-ons, Vault & Team...'; Tab = 5 }
-    )
+    @{ Label = 'Health Dashboard...'; Name = 'health' },
+    @{ Label = 'Backups & Schedule...'; Name = 'backups' },
+    @{ Label = 'Xdebug Toggle...'; Name = 'xdebug' },
+    @{ Label = 'Git Tools...'; Name = 'git' },
+    @{ Label = 'Mailpit Inbox...'; Name = 'mailpit' },
+    @{ Label = 'Add-ons, Vault & Team...'; Name = 'more' }
+)
     foreach ($entry in $proTabs) {
         $mi = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList $entry.Label
-        $tabIndex = [int]$entry.Tab
-        $clickBlock = { param($sender, $e) Show-ProHubWindow -Tab $tabIndex }.GetNewClosure()
+        $winName = [string]$entry.Name
+        $clickBlock = { param($sender, $e) Show-ProWindow -Name $winName }.GetNewClosure()
         $mi.Add_Click($clickBlock)
         [void]$proMenu.DropDownItems.Add($mi)
     }
