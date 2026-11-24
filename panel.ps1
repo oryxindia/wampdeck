@@ -104,6 +104,14 @@ $form.ForeColor = $script:GuiColors.Text
 $form.Font = $script:GuiFont
 $script:form = $form
 
+function Start-ProHub {
+    $hub = Join-Path $Root 'pro\wampdeck-pro-hub.ps1'
+    if (Test-Path $hub) {
+        Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $hub + '"')
+        )
+    }
+}
 function Exit-WampDeck {
     $script:exiting = $true
     if ($script:trayIcon) { $script:trayIcon.Visible = $false }
@@ -228,7 +236,18 @@ $projectMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (
 $toolsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Tools')
 $settingsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Settings')
 $helpMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Help')
-foreach ($item in @($stackMenu, $projectMenu, $toolsMenu, $settingsMenu, $helpMenu)) {
+$proInstalled = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')))
+if ($proInstalled) {
+    $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
+    $proHubItem = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'WampDeck Pro Dashboard...'
+    $proHubItem.Add_Click({ Start-ProHub })
+    [void]$proMenu.DropDownItems.Add($proHubItem)
+}
+foreach ($item in @($stackMenu, $projectMenu, $toolsMenu)) {
+    [void]$menuStrip.Items.Add($item)
+}
+if ($proInstalled) { [void]$menuStrip.Items.Add($proMenu) }
+foreach ($item in @($settingsMenu, $helpMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
 $script:menuItemRegistry['menuTopStack'] = $stackMenu
@@ -434,7 +453,7 @@ $proHost.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-P
 $menuStrip.Items.Add($proHost) | Out-Null
 $script:proBadge.Cursor = [System.Windows.Forms.Cursors]::Hand
 $script:proBadge.Add_Click({
-    $gui = Join-Path $Root 'pro\wampdeck-pro-gui.ps1'
+    $gui = Join-Path $Root 'pro\wampdeck-pro-hub.ps1'
     if (Test-Path $gui) {
         Start-Process -FilePath 'powershell.exe' -ArgumentList @(
             '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $gui + '"')
