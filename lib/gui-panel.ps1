@@ -1,5 +1,18 @@
 # Panel behaviour: background jobs, refresh, service/project actions.
 
+function Test-WampDeckInternet {
+    if ($script:InternetCheckTime -and ((Get-Date) - $script:InternetCheckTime).TotalSeconds -lt 30) {
+        return [bool]$script:InternetCheckResult
+    }
+    $ok = $false
+    try {
+        [void][System.Net.Dns]::GetHostAddresses('www.microsoft.com')
+        $ok = $true
+    } catch { $ok = $false }
+    $script:InternetCheckResult = $ok
+    $script:InternetCheckTime = Get-Date
+    return $ok
+}
 function Open-Url {
     param([string]$Url)
     try { Start-Process $Url } catch { Show-GuiError "Could not open $Url`n$($_.Exception.Message)" }
@@ -236,7 +249,7 @@ function Refresh-Ui {
     }
 
     if ($script:headerBadge) {
-        $online = $status.WebRunning -and $status.MysqlRunning
+        $online = Test-WampDeckInternet
         $script:headerBadge.Text = if ($online) { (Get-WampDeckString 'Online') } else { (Get-WampDeckString 'Offline') }
         $script:headerBadge.ForeColor = if ($online) { $script:GuiColors.Accent } else { $script:GuiColors.Red }
     }
