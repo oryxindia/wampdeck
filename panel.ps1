@@ -405,23 +405,23 @@ $subtitle.AutoSize = $true
 $subtitle.Location = New-Object System.Drawing.Point(88, 62)
 $form.Controls.Add($subtitle)
 
-$script:headerBadge = New-Object System.Windows.Forms.ToolStripMenuItem
+$script:headerBadge = New-Object System.Windows.Forms.ToolStripLabel
 $script:headerBadge.Name = 'headerBadge'
 $script:headerBadge.Text = 'CHECKING'
 $script:headerBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
 $script:headerBadge.ForeColor = $script:GuiColors.Muted
 $script:headerBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
-$script:headerBadge.Enabled = $false
+$script:headerBadge.Enabled = $true
 $menuStrip.Items.Add($script:headerBadge) | Out-Null
 # Paid add-on badge - visible only when the Pro folder and a licence are
 # present. The free panel is unchanged for users without Pro.
-$script:proBadge = New-Object System.Windows.Forms.ToolStripMenuItem
+$script:proBadge = New-Object System.Windows.Forms.ToolStripLabel
 $script:proBadge.Name = 'proBadge'
 $script:proBadge.Text = 'PRO'
 $script:proBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
 $script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
 $script:proBadge.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
-$script:proBadge.Enabled = $false
+$script:proBadge.Enabled = $true
 $script:proBadge.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
 $menuStrip.Items.Add($script:proBadge) | Out-Null
 
