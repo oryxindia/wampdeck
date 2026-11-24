@@ -271,6 +271,10 @@ if ($proInstalled) {
     })
     [void]$proMenu.DropDownItems.Add($licenceItem)
 }
+foreach ($item in @($stackMenu, $projectMenu, $toolsMenu)) {
+    [void]$menuStrip.Items.Add($item)
+}
+if ($proInstalled) { [void]$menuStrip.Items.Add($proMenu) }
 foreach ($item in @($settingsMenu, $helpMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
