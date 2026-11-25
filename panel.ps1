@@ -541,8 +541,6 @@ function New-CmsLaunchTile {
     $tile.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
     $tile.BackColor = [System.Drawing.Color]::Transparent
     $tile.Cursor = [System.Windows.Forms.Cursors]::Hand
-    $tile.Add_MouseEnter({ param($sender, $eventArgs) $sender.BackColor = $script:GuiColors.SurfaceAlt })
-    $tile.Add_MouseLeave({ param($sender, $eventArgs) $sender.BackColor = [System.Drawing.Color]::Transparent })
     $tile.Add_Click({ Create-CmsAction -PresetCms $CmsId })
     $form.Controls.Add($tile)
 
@@ -561,6 +559,7 @@ function New-CmsLaunchTile {
         $e.ToolTipLocation = New-Object System.Drawing.Point($x, ($screenPos.Y + $TileHeight + 4))
     })
     $script:toolTips += $tip
+    $tile.Add_MouseLeave({ param($sender, $eventArgs) $tip.Hide($form) })
 
     return $tile
 }
@@ -577,10 +576,10 @@ $script:cmsLaunchOrder = @(
     @{ Id = 'concrete';      Width = 34 },
     @{ Id = 'grav';          Width = 34 },
     @{ Id = 'winter';        Width = 34 },
-    @{ Id = 'twill';         Width = 66 }
+    @{ Id = 'twill';         Width = 64 }
 )
 $cmsLaunchClusterWidth = [int](($script:cmsLaunchOrder | ForEach-Object { $_.Width } | Measure-Object -Sum).Sum) + (8 * 8)
-$script:cmsLaunchX = 916 - $cmsLaunchClusterWidth
+$script:cmsLaunchX = 896 - $cmsLaunchClusterWidth
 foreach ($cmsLaunch in @($script:cmsLaunchOrder)) {
     $null = New-CmsLaunchTile -CmsId $cmsLaunch.Id -X $script:cmsLaunchX -Y 27 -TileWidth $cmsLaunch.Width -TileHeight 32 -MarkHeight 24
     $script:cmsLaunchX += ($cmsLaunch.Width + 8)
@@ -917,6 +916,7 @@ function New-ToolButton {
         $tip = New-Object System.Windows.Forms.ToolTip
         $tip.SetToolTip($button, $Hint)
         $script:toolTips += $tip
+    $tile.Add_MouseLeave({ param($sender, $eventArgs) $tip.Hide($form) })
     }
     $button.Add_Click($OnClick)
     $toolsTab.Controls.Add($button)
