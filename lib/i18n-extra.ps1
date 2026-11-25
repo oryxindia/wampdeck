@@ -747,3 +747,170 @@ $script:CompleteLanguages += @(
     @{ Code = 'vi';    Name = 'Tiáº¿ng Viá»‡t (Vietnamese)' }
     @{ Code = 'zh-TW'; Name = 'ç¹é«”ä¸­æ–‡ (Traditional Chinese)' }
 )
+$script:Phase3Remaining = @{    AppTitle = @{ ca='WampDeck'; hr='WampDeck'; id='WampDeck'; sk='WampDeck'; sr='WampDeck' }
+    AppSubtitle = @{ ca='Pila de desenvolupament PHP portàtil'; hr='Prenosivi PHP razvojni stek'; id='Satu pengembangan PHP portabel'; sk='Prenosné PHP vývojové prostředí'; sr='Prenosivni PHP razvojni stek' }
+    Stack = @{ ca='Pila'; hr='Stek'; id='Tumpukan'; sk='Stapel'; sr='Stek' }
+    Project = @{ ca='Projecte'; hr='Projekt'; id='Proyek'; sk='Projekt'; sr='Projekat' }
+    Services = @{ ca='Serveis'; hr='Usluge'; id='Layanan'; sk='Služby'; sr='Usluge' }
+    Tools = @{ ca='Eines'; hr='Alati'; id='Alat'; sk='Nástroje'; sr='Alati' }
+    Settings = @{ ca='Configuració'; hr='Podešavanja'; id='Pengaturan'; sk='Nastavení'; sr='Podešavanja' }
+    Help = @{ ca='Ajuda'; hr='Pomoć'; id='Bantuan'; sk='Nápověda'; sr='Pomoć' }
+    Language = @{ ca='Idioma'; hr='Jezik'; id='Bahasa'; sk='Jazyk'; sr='Jezik' }
+    Start = @{ ca='Inicia'; hr='Pokreni'; id='Mulai'; sk='Spustit'; sr='Pokreni' }
+    Stop = @{ ca='Atura'; hr='Zaustavi'; id='Hentikan'; sk='Zastavit'; sr='Zaustavi' }
+    Restart = @{ ca='Reinicia'; hr='Restartuj'; id='Mulai ulang'; sk='Restartovat'; sr='Restartuj' }
+    Terminal = @{ ca='>_  Terminal'; hr='>_  Terminal'; id='>_  Terminal'; sk='>_  Terminál'; sr='>_  Terminal' }
+    TerminalHint = @{ ca='Obreu una terminal a www amb PHP, Composer, Git, Node i MySQL a punt'; hr='Otvori terminal u www sa PHP, Composer, Git, Node i MySQL spremnim'; id='Buka terminal di www dengan PHP, Composer, Git, Node dan MySQL siap'; sk='Otevřít terminál ve www s PHP, Composer, Git, Node a MySQL'; sr='Otvori terminal u www sa PHP, Composer, Git, Node i MySQL spremnim' }
+    StartStack = @{ ca='Inicia la pila'; hr='Pokreni stek'; id='Mulai tumpukan'; sk='Spustit prostředí'; sr='Pokreni stek' }
+    StopStack = @{ ca='Atura la pila'; hr='Zaustavi stek'; id='Hentikan tumpukan'; sk='Zastavit prostředí'; sr='Zaustavi stek' }
+    RestartStack = @{ ca='Reinicia la pila'; hr='Restartuj stek'; id='Mulai ulang tumpukan'; sk='Restartovat prostředí'; sr='Restartuj stek' }
+    OpenPanelInBrowser = @{ ca='Obre el panell al navegador'; hr='Otvori panel u browseru'; id='Buka panel di browser'; sk='Otevřít panel v prohlížeči'; sr='Otvori panel u browseru' }
+    OpenWwwFolder = @{ ca='Obre la carpeta www'; hr='Otvori folder www'; id='Buka folder www'; sk='Otevřít složku www'; sr='Otvori folder www' }
+    OpenLogsFolder = @{ ca='Obre la carpeta de registres'; hr='Otvori folder za dnevnike'; id='Buka folder log'; sk='Otevřít složku logů'; sr='Otvori folder za dnevnike' }
+    TerminalInWww = @{ ca='Terminal a www'; hr='Terminal u www'; id='Terminal di www'; sk='Terminál ve www'; sr='Terminal u www' }
+    Quit = @{ ca='Surt'; hr='Izađi'; id='Keluar'; sk='Ukončit'; sr='Izađi' }
+    NewProject = @{ ca='Nou project...'; hr='Novi projekat...'; id='Proyek baru...'; sk='Nový projekt...'; sr='Novi projekat...' }
+    OpenInBrowser = @{ ca='Obre al navegador'; hr='Otvori u browseru'; id='Buka di browser'; sk='Otevřít v prohlížeči'; sr='Otvori u browseru' }
+    OpenTestUrl = @{ ca='Obre l''URL .test'; hr='Otvori .test URL'; id='Buka URL .test'; sk='Otevřít .test URL'; sr='Otvori .test URL' }
+    OpenFolder = @{ ca='Obre la carpeta'; hr='Otvori folder'; id='Buka folder'; sk='Otevřít složku'; sr='Otvori folder' }
+    OpenTerminalHere = @{ ca='Obre la terminal aquí'; hr='Otvori terminal ovde'; id='Buka terminal di sini'; sk='Otevřít terminál zde'; sr='Otvori terminal ovde' }
+    CopyLocalUrl = @{ ca='Copia l''URL local'; hr='Kopiraj lokalni URL'; id='Salin URL lokal'; sk='Kopírovat místní URL'; sr='Kopiraj lokalni URL' }
+    DeleteProject = @{ ca='Elimina el projecte...'; hr='Obriši projekat...'; id='Hapus proyek...'; sk='Odstranit projekt...'; sr='Obriši projekat...' }
+    RefreshProjects = @{ ca='Actualitza la llista de projectes'; hr='Ažuriraj listu projekata'; id='Perbarui daftar proyek'; sk='Obnovit seznam projektů'; sr='Ažuriraj listu projekata' }
+    ProjectPhpVersion = @{ ca='Versió de PHP'; hr='Verzija PHP'; id='Versi PHP'; sk='Verze PHP'; sr='Verzija PHP' }
+    ProjectPhpDefault = @{ ca='Predeterminat de la pila ({0})'; hr='Podrazumevano steka ({0})'; id='Default tumpukan ({0})'; sk='Výchozí prostředí ({0})'; sr='Podrazumevano steka ({0})' }
+    ProjectPhpChanged = @{ ca='{0} ara fa servir PHP {1}.'; hr='Trenutno {0} koristi PHP {1}.'; id='Sekarang {0} menggunakan PHP {1}.'; sk='{0} nyní běží na PHP {1}.'; sr='Trenutno {0} koristi PHP {1}.' }
+    ProjectPhpColumn = @{ ca='PHP'; hr='PHP'; id='PHP'; sk='PHP'; sr='PHP' }
+    HeidiSql = @{ ca='HeidiSQL'; hr='HeidiSQL'; id='HeidiSQL'; sk='HeidiSQL'; sr='HeidiSQL' }
+    MailpitInbox = @{ ca='Mailpit (correu web)'; hr='Mailpit (veb pošta)'; id='Mailpit (kotak web)'; sk='Mailpit (webová schránka)'; sr='Mailpit (veb pošta)' }
+    Adminer = @{ ca='Adminer'; hr='Adminer'; id='Adminer'; sk='Adminer'; sr='Adminer' }
+    Phpinfo = @{ ca='phpinfo()'; hr='phpinfo()'; id='phpinfo()'; sk='phpinfo()'; sr='phpinfo()' }
+    Notepad = @{ ca='Notepad++'; hr='Notepad++'; id='Notepad++'; sk='Notepad++'; sr='Notepad++' }
+    NgrokStart = @{ ca='Inicia el túnel ngrok'; hr='Pokreni ngrok tunel'; id='Mulai terowongan ngrok'; sk='Spustit ngrok tunel'; sr='Pokreni ngrok tunel' }
+    NgrokStop = @{ ca='Atura ngrok'; hr='Zaustavi ngrok'; id='Hentikan ngrok'; sk='Zastavit ngrok'; sr='Zaustavi ngrok' }
+    NgrokNoToken = @{ ca='ngrok iniciat, però encara no hi ha URL pública. Afegeix primer l''authtoken.'; hr='ngrok je pokrenut, ali još nema javnog URL-a. Prvo dodajte authtoken.'; id='ngrok sudah mulai tapi belum ada URL publik. Tambahkan authtoken dulu.'; sk='ngrok spuštěn, ale zatím bez veřejné URL. Nejprve přidejte authtoken.'; sr='ngrok je pokrenut, ali još nema javnog URL-a. Prvo dodajte authtoken.' }
+    HostsChecking = @{ ca='hosts: comprovant'; hr='hosts: provera'; id='hosts: memeriksa'; sk='hosts: kontrola'; sr='hosts: provera' }
+    HostsSyncing = @{ ca='S''incronitza el fitxer hosts...'; hr='Sinkronizacija hosts fajla...'; id='Menyinkronkan file hosts...'; sk='Synchronizace souboru hosts...'; sr='Sinkronizacija hosts fajla...' }
+    HostsOpening = @{ ca='S''obre el fitxer hosts...'; hr='Otvaranje hosts fajla...'; id='Membuka file hosts...'; sk='Otevírání souboru hosts...'; sr='Otvaranje hosts fajla...' }
+    Cronical = @{ ca='Planificador Cronical'; hr='Cronical planer'; id='Penjadwal Cronical'; sk='Plánovač Cronical'; sr='Cronical planer' }
+    SyncHosts = @{ ca='Sincronitza hosts (UAC)'; hr='Sinkronizuj hosts (UAC)'; id='Sinkronkan hosts (UAC)'; sk='Synchronizovat hosts (UAC)'; sr='Sinkronizuj hosts (UAC)' }
+    EditHosts = @{ ca='Edita hosts (UAC)'; hr='Uredi hosts (UAC)'; id='Edit hosts (UAC)'; sk='Upravit hosts (UAC)'; sr='Uredi hosts (UAC)' }
+    CertificatesFolder = @{ ca='Carpeta de certificats'; hr='Folder za sertifikate'; id='Folder sertifikat'; sk='Složka certifikátů'; sr='Folder za sertifikate' }
+    PhpExtensions = @{ ca='Extensions PHP...'; hr='PHP proširenja...'; id='Ekstensi PHP...'; sk='PHP rozšíření...'; sr='PHP proširenja...' }
+    StartStackWhenPanelOpens = @{ ca='Inicia la pila en obrir el panell'; hr='Pokreni stek pri otvaranju panela'; id='Mulai tumpukan saat panel dibuka'; sk='Spustit prostředí při otevření panelu'; sr='Pokreni stek pri otvaranju panela' }
+    StartWithWindows = @{ ca='Inicia amb Windows'; hr='Pokreni sa Windows'; id='Mulai bersama Windows'; sk='Spustit s Windows'; sr='Pokreni sa Windows' }
+    RefreshConfigs = @{ ca='Actualitza la configuració'; hr='Ažuriraj konfiguraciju'; id='Perbarui konfigurasi'; sk='Obnovit konfiguraci'; sr='Ažuriraj konfiguraciju' }
+    About = @{ ca='Quant a WampDeck'; hr='O WampDeck'; id='Tentang WampDeck'; sk='O WampDeck'; sr='O WampDeck' }
+    Readme = @{ ca='README'; hr='README'; id='README'; sk='README'; sr='README' }
+    OpenInstallFolder = @{ ca='Obre la carpeta d''instal·lació'; hr='Otvori folder za instalaciju'; id='Buka folder instalasi'; sk='Otevřít instalační složku'; sr='Otvori folder za instalaciju' }
+    EnableHttps = @{ ca='Activa HTTPS'; hr='Uključi HTTPS'; id='Aktifkan HTTPS'; sk='Povolit HTTPS'; sr='Uključi HTTPS' }
+    DisableHttps = @{ ca='Desactiva HTTPS'; hr='Isključi HTTPS'; id='Nonaktifkan HTTPS'; sk='Zakázat HTTPS'; sr='Isključi HTTPS' }
+    TrustCert = @{ ca='Confia en el certificat (diàleg de Windows)'; hr='Poveruj sertifikatu (Windows dijalog)'; id='Percayai sertifikat (dialog Windows)'; sk='Důvěryhodný certifikát (dialog Windows)'; sr='Poveruj sertifikatu (Windows dijalog)' }
+    RegenerateCert = @{ ca='Regenera el certificat'; hr='Regeneriši sertifikat'; id='Buat ulang sertifikat'; sk='Znovu vygenerovat certifikát'; sr='Regeneriši sertifikat' }
+    Php = @{ ca='PHP'; hr='PHP'; id='PHP'; sk='PHP'; sr='PHP' }
+    WebServer = @{ ca='Servei web'; hr='Veb server'; id='Server web'; sk='Webový server'; sr='Veb server' }
+    Database = @{ ca='Base de dades'; hr='Baza podataka'; id='Basis data'; sk='Databáze'; sr='Baza podataka' }
+    ExtraServices = @{ ca='Serveis addicionals'; hr='Dodatne usluge'; id='Layanan tambahan'; sk='Další služby'; sr='Dodatne usluge' }
+    MySql = @{ ca='MySQL'; hr='MySQL'; id='MySQL'; sk='MySQL'; sr='MySQL' }
+    Running = @{ ca='en execució'; hr='radi'; id='berjalan'; sk='spusteno'; sr='radi' }
+    Stopped = @{ ca='aturat'; hr='zaustavljeno'; id='berhenti'; sk='zastaveno'; sr='zaustavljeno' }
+    Starting = @{ ca='iniciant...'; hr='pokreće se...'; id='memulai...'; sk='spouští se...'; sr='pokreće se...' }
+    Stopping = @{ ca='aturant...'; hr='zaustavlja se...'; id='menghentikan...'; sk='zastavuje se...'; sr='zaustavlja se...' }
+    StartingService = @{ ca='S''està iniciant el servei...'; hr='Pokretanje usluge...'; id='Memulai layanan...'; sk='Spouštění služby...'; sr='Pokretanje usluge...' }
+    StoppingService = @{ ca='S''està aturant el servei...'; hr='Zaustavljanje usluge...'; id='Menghentikan layanan...'; sk='Zastavování služby...'; sr='Zaustavljanje usluge...' }
+    Ready = @{ ca='A punt'; hr='SPREMNO'; id='Siap'; sk='Připraveno'; sr='SPREMNO' }
+    StartingTheStack = @{ ca='S''està iniciant la pila...'; hr='Pokretanje steka...'; id='Memulai tumpukan...'; sk='Spouštění prostředí...'; sr='Pokretanje steka...' }
+    StoppingTheStack = @{ ca='S''està aturant la pila...'; hr='Zaustavljanje steka...'; id='Menghentikan tumpukan...'; sk='Zastavování prostředí...'; sr='Zaustavljanje steka...' }
+    RestartingTheStack = @{ ca='S''està reiniciant la pila...'; hr='Restartovanje steka...'; id='Mulai ulang tumpukan...'; sk='Restartování prostředí...'; sr='Restartovanje steka...' }
+    AnotherTaskRunning = @{ ca='Una altra tasca de WampDeck encara s''està executant. Espereu que acabi.'; hr='Druga WampDeck radnja još uvek radi. Sačekajte da se završi.'; id='Tugas WampDeck lain masih berjalan. Tunggu sampai selesai.'; sk='Další úloha WampDeck stále běží. Počkejte prosím.'; sr='Druga WampDeck radnja još uvek radi. Sačekajte da se završi.' }
+    TaskFailed = @{ ca='La tasca de WampDeck ha fallat (exit {0}).'; hr='WampDeck radnja nije uspela (exit {0}).'; id='Tugas WampDeck gagal (exit {0}).'; sk='Úloha WampDeck selhala (exit {0}).'; sr='WampDeck radnja nije uspela (exit {0}).' }
+    CheckStatus = @{ ca='COMPROVANT'; hr='PROVERA'; id='MEMERIKSA'; sk='KONTROLA'; sr='PROVERA' }
+    SslChecking = @{ ca='ssl: comprovant'; hr='ssl: provera'; id='ssl: memeriksa'; sk='ssl: kontrola'; sr='ssl: provera' }
+    SslOn = @{ ca='ssl: actiu, de confiança'; hr='ssl: uključen, pouzdan'; id='ssl: aktif, terpercaya'; sk='ssl: zapnuto, důvěryhodné'; sr='ssl: uključen, pouzdan' }
+    SslOnCaUntrusted = @{ ca='ssl: actiu, CA no fiable'; hr='ssl: uključen, CA nepouzdan'; id='ssl: aktif, CA tidak terpercaya'; sk='ssl: zapnuto, CA nedůvěryhodná'; sr='ssl: uključen, CA nepouzdan' }
+    SslOff = @{ ca='ssl: desactivat'; hr='ssl: isključen'; id='ssl: nonaktif'; sk='ssl: vypnuto'; sr='ssl: isključen' }
+    Online = @{ ca='EN LÍNEA'; hr='ONLINE'; id='ONLINE'; sk='ONLINE'; sr='ONLINE' }
+    Offline = @{ ca='FORA DE LÍNEA'; hr='OFFLINE'; id='OFFLINE'; sk='OFFLINE'; sr='OFFLINE' }
+    PortsBusy = @{ ca='Els ports encara estan ocupats. Atureu l''altre programa o canvieu els ports.'; hr='Portovi su još zauzeti. Zaustavite drugi program ili promenite portove.'; id='Port masih digunakan. Hentikan program lain atau ubah port.'; sk='Porty jsou stále obsazeny. Zastavte jiný program nebo změňte porty.'; sr='Portovi su još zauzeti. Zaustavite drugi program ili promenite portove.' }
+    WwwHint = @{ ca='Fes doble clic en un projecte per obrir-lo. Cada carpeta a www\ obté una URL local automàticament.'; hr='Dvostrukim klikom otvorite projekat. Svaki folder u www\ automatski dobija lokalni URL.'; id='Klik dua kali proyek untuk membukanya. Setiap folder di www\ otomatis mendapat URL lokal.'; sk='Dvojklikem otevřete projekt. Každá složka ve www\ automaticky získá místní URL.'; sr='Dvostrukim klikom otvorite projekat. Svaki folder u www\ automatski dobija lokalni URL.' }
+    ServicesHint = @{ ca='Els serveis bàsics sempre s''executen. Activa Mailpit, Redis o Memcached a Configuració.'; hr='Osnovne usluge se uvek pokreću. Uključite Mailpit, Redis ili Memcached u podešavanjima.'; id='Layanan inti selalu berjalan. Aktifkan Mailpit, Redis atau Memcached di Pengaturan.'; sk='Základní služby jsou vždy spuštěny. Mailpit, Redis nebo Memcached povolte v nastavení.'; sr='Osnovne usluge se uvek pokreću. Uključite Mailpit, Redis ili Memcached u podešavanjima.' }
+    AutoStartInfo = @{ ca='WampDeck s''iniciarà amb Windows (a l''àrea de notificació).'; hr='WampDeck će se pokretati sa Windows-om (u oblasti obaveštenja).'; id='WampDeck akan mulai bersama Windows (di area notifikasi).'; sk='WampDeck se spustí s Windows (v oznamovací oblasti).'; sr='WampDeck će se pokretati sa Windows-om (u oblasti obaveštenja).' }
+    AutoStartOffInfo = @{ ca='WampDeck ja no s''iniciarà amb Windows.'; hr='WampDeck se više neće pokretati sa Windows-om.'; id='WampDeck tidak akan mulai bersama Windows.'; sk='WampDeck se už nebude spouštět s Windows.'; sr='WampDeck se više neće pokretati sa Windows-om.' }
+    EnablingHttps = @{ ca='S''està activant HTTPS...'; hr='Uključivanje HTTPS...'; id='Mengaktifkan HTTPS...'; sk='Povolování HTTPS...'; sr='Uključivanje HTTPS...' }
+    DisablingHttps = @{ ca='S''està desactivant HTTPS...'; hr='Isključivanje HTTPS...'; id='Menonaktifkan HTTPS...'; sk='Zakazování HTTPS...'; sr='Isključivanje HTTPS...' }
+    WaitingForTrust = @{ ca='Esperant la confirmació de Windows...'; hr='Čekanje Windows potvrde...'; id='Menunggu konfirmasi Windows...'; sk='Čekání na potvrzení Windows...'; sr='Čekanje Windows potvrde...' }
+    RegeneratingCert = @{ ca='Regenerant certificats...'; hr='Regeneracija sertifikata...'; id='Membuat ulang sertifikat...'; sk='Obnovování certifikátů...'; sr='Regeneracija sertifikata...' }
+    ServiceStart = @{ ca='Inicia'; hr='Pokreni'; id='Mulai'; sk='Spustit'; sr='Pokreni' }
+    ServiceStop = @{ ca='Atura'; hr='Zaustavi'; id='Hentikan'; sk='Zastavit'; sr='Zaustavi' }
+    ServiceStartAll = @{ ca='Inicia-ho tot'; hr='Pokreni sve'; id='Mulai semua'; sk='Spustit vše'; sr='Pokreni sve' }
+    ServiceStopAll = @{ ca='Atura-ho tot'; hr='Zaustavi sve'; id='Hentikan semua'; sk='Zastavit vše'; sr='Zaustavi sve' }
+    ServiceToggleStartup = @{ ca='Commuta l''inici automàtic'; hr='Promeni autostart'; id='Ubah autostart'; sk='Přepnout automatické spuštění'; sr='Promeni autostart' }
+    ServiceAlways = @{ ca='sempre'; hr='uvek'; id='selalu'; sk='vždy'; sr='uvek' }
+    ServiceOff = @{ ca='desactivat'; hr='isključen'; id='nonaktif'; sk='vypnuto'; sr='isključen' }
+    TabProjects = @{ ca='Projectes'; hr='Projekti'; id='Proyek'; sk='Projekty'; sr='Projekti' }
+    TabServices = @{ ca='Serveis'; hr='Usluge'; id='Layanan'; sk='Služby'; sr='Usluge' }
+    TabTools = @{ ca='Eines'; hr='Alati'; id='Alat'; sk='Nástroje'; sr='Alati' }
+    TabNewProject = @{ ca='Nou project'; hr='Novi projekat'; id='Proyek baru'; sk='Nový projekt'; sr='Novi projekat' }
+    TabOpen = @{ ca='Obre'; hr='Otvori'; id='Buka'; sk='Otevřít'; sr='Otvori' }
+    TabTestUrl = @{ ca='URL .test'; hr='.test URL'; id='URL .test'; sk='.test URL'; sr='.test URL' }
+    TabFolder = @{ ca='Carpeta'; hr='Folder'; id='Folder'; sk='Složka'; sr='Folder' }
+    TabCopyUrl = @{ ca='Copia URL'; hr='Kopiraj URL'; id='Salin URL'; sk='Kopírovat URL'; sr='Kopiraj URL' }
+    TabDelete = @{ ca='Elimina'; hr='Obriši'; id='Hapus'; sk='Odstranit'; sr='Obriši' }
+    TabRefresh = @{ ca='Actualitza'; hr='Ažuriraj'; id='Perbarui'; sk='Obnovit'; sr='Ažuriraj' }
+    TabTerminal = @{ ca='Terminal'; hr='Terminal'; id='Terminal'; sk='Terminál'; sr='Terminal' }
+    ProjectCount = @{ ca='{0} projecte'; hr='{0} projekat'; id='{0} proyek'; sk='{0} projekt'; sr='{0} projekat' }
+    ProjectCountPlural = @{ ca='{0} projectes'; hr='{0} projekata'; id='{0} proyek'; sk='{0} projektů'; sr='{0} projekata' }
+    TrayBalloon = @{ ca='Encara s''està executant a l''àrea de notificació.'; hr='Još uvek radi u oblasti obaveštenja.'; id='Masih berjalan di area notifikasi.'; sk='Stále běží v oznamovací oblasti.'; sr='Još uvek radi u oblasti obaveštenja.' }
+    ColumnProject = @{ ca='Projecte'; hr='Projekat'; id='Proyek'; sk='Projekt'; sr='Projekat' }
+    ColumnPhp = @{ ca='PHP'; hr='PHP'; id='PHP'; sk='PHP'; sr='PHP' }
+    ColumnLocalUrl = @{ ca='URL local'; hr='Lokalni URL'; id='URL lokal'; sk='Místní URL'; sr='Lokalni URL' }
+    ColumnTestUrl = @{ ca='URL .test'; hr='.test URL'; id='URL .test'; sk='.test URL'; sr='.test URL' }
+    ColumnFolder = @{ ca='Carpeta'; hr='Folder'; id='Folder'; sk='Složka'; sr='Folder' }
+    ServiceCount = @{ ca='{0} servei'; hr='{0} usluga'; id='{0} layanan'; sk='{0} služba'; sr='{0} usluga' }
+    ServiceCountPl = @{ ca='{0} serveis'; hr='{0} usluge'; id='{0} layanan'; sk='{0} služby'; sr='{0} usluge' }
+    FrontendTitle = @{ ca='Frameworks PHP - instal·lació amb un clic'; hr='PHP frameworki - instalacija jednim klikom'; id='Framework PHP - instal sekali klik'; sk='PHP frameworky - instalace jedním klikem'; sr='PHP frameworki - instalacija jednim klikom' }
+    InstallLabel = @{ ca='Instal·la'; hr='Instaliraj'; id='Instal'; sk='Instalovat'; sr='Instaliraj' }
+    FolderLabel = @{ ca='Nom de la carpeta del projecte'; hr='Naziv foldera projekta'; id='Nama folder proyek'; sk='Název složky projektu'; sr='Naziv foldera projekta' }
+    FrameworkHint2 = @{ ca='Instal·lació de frameworks PHP amb un clic: gratis a WampDeck.'; hr='Instalacija PHP frameworka jednim klikom - besplatno u WampDeck.'; id='Instal framework PHP sekali klik - gratis di WampDeck'; sk='Instalace PHP frameworků jedním klikem - zdarma ve WampDeck.'; sr='Instalacija PHP frameworka jednim klikom - besplatno u WampDeck.' }
+    DatabaseClient = @{ ca='Client de base de dades'; hr='Klijent baze podataka'; id='Klien basis data'; sk='Databázový klient'; sr='Klijent baze podataka' }
+    CapturedMail = @{ ca='Correu capturat'; hr='Zarobljena pošta'; id='Surel tertangkap'; sk='Zachycená pošta'; sr='Zarobljena pošta' }
+    WebDatabase = @{ ca='Base de dades web'; hr='Veb baza podataka'; id='Basis data web'; sk='Webová databáze'; sr='Veb baza podataka' }
+    PhpSettings = @{ ca='Configuració de PHP'; hr='PHP podešavanja'; id='Pengaturan PHP'; sk='Nastavení PHP'; sr='PHP podešavanja' }
+    TextEditor = @{ ca='Editor de text'; hr='Tekst editor'; id='Editor teks'; sk='Textový editor'; sr='Tekst editor' }
+    VersionCheck = @{ ca='Comprovació de versió'; hr='Provera verzije'; id='Ce versi'; sk='Kontrola verze'; sr='Provera verzije' }
+    CronScheduler = @{ ca='Planificador de tasques'; hr='Planer zadataka'; id='Penjadwal tugas'; sk='Plánovač úloh'; sr='Planer zadataka' }
+    CloseTunnel = @{ ca='Tanca el túnel'; hr='Zatvori tunel'; id='Tutup terowongan'; sk='Zavřít tunel'; sr='Zatvori tunel' }
+    HostsFile = @{ ca='Fitxer hosts'; hr='Hosts fajl'; id='File hosts'; sk='Soubor hosts'; sr='Hosts fajl' }
+    EditUac = @{ ca='Edita amb UAC'; hr='Uredi sa UAC'; id='Edit dengan UAC'; sk='Upravit s UAC'; sr='Uredi sa UAC' }
+    SslFiles = @{ ca='Fitxers SSL'; hr='SSL fajlovi'; id='File SSL'; sk='Soubory SSL'; sr='SSL fajlovi' }
+    RebuildVhosts = @{ ca='Recrea els host virtuals'; hr='Regeneriši virtuelne hostove'; id='Buat ulang host virtual'; sk='Znovu vytvořit virtuální hosty'; sr='Regeneriši virtuelne hostove' }
+    Versions = @{ ca='Versions'; hr='Verzije'; id='Versi'; sk='Verze'; sr='Verzije' }
+    TabPhpFramework = @{ ca='Frameworks PHP'; hr='PHP frameworki'; id='Framework PHP'; sk='PHP frameworky'; sr='PHP frameworki' }
+    Install = @{ ca='Instal·la'; hr='Instaliraj'; id='Instal'; sk='Instalovat'; sr='Instaliraj' }
+    FrameworkHint = @{ ca='Instal·lació de frameworks PHP amb un clic: gratis a WampDeck.'; hr='Instalacija PHP frameworka jednim klikom - besplatno u WampDeck.'; id='Instal framework PHP sekali klik - gratis di WampDeck'; sk='Instalace PHP frameworků jedním klikem - zdarma ve WampDeck.'; sr='Instalacija PHP frameworka jednim klikom - besplatno u WampDeck.' }
+    ProjectFolderName = @{ ca='Nom de la carpeta del projecte'; hr='Naziv foldera projekta'; id='Nama folder proyek'; sk='Název složky projektu'; sr='Naziv foldera projekta' }
+    FirstRunTitle = @{ ca='Benvingut a WampDeck - tria el teu idioma'; hr='Dobrodošli u WampDeck - izaberite jezik'; id='Selamat datang di WampDeck - pilih bahasa'; sk='Vítejte ve WampDeck - vyberte jazyk'; sr='Dobrodošli u WampDeck - izaberite jezik' }
+    FirstRunHint = @{ ca='Tria la llengua de la interfície de WampDeck.'; hr='Izaberite jezik interfejsa WampDeck.'; id='Pilih bahasa antarmuka WampDeck.'; sk='Vyberte jazyk rozhraní WampDeck.'; sr='Izaberite jezik interfejsa WampDeck.' }
+    FirstRunRtlNote = @{ ca='L''àrab fa servir una disposició de dreta a esquerra. Es configura un cop durant la instal·lació i no canvia en canviar d''idioma a Configuració.'; hr='Arapski koristi raspored desno-levo. Podešava se jednom pri instalaciji i ne menja se pri promeni jezika u podešavanjima.'; id='Bahasa Arab menggunakan tata letak kanan ke kiri. Diatur sekali saat instalasi dan tidak berubah saat mengubah bahasa di Pengaturan.'; sk='Arabština používá rozvržení zprava doleva. Nastavuje se jednou při instalaci a při změně jazyka v nastavení se nemění.'; sr='Arapski koristi raspored desno-levo. Podešava se jednom pri instalaciji i ne menja se pri promeni jezika u podešavanjima.' }
+    ProTitle = @{ ca='WampDeck Pro - Eines per a agències'; hr='WampDeck Pro - Alati za agencije'; id='WampDeck Pro - Alat untuk agensi'; sk='WampDeck Pro - Vývojářská sada pro agentury'; sr='WampDeck Pro - Alati za agencije' }
+    ProHealth = @{ ca='Tauler de salut'; hr='Panel zdravlja'; id='Panel kesehatan'; sk='Panel stavu'; sr='Panel zdravlja' }
+    ProBackups = @{ ca='Còpies de seguretat i programació'; hr='Backup i zakazivanje'; id='Backup dan penjadwalan'; sk='Zálohy a plánování'; sr='Backup i zakazivanje' }
+    ProXdebug = @{ ca='Commuta Xdebug'; hr='Uključi/isključi Xdebug'; id='Alihkan Xdebug'; sk='Přepnout Xdebug'; sr='Uključi/isključi Xdebug' }
+    ProGit = @{ ca='Eines Git'; hr='Git alati'; id='Alat Git'; sk='Git nástroje'; sr='Git alati' }
+    ProMailpit = @{ ca='Mailpit Pro'; hr='Mailpit Pro'; id='Mailpit Pro'; sk='Mailpit Pro'; sr='Mailpit Pro' }
+    ProMore = @{ ca='Complements, cofre i equip'; hr='Dodaci, sef i tim'; id='Add-on, brankas dan tim'; sk='Doplňky, trezor a tým'; sr='Dodaci, sef i tim' }
+    ProInstallSelected = @{ ca='Instal·la el seleccionat...'; hr='Instaliraj izabrano...'; id='Instal yang dipilih...'; sk='Instalovat vybrané...'; sr='Instaliraj izabrano...' }
+    Cancel = @{ ca='Cancel·la'; hr='Otkaži'; id='Batal'; sk='Zrušit'; sr='Otkaži' }
+    ProBadge = @{ ca='PRO'; hr='PRO'; id='PRO'; sk='PRO'; sr='PRO' }
+    CheckingShort = @{ ca='COMPROVANT'; hr='PROVERA'; id='MEMERIKSA'; sk='KONTROLA'; sr='PROVERA' }}
+foreach ($key in $script:Phase3Remaining.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:Phase3Remaining[$key].Keys) { $script:UiStrings[$key][$lang] = $script:Phase3Remaining[$key][$lang] }
+}
+$script:CompleteLanguages += @(
+    @{ Code = 'ca'; Name = 'CatalÃ  (Catalan)' }
+    @{ Code = 'hr'; Name = 'Hrvatski (Croatian)' }
+    @{ Code = 'id'; Name = 'Bahasa Indonesia (Indonesian)' }
+    @{ Code = 'sk'; Name = 'SlovenÄina (Slovak)' }
+    @{ Code = 'sr'; Name = 'Ð¡Ñ€Ð¿ÑÐºÐ¸ (Serbian)' }
+)

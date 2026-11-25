@@ -1,4 +1,4 @@
-﻿# WampDeck control panel - native WinForms GUI.
+# WampDeck control panel - native WinForms GUI.
 #
 #   .\panel.cmd
 #   powershell -Sta -ExecutionPolicy Bypass -File .\panel.ps1
@@ -236,6 +236,9 @@ function Update-GuiLanguageTexts {
     }
     if ($script:frameworkStatusLabel) {
         $script:frameworkStatusLabel.Text = Get-WampDeckString 'FrameworkHint2' -Language $lang
+    }
+        foreach ($binding in $script:LanguageBindings) {
+        try { $binding.C.Text = & $binding.S } catch { }
     }
     Refresh-Ui
 }
@@ -639,9 +642,10 @@ function New-StatusCard {
     $detail.Size = New-Object System.Drawing.Size(188, 20)
     $panel.Controls.Add($detail)
 
-    return [pscustomobject]@{ Value = $value; Detail = $detail }
+    return [pscustomobject]@{ Value = $value; Detail = $detail; Caption = $captionLabel }
 }
 
+$script:LanguageBindings = @()
 $phpCard = New-StatusCard -Caption (Get-WampDeckString 'Php') -X 24
 $script:cardPhpValue = $phpCard.Value
 $script:cardPhpDetail = $phpCard.Detail
@@ -657,6 +661,10 @@ $script:cardDbDetail = $dbCard.Detail
 $toolsCard = New-StatusCard -Caption (Get-WampDeckString 'ExtraServices') -X 708
 $script:cardToolsValue = $toolsCard.Value
 $script:cardToolsDetail = $toolsCard.Detail
+$script:LanguageBindings += @{ C = $phpCard.Caption;   S = { (Get-WampDeckString 'Php').ToUpperInvariant() } }
+$script:LanguageBindings += @{ C = $webCard.Caption;   S = { (Get-WampDeckString 'WebServer').ToUpperInvariant() } }
+$script:LanguageBindings += @{ C = $dbCard.Caption;    S = { (Get-WampDeckString 'Database').ToUpperInvariant() } }
+$script:LanguageBindings += @{ C = $toolsCard.Caption; S = { (Get-WampDeckString 'ExtraServices').ToUpperInvariant() } }
 
 # ---------------------------------------------------------------- tabs
 $tabBar = New-Object System.Windows.Forms.Panel
@@ -924,6 +932,7 @@ foreach ($text in @('Start', 'Stop', 'Toggle startup')) {
 $script:serviceList.ContextMenuStrip = $serviceContext
 
 # ---------------------------------------------------------------- tools
+$script:toolButtons = @()
 function New-ToolButton {
     param([string]$Text, [int]$X, [int]$Y, [scriptblock]$OnClick, [string]$Hint = '')
 
@@ -937,6 +946,7 @@ function New-ToolButton {
         $script:toolTips += $tip
     }
     $button.Add_Click($OnClick)
+    $script:toolButtons += $button
     $toolsTab.Controls.Add($button)
     return $button
 }
@@ -1158,7 +1168,28 @@ function New-FrameworkCard {
     $frameworkTab.Controls.Add($card)
 }
 
-$script:frameworkInstallButtons = @()
+# tool button text bindings (creation order)
+$toolTextBindings = @(
+    { "HeidiSQL`r`n" + (Get-WampDeckString 'DatabaseClient') },
+    { (Get-WampDeckString 'MailpitInbox') + "`r`n" + (Get-WampDeckString 'CapturedMail') },
+    { "Adminer`r`n" + (Get-WampDeckString 'WebDatabase') },
+    { "phpinfo()`r`n" + (Get-WampDeckString 'PhpSettings') },
+    { ">_  Terminal`r`nCmder in www" },
+    { "Notepad++`r`n" + (Get-WampDeckString 'TextEditor') },
+    { "Composer`r`n" + (Get-WampDeckString 'VersionCheck') },
+    { "Cronical`r`n" + (Get-WampDeckString 'CronScheduler') },
+    { "ngrok tunnel`r`nPublic HTTPS URL" },
+    { (Get-WampDeckString 'NgrokStop') + "`r`n" + (Get-WampDeckString 'CloseTunnel') },
+    { (Get-WampDeckString 'HostsFile') + "`r`n" + (Get-WampDeckString 'EditUac') },
+    { (Get-WampDeckString 'CertificatesFolder') + "`r`n" + (Get-WampDeckString 'SslFiles') },
+    { (Get-WampDeckString 'RefreshConfigs') + "`r`n" + (Get-WampDeckString 'RebuildVhosts') },
+    { (Get-WampDeckString 'OpenLogsFolder') + "`r`n" + (Get-WampDeckString 'OpenLogsFolder') },
+    { (Get-WampDeckString 'OpenWwwFolder') + "`r`n" + (Get-WampDeckString 'TabProjects') },
+    { (Get-WampDeckString 'About') + "`r`n" + (Get-WampDeckString 'Versions') }
+)
+for ($i = 0; $i -lt $toolTextBindings.Count -and $i -lt $script:toolButtons.Count; $i++) {
+    $script:LanguageBindings += @{ C = $script:toolButtons[$i]; S = $toolTextBindings[$i] }
+}$script:frameworkInstallButtons = @()
 $frameworkStatus = New-Object System.Windows.Forms.Label
 $frameworkStatus.Text = (Get-WampDeckString 'FrameworkHint2')
 $frameworkStatus.ForeColor = $script:GuiColors.Muted
