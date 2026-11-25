@@ -516,7 +516,10 @@ $script:restartButton.Add_Click({ Restart-StackAction })
 function New-CmsLaunchTile {
     param([string]$CmsId, [int]$X, [int]$Y, [int]$TileWidth, [int]$TileHeight, [int]$MarkHeight)
 
-    $entry = Resolve-WampDeckCms $CmsId
+    $proCmsIds = @('craftcms','statamic','octobercms')
+    $proCmsNames = @{ craftcms = 'Craft CMS (Pro)'; statamic = 'Statamic (Pro)'; octobercms = 'October CMS (Pro)' }
+    $entry = $null
+    if ($CmsId -notin $proCmsIds) { $entry = Resolve-WampDeckCms $CmsId }
     $imagePath = Join-Path (Join-Path $Root 'assets\cms\icons') ("$CmsId.png")
     if (-not (Test-Path -LiteralPath $imagePath)) { return $null }
 
@@ -543,11 +546,23 @@ function New-CmsLaunchTile {
     $tile.Cursor = [System.Windows.Forms.Cursors]::Hand
     $tile.Add_MouseEnter({ param($sender, $eventArgs) $sender.BackColor = $script:GuiColors.SurfaceAlt })
     $tile.Add_MouseLeave({ param($sender, $eventArgs) $sender.BackColor = [System.Drawing.Color]::Transparent })
-    $tile.Add_Click({ Create-CmsAction -PresetCms $CmsId })
+    $tileId = [string]$CmsId
+    $tile.Add_Click({
+        if ($tileId -in @('craftcms','statamic','octobercms')) {
+            if ($proInstalled -and (Get-Command Show-ProWindow -ErrorAction SilentlyContinue)) {
+                Show-ProWindow -Name frameworks
+            } else {
+                [System.Windows.Forms.MessageBox]::Show(($proCmsNames[$tileId] + ' is a WampDeck Pro feature.' + [Environment]::NewLine + [Environment]::NewLine + 'Open the Pro menu -> Frameworks & Extra CMS to install it, or contact Oryx India for a Pro licence.'), 'WampDeck Pro', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+            }
+        } else {
+            Create-CmsAction -PresetCms $tileId
+        }
+    }.GetNewClosure())
     $form.Controls.Add($tile)
 
     $tip = New-Object System.Windows.Forms.ToolTip
-    $tip.SetToolTip($tile, ("{0} - click to install" -f $entry.Name))
+    $tipText = if ($entry) { $entry.Name } else { $proCmsNames[$CmsId] }
+    $tip.SetToolTip($tile, ("{0} - click to install" -f $tipText))
     # Keep the tooltip inside the WampDeck window: the CMS strip is close to
     # the right edge, so the default placement pushes the text outside the
     # frame. Reposition on Popup to stay below the tile and within the form.
@@ -566,6 +581,9 @@ function New-CmsLaunchTile {
 }
 
 $script:cmsLaunchOrder = @(
+    @{ Id = 'craftcms';      Width = 34 },
+    @{ Id = 'statamic';      Width = 34 },
+    @{ Id = 'octobercms';    Width = 34 },
     @{ Id = 'drupal';        Width = 34 },
     @{ Id = 'wordpress';     Width = 34 },
     @{ Id = 'typo3';         Width = 34 },
