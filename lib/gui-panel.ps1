@@ -1,4 +1,4 @@
-﻿# Panel behaviour: background jobs, refresh, service/project actions.
+# Panel behaviour: background jobs, refresh, service/project actions.
 
 function Test-WampDeckInternet {
     if ($script:InternetCheckTime -and ((Get-Date) - $script:InternetCheckTime).TotalSeconds -lt 30) {
@@ -244,7 +244,8 @@ function Refresh-Ui {
         if ($State.mailpit) { $enabled += 'Mailpit' }
         if ($State.redis) { $enabled += 'Redis' }
         if ($State.memcached) { $enabled += 'Memcached' }
-        $script:cardToolsValue.Text = if ($enabled.Count -eq 1) { '1 service' } elseif ($enabled.Count) { "$($enabled.Count) services" } else { 'Optional services' }
+        $lang = Get-WampDeckLanguage
+    $script:cardToolsValue.Text = if ($enabled.Count -eq 1) { (Get-WampDeckString 'ServiceCount' -Language $lang -Format 1) } elseif ($enabled.Count) { (Get-WampDeckString 'ServiceCountPl' -Language $lang -Format $enabled.Count) } else { 'Optional services' }
         $script:cardToolsDetail.Text = if ($enabled.Count) { $enabled -join ', ' } else { 'enable from Settings' }
     }
 
