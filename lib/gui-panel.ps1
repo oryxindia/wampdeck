@@ -1,4 +1,4 @@
-# Panel behaviour: background jobs, refresh, service/project actions.
+﻿# Panel behaviour: background jobs, refresh, service/project actions.
 
 function Test-WampDeckInternet {
     if ($script:InternetCheckTime -and ((Get-Date) - $script:InternetCheckTime).TotalSeconds -lt 30) {

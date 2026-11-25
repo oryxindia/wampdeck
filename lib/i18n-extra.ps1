@@ -168,3 +168,195 @@ foreach ($key in $script:ExtraUiStrings2.Keys) {
     if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
     foreach ($lang in $script:ExtraUiStrings2[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStrings2[$key][$lang] }
 }
+
+$script:ExtraUiStrings3 = @{
+    ColumnProject  = @{ en='Project';       ur='پروجیکٹ';  ar='المشروع';   'zh-CN'='项目';     fr='Projet';      de='Projekt';     cs='Projekt' }
+    ColumnPhp      = @{ en='PHP';           ur='PHP';       ar='PHP';      'zh-CN'='PHP';      fr='PHP';         de='PHP';         cs='PHP' }
+    ColumnLocalUrl = @{ en='Local URL';     ur='لوکل URL';  ar='رابط محلي'; 'zh-CN'='本地网址'; fr='URL locale';  de='Lokale URL';  cs='Místní URL' }
+    ColumnTestUrl  = @{ en='.test URL';     ur='.test URL'; ar='رابط .test';'zh-CN'='.test 网址';fr='URL .test';   de='.test-URL';   cs='.test URL' }
+    ColumnFolder   = @{ en='Folder';        ur='فولڈر';     ar='مجلد';      'zh-CN'='文件夹';   fr='Dossier';     de='Ordner';      cs='Složka' }
+    ServiceCount   = @{ en='{0} service';   ur='{0} سروس';   ar='{0} خدمة';   'zh-CN'='{0} 个服务'; fr='{0} service'; de='{0} Dienst'; cs='{0} služba' }
+    ServiceCountPl = @{ en='{0} services';  ur='{0} سروسز';  ar='{0} خدمات'; 'zh-CN'='{0} 个服务'; fr='{0} services'; de='{0} Dienste'; cs='{0} služby' }
+    FrontendTitle  = @{ en='PHP Frameworks - one-click install'; ur='PHP فریم ورک - ایک کلک میں انسٹال'; ar='أطر PHP - تثبيت بنقرة واحدة'; 'zh-CN'='PHP 框架 - 一键安装'; fr='Frameworks PHP - installation en un clic'; de='PHP-Frameworks - Installation mit einem Klick'; cs='PHP frameworky - instalace jedním klikem' }
+    InstallLabel   = @{ en='Install';       ur='انسٹال';    ar='تثبيت';    'zh-CN'='安装';     fr='Installer';   de='Installieren'; cs='Instalovat' }
+    FolderLabel    = @{ en='Project folder name'; ur='پروجیکٹ فولڈر کا نام'; ar='اسم مجلد المشروع'; 'zh-CN'='项目文件夹名称'; fr='Nom du dossier du projet'; de='Projektordnername'; cs='Název složky projektu' }
+    FrameworkHint2 = @{ en='One-click PHP framework install - free in WampDeck.'; ur='ایک کلک میں PHP فریم ورک انسٹال - WampDeck میں مفت۔'; ar='تثبيت أطر PHP بنقرة واحدة - مجاني في WampDeck.'; 'zh-CN'='一键安装 PHP 框架 - WampDeck 免费提供。'; fr='Installation des frameworks PHP en un clic - gratuit dans WampDeck.'; de='PHP-Frameworks mit einem Klick - kostenlos in WampDeck.'; cs='Instalace PHP frameworků jedním klikem - zdarma ve WampDeck.' }
+}
+foreach ($key in $script:ExtraUiStrings3.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:ExtraUiStrings3[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStrings3[$key][$lang] }
+}
+
+# WampDeck UI translations - Phase 2: French, German, Czech.
+# Loaded after i18n.ps1 and i18n-extra.ps1.
+
+$script:Phase2Strings = @{
+    AppTitle         = @{ fr='WampDeck'; de='WampDeck'; cs='WampDeck'; hi='वाम्पडेक'; ur='ویمپ ڈیک'; ar='ويمب ديك'; 'zh-CN'='WampDeck' }
+    AppSubtitle      = @{ fr='Pile de développement PHP portable'; de='Portable PHP-Entwicklungsumgebung'; cs='Přenosné PHP vývojové prostředí'; hi='पोर्टेबल PHP डेवलपमेंट स्टैक' }
+    Stack            = @{ fr='Pile'; de='Umgebung'; cs='Prostředí'; hi='स्टैक' }
+    Project          = @{ fr='Projet'; de='Projekt'; cs='Projekt'; hi='प्रोजेक्ट' }
+    Services         = @{ fr='Services'; de='Dienste'; cs='Služby'; hi='सेवाएँ' }
+    Tools            = @{ fr='Outils'; de='Werkzeuge'; cs='Nástroje'; hi='उपकरण' }
+    Settings         = @{ fr='Paramètres'; de='Einstellungen'; cs='Nastavení'; hi='सेटिंग्स' }
+    Help             = @{ fr='Aide'; de='Hilfe'; cs='Nápověda'; hi='मदद' }
+    Language         = @{ fr='Langue'; de='Sprache'; cs='Jazyk'; hi='भाषा' }
+    Start            = @{ fr='Démarrer'; de='Start'; cs='Spustit'; hi='शुरू करें' }
+    Stop             = @{ fr='Arrêter'; de='Stopp'; cs='Zastavit'; hi='रोकें' }
+    Restart          = @{ fr='Redémarrer'; de='Neustart'; cs='Restartovat'; hi='पुनरारंभ करें' }
+    Terminal         = @{ fr='>_  Terminal'; de='>_  Terminal'; cs='>_  Terminál'; hi='>_  टर्मिनल' }
+    TerminalHint     = @{ fr='Ouvrir un terminal dans www avec PHP, Composer, Git, Node et MySQL prêts'; de='Terminal in www öffnen - PHP, Composer, Git, Node und MySQL bereit'; cs='Otevřít terminál ve www s PHP, Composer, Git, Node a MySQL'; hi='PHP, Composer, Git, Node और MySQL उपलब्ध होने पर www में टर्मिनल खोलें' }
+    StartStack       = @{ fr='Démarrer la pile'; de='Umgebung starten'; cs='Spustit prostředí'; hi='स्टैक शुरू करें' }
+    StopStack        = @{ fr='Arrêter la pile'; de='Umgebung stoppen'; cs='Zastavit prostředí'; hi='स्टैक रोकें' }
+    RestartStack     = @{ fr='Redémarrer la pile'; de='Umgebung neu starten'; cs='Restartovat prostředí'; hi='स्टैक पुनरारंभ करें' }
+    OpenPanelInBrowser = @{ fr='Ouvrir le panneau dans le navigateur'; de='Panel im Browser öffnen'; cs='Otevřít panel v prohlížeči'; hi='ब्राउज़र में पैनल खोलें' }
+    OpenWwwFolder    = @{ fr='Ouvrir le dossier www'; de='www-Ordner öffnen'; cs='Otevřít složku www'; hi='www फ़ोल्डर खोलें' }
+    OpenLogsFolder   = @{ fr='Ouvrir le dossier des journaux'; de='Protokollordner öffnen'; cs='Otevřít složku logů'; hi='लॉग फ़ोल्डर खोलें' }
+    TerminalInWww   = @{ fr='Terminal dans www'; de='Terminal in www'; cs='Terminál ve www'; hi='www में टर्मिनल' }
+    Quit             = @{ fr='Quitter'; de='Beenden'; cs='Ukončit'; hi='बाहर निकलें' }
+    NewProject       = @{ fr='Nouveau projet...'; de='Neues Projekt...'; cs='Nový projekt...'; hi='नया प्रोजेक्ट...' }
+    OpenInBrowser    = @{ fr='Ouvrir dans le navigateur'; de='Im Browser öffnen'; cs='Otevřít v prohlížeči'; hi='ब्राउज़र में खोलें' }
+    OpenTestUrl      = @{ fr='Ouvrir l URL .test'; de='.test-URL öffnen'; cs='Otevřít .test URL'; hi='.test URL खोलें' }
+    OpenFolder       = @{ fr='Ouvrir le dossier'; de='Ordner öffnen'; cs='Otevřít složku'; hi='फ़ोल्डर खोलें' }
+    OpenTerminalHere = @{ fr='Ouvrir un terminal ici'; de='Hier Terminal öffnen'; cs='Otevřít terminál zde'; hi='यहाँ टर्मिनल खोलें' }
+    CopyLocalUrl     = @{ fr='Copier l URL locale'; de='Lokale URL kopieren'; cs='Kopírovat místní URL'; hi='लोकल URL कॉपी करें' }
+    DeleteProject    = @{ fr='Supprimer le projet...'; de='Projekt löschen...'; cs='Odstranit projekt...'; hi='प्रोजेक्ट हटाएँ...' }
+    RefreshProjects  = @{ fr='Actualiser la liste des projets'; de='Projektliste aktualisieren'; cs='Obnovit seznam projektů'; hi='प्रोजेक्ट सूची रिफ्रेश करें' }
+    ProjectPhpVersion = @{ fr='Version de PHP'; de='PHP-Version'; cs='Verze PHP'; hi='PHP संस्करण' }
+    ProjectPhpDefault = @{ fr='Pile par défaut ({0})'; de='Standardumgebung ({0})'; cs='Výchozí prostředí ({0})'; hi='स्टैक डिफ़ॉल्ट ({0})' }
+    ProjectPhpChanged = @{ fr='{0} utilise maintenant PHP {1}.'; de='{0} läuft jetzt mit PHP {1}.'; cs='{0} nyní běží na PHP {1}.'; hi='{0} अब PHP {1} पर चलता है।' }
+    ProjectPhpColumn  = @{ fr='PHP'; de='PHP'; cs='PHP' }
+    HeidiSql         = @{ fr='HeidiSQL'; de='HeidiSQL'; cs='HeidiSQL' }
+    MailpitInbox     = @{ fr='Mailpit (boîte web)'; de='Mailpit (Web-Postfach)'; cs='Mailpit (webová schránka)'; hi='मेलपिट इनबॉक्स' }
+    Adminer          = @{ fr='Adminer'; de='Adminer'; cs='Adminer' }
+    Phpinfo          = @{ fr='phpinfo()'; de='phpinfo()'; cs='phpinfo()' }
+    Notepad          = @{ fr='Notepad++'; de='Notepad++'; cs='Notepad++' }
+    NgrokStart       = @{ fr='Démarrer le tunnel ngrok'; de='ngrok-Tunnel starten'; cs='Spustit ngrok tunel'; hi='ngrok टनल शुरू करें' }
+    NgrokStop        = @{ fr='Arrêter ngrok'; de='ngrok stoppen'; cs='Zastavit ngrok'; hi='ngrok रोकें' }
+    NgrokNoToken     = @{ fr='ngrok démarré, mais aucune URL publique. Ajoutez d abord votre authtoken.'; de='ngrok gestartet, aber noch keine öffentliche URL. Zuerst authtoken hinzufügen.'; cs='ngrok spuštěn, ale zatím bez veřejné URL. Nejprve přidejte authtoken.'; hi='ngrok शुरू हो गया, पर अभी public URL नहीं है। पहले authtoken दें।' }
+    HostsChecking    = @{ fr='hosts : vérification'; de='hosts: Prüfung läuft'; cs='hosts: kontrola'; hi='hosts: जाँच हो रही है' }
+    HostsSyncing     = @{ fr='Synchronisation du fichier hosts...'; de='hosts-Datei wird synchronisiert...'; cs='Synchronizace souboru hosts...'; hi='होस्ट्स फ़ाइल सिंक हो रही है...' }
+    HostsOpening     = @{ fr='Ouverture du fichier hosts...'; de='hosts-Datei wird geöffnet...'; cs='Otevírání souboru hosts...'; hi='होस्ट्स फ़ाइल खोल रही है...' }
+    Cronical         = @{ fr='Planificateur Cronical'; de='Cronical-Planer'; cs='Plánovač Cronical'; hi='Cronical शेड्यूलर' }
+    SyncHosts        = @{ fr='Synchroniser hosts (UAC)'; de='hosts synchronisieren (UAC)'; cs='Synchronizovat hosts (UAC)'; hi='होस्ट्स फ़ाइल सिंक करें (UAC)' }
+    EditHosts        = @{ fr='Modifier hosts (UAC)'; de='hosts bearbeiten (UAC)'; cs='Upravit hosts (UAC)'; hi='होस्ट्स फ़ाइल एडिट करें (UAC)' }
+    CertificatesFolder = @{ fr='Dossier des certificats'; de='Zertifikatsordner'; cs='Složka certifikátů'; hi='सर्टिफिकेट फ़ोल्डर' }
+    PhpExtensions    = @{ fr='Extensions PHP...'; de='PHP-Erweiterungen...'; cs='PHP rozšíření...'; hi='PHP एक्सटेंशन...' }
+    StartStackWhenPanelOpens = @{ fr='Démarrer la pile à l ouverture du panneau'; de='Umgebung beim Öffnen des Panels starten'; cs='Spustit prostředí při otevření panelu'; hi='पैनल खुलते ही स्टैक शुरू करें' }
+    StartWithWindows = @{ fr='Démarrer avec Windows'; de='Mit Windows starten'; cs='Spustit s Windows'; hi='Windows के साथ शुरू करें' }
+    RefreshConfigs   = @{ fr='Actualiser la configuration'; de='Konfiguration aktualisieren'; cs='Obnovit konfiguraci'; hi='कॉन्फिगरेशन रिफ्रेश करें' }
+    About            = @{ fr='À propos de WampDeck'; de='Über WampDeck'; cs='O WampDeck'; hi='WampDeck के बारे में' }
+    Readme           = @{ fr='README'; de='README'; cs='README' }
+    OpenInstallFolder = @{ fr='Ouvrir le dossier d installation'; de='Installationsordner öffnen'; cs='Otevřít instalační složku'; hi='इनस्टॉल फ़ोल्डर खोलें' }
+    EnableHttps      = @{ fr='Activer HTTPS'; de='HTTPS aktivieren'; cs='Povolit HTTPS'; hi='HTTPS चालू करें' }
+    DisableHttps     = @{ fr='Désactiver HTTPS'; de='HTTPS deaktivieren'; cs='Zakázat HTTPS'; hi='HTTPS बंद करें' }
+    TrustCert        = @{ fr='Approuver le certificat (fenêtre Windows)'; de='Zertifikat vertrauen (Windows-Dialog)'; cs='Důvěryhodný certifikát (dialog Windows)'; hi='सर्टिफिकेट विश्वास करें' }
+    RegenerateCert   = @{ fr='Régénérer le certificat'; de='Zertifikat neu erzeugen'; cs='Znovu vygenerovat certifikát'; hi='सर्टिफिकेट दोबारा बनाएँ' }
+    Php              = @{ fr='PHP'; de='PHP'; cs='PHP' }
+    WebServer        = @{ fr='Serveur web'; de='Webserver'; cs='Webový server'; hi='वेब सर्वर' }
+    Database         = @{ fr='Base de données'; de='Datenbank'; cs='Databáze'; hi='डेटाबेस' }
+    ExtraServices   = @{ fr='Services supplémentaires'; de='Zusätzliche Dienste'; cs='Další služby'; hi='अतिरिक्त सेवाएँ' }
+    MySql            = @{ fr='MySQL'; de='MySQL'; cs='MySQL' }
+    Running          = @{ fr='en cours'; de='läuft'; cs='spusteno'; hi='चालू' }
+    Stopped          = @{ fr='arrêté'; de='gestoppt'; cs='zastaveno'; hi='बंद' }
+    Starting         = @{ fr='démarrage...'; de='startet...'; cs='spouští se...'; hi='शुरू हो रहा है...' }
+    Stopping         = @{ fr='arrêt...'; de='stoppt...'; cs='zastavuje se...'; hi='रुक रहा है...' }
+    StartingService  = @{ fr='Démarrage du service...'; de='Dienst startet...'; cs='Spouštění služby...'; hi='सेवा शुरू हो रही है...' }
+    StoppingService  = @{ fr='Arrêt du service...'; de='Dienst stoppt...'; cs='Zastavování služby...'; hi='सेवा रुक रही है...' }
+    Ready            = @{ fr='Prêt'; de='Bereit'; cs='Připraveno'; hi='तैयार' }
+    StartingTheStack = @{ fr='Démarrage de la pile...'; de='Umgebung startet...'; cs='Spouštění prostředí...'; hi='स्टैक शुरू हो रहा है...' }
+    StoppingTheStack  = @{ fr='Arrêt de la pile...'; de='Umgebung stoppt...'; cs='Zastavování prostředí...'; hi='स्टैक रुक रहा है...' }
+    RestartingTheStack = @{ fr='Redémarrage de la pile...'; de='Umgebung startet neu...'; cs='Restartování prostředí...'; hi='स्टैक पुनरारंभ हो रहा है...' }
+    AnotherTaskRunning = @{ fr='Une autre tâche WampDeck est encore en cours. Veuillez patienter.'; de='Eine andere WampDeck-Aufgabe läuft noch. Bitte warten.'; cs='Další úloha WampDeck stále běží. Počkejte prosím.'; hi='एक और WampDeck कार्य अभी चल रहा है।' }
+    TaskFailed       = @{ fr='Tâche WampDeck échouée (exit {0}).'; de='WampDeck-Aufgabe fehlgeschlagen (exit {0}).'; cs='Úloha WampDeck selhala (exit {0}).'; hi='WampDeck कार्य विफल रहा (exit {0})।' }
+    CheckStatus      = @{ fr='VÉRIFICATION'; de='PRÜFUNG'; cs='KONTROLA'; hi='जाँच हो रही है' }
+    SslChecking      = @{ fr='ssl : vérification'; de='ssl: Prüfung'; cs='ssl: kontrola'; hi='ssl: जाँच हो रही है' }
+    SslOn            = @{ fr='ssl : activé, approuvé'; de='ssl: aktiv, vertraut'; cs='ssl: zapnuto, důvěryhodné'; hi='ssl: चालू, विश्वासित' }
+    SslOnCaUntrusted = @{ fr='ssl : activé, CA non approuvé'; de='ssl: aktiv, CA nicht vertraut'; cs='ssl: zapnuto, CA nedůvěryhodná'; hi='ssl: चालू, CA विश्वासित नहीं' }
+    SslOff           = @{ fr='ssl : désactivé'; de='ssl: aus'; cs='ssl: vypnuto'; hi='ssl: बंद' }
+    Online           = @{ fr='EN LIGNE'; de='ONLINE'; cs='ONLINE'; hi='ऑनलाइन' }
+    Offline          = @{ fr='HORS LIGNE'; de='OFFLINE'; cs='OFFLINE'; hi='ऑफ़लाइन' }
+    PortsBusy        = @{ fr='Les ports sont encore occupés. Arrêtez l autre programme ou changez les ports.'; de='Ports sind noch belegt. Anderes Programm stoppen oder Ports ändern.'; cs='Porty jsou stále obsazeny. Zastavte jiný program nebo změňte porty.'; hi='पोर्ट अभी भी व्यस्त हैं।' }
+    WwwHint          = @{ fr='Double-cliquez sur un projet pour l ouvrir. Chaque dossier dans www\ reçoit une URL locale automatiquement.'; de='Projekt mit Doppelklick öffnen. Jeder Ordner in www\ erhält automatisch eine lokale URL.'; cs='Dvojklikem otevřete projekt. Každá složka ve www\ automaticky získá místní URL.'; hi='प्रोजेक्ट को डबल-क्लिक करें खोलने के लिए।' }
+    ServicesHint     = @{ fr='Les services de base tournent toujours. Activez Mailpit, Redis ou Memcached dans Paramètres.'; de='Kerndienste laufen immer. Mailpit, Redis oder Memcached in den Einstellungen aktivieren.'; cs='Základní služby jsou vždy spuštěny. Mailpit, Redis nebo Memcached povolte v nastavení.'; hi='कोर सेवाएँ हमेशा चलती हैं।' }
+    AutoStartInfo    = @{ fr='WampDeck démarrera avec Windows (dans la zone de notification).'; de='WampDeck startet mit Windows (im Benachrichtigungsbereich).'; cs='WampDeck se spustí s Windows (v oznamovací oblasti).'; hi='WampDeck Windows के साथ शुरू होगा।' }
+    AutoStartOffInfo = @{ fr='WampDeck ne démarrera plus avec Windows.'; de='WampDeck startet nicht mehr mit Windows.'; cs='WampDeck se už nebude spouštět s Windows.'; hi='WampDeck अब Windows के साथ शुरू होगा नहीं।' }
+    EnablingHttps    = @{ fr='Activation de HTTPS...'; de='HTTPS wird aktiviert...'; cs='Povolování HTTPS...'; hi='HTTPS चालू हो रहा है...' }
+    DisablingHttps   = @{ fr='Désactivation de HTTPS...'; de='HTTPS wird deaktiviert...'; cs='Zakazování HTTPS...'; hi='HTTPS बंद हो रहा है...' }
+    WaitingForTrust  = @{ fr='En attente de la confirmation Windows...'; de='Warte auf Windows-Bestätigung...'; cs='Čekání na potvrzení Windows...'; hi='Windows confirmation इंतज़ार कर रहा है...' }
+    RegeneratingCert = @{ fr='Régénération des certificats...'; de='Zertifikate werden neu erzeugt...'; cs='Obnovování certifikátů...'; hi='सर्टिफिकेट दोबारा बन रहे हैं...' }
+    ServiceStart     = @{ fr='Démarrer'; de='Start'; cs='Spustit'; hi='शुरू करें' }
+    ServiceStop      = @{ fr='Arrêter'; de='Stopp'; cs='Zastavit'; hi='रोकें' }
+    ServiceStartAll  = @{ fr='Tout démarrer'; de='Alle starten'; cs='Spustit vše'; hi='सब शुरू करें' }
+    ServiceStopAll   = @{ fr='Tout arrêter'; de='Alle stoppen'; cs='Zastavit vše'; hi='सब रोकें' }
+    ServiceToggleStartup = @{ fr='Basculer le démarrage'; de='Autostart umschalten'; cs='Přepnout automatické spuštění'; hi='शुरुआत टॉगल करें' }
+    ServiceAlways    = @{ fr='toujours'; de='immer'; cs='vždy'; hi='हमेशा' }
+    ServiceOff       = @{ fr='désactivé'; de='aus'; cs='vypnuto'; hi='बंद' }
+    TabProjects     = @{ fr='Projets'; de='Projekte'; cs='Projekty'; hi='प्रोजेक्ट' }
+    TabServices     = @{ fr='Services'; de='Dienste'; cs='Služby'; hi='सेवाएँ' }
+    TabTools        = @{ fr='Outils'; de='Werkzeuge'; cs='Nástroje'; hi='उपकरण' }
+    TabNewProject   = @{ fr='Nouveau projet'; de='Neues Projekt'; cs='Nový projekt'; hi='नया प्रोजेक्ट' }
+    TabOpen         = @{ fr='Ouvrir'; de='Öffnen'; cs='Otevřít'; hi='खोलें' }
+    TabTestUrl      = @{ fr='URL .test'; de='.test-URL'; cs='.test URL' }
+    TabFolder       = @{ fr='Dossier'; de='Ordner'; cs='Složka'; hi='फ़ोल्डर' }
+    TabCopyUrl      = @{ fr='Copier URL'; de='URL kopieren'; cs='Kopírovat URL'; hi='URL कॉपी करें' }
+    TabDelete       = @{ fr='Supprimer'; de='Löschen'; cs='Odstranit'; hi='हटाएँ' }
+    TabRefresh      = @{ fr='Actualiser'; de='Aktualisieren'; cs='Obnovit'; hi='रिफ्रेश' }
+    TabTerminal     = @{ fr='Terminal'; de='Terminal'; cs='Terminál'; hi='टर्मिनल' }
+    ProjectCount    = @{ fr='{0} projet'; de='{0} Projekt'; cs='{0} projekt'; hi='{0} प्रोजेक्ट' }
+    ProjectCountPlural = @{ fr='{0} projets'; de='{0} Projekte'; cs='{0} projektů'; hi='{0} प्रोजेक्ट' }
+    TrayBalloon      = @{ fr='Toujours actif dans la zone de notification.'; de='Läuft weiter im Benachrichtigungsbereich.'; cs='Stále běží v oznamovací oblasti.'; hi='अभी notification area में चल रहा है।' }
+    ColumnProject   = @{ fr='Projet'; de='Projekt'; cs='Projekt' }
+    ColumnPhp       = @{ fr='PHP'; de='PHP'; cs='PHP' }
+    ColumnLocalUrl  = @{ fr='URL locale'; de='Lokale URL'; cs='Místní URL' }
+    ColumnTestUrl   = @{ fr='URL .test'; de='.test-URL'; cs='.test URL' }
+    ColumnFolder    = @{ fr='Dossier'; de='Ordner'; cs='Složka' }
+    ServiceCount    = @{ fr='{0} service'; de='{0} Dienst'; cs='{0} služba' }
+    ServiceCountPl  = @{ fr='{0} services'; de='{0} Dienste'; cs='{0} služby' }
+    FrontendTitle   = @{ fr='Frameworks PHP - installation en un clic'; de='PHP-Frameworks - Installation mit einem Klick'; cs='PHP frameworky - instalace jedním klikem' }
+    InstallLabel    = @{ fr='Installer'; de='Installieren'; cs='Instalovat' }
+    FolderLabel     = @{ fr='Nom du dossier du projet'; de='Projektordnername'; cs='Název složky projektu' }
+    FrameworkHint2  = @{ fr='Installation des frameworks PHP en un clic - gratuit dans WampDeck.'; de='PHP-Frameworks mit einem Klick - kostenlos in WampDeck.'; cs='Instalace PHP frameworků jedním klikem - zdarma ve WampDeck.' }
+    DatabaseClient  = @{ fr='Client de base de données'; de='Datenbankclient'; cs='Databázový klient' }
+    CapturedMail    = @{ fr='Courrier capturé'; de='Abgefangene Mails'; cs='Zachycená pošta' }
+    WebDatabase     = @{ fr='Base de données web'; de='Web-Datenbank'; cs='Webová databáze' }
+    PhpSettings     = @{ fr='Paramètres PHP'; de='PHP-Einstellungen'; cs='Nastavení PHP' }
+    TextEditor      = @{ fr='Éditeur de texte'; de='Texteditor'; cs='Textový editor' }
+    VersionCheck    = @{ fr='Vérification de version'; de='Versionsprüfung'; cs='Kontrola verze' }
+    CronScheduler   = @{ fr='Planificateur de tâches'; de='Aufgabenplaner'; cs='Plánovač úloh' }
+    CloseTunnel     = @{ fr='Fermer le tunnel'; de='Tunnel schließen'; cs='Zavřít tunel' }
+    HostsFile       = @{ fr='Fichier hosts'; de='hosts-Datei'; cs='Soubor hosts' }
+    EditUac         = @{ fr='Modifier avec UAC'; de='Mit UAC bearbeiten'; cs='Upravit s UAC' }
+    SslFiles        = @{ fr='Fichiers SSL'; de='SSL-Dateien'; cs='Soubory SSL' }
+    RebuildVhosts   = @{ fr='Recréer les hôtes virtuels'; de='VHosts neu erstellen'; cs='Znovu vytvořit virtuální hosty' }
+    Versions        = @{ fr='Versions'; de='Versionen'; cs='Verze' }
+    TabPhpFramework = @{ fr='Frameworks PHP'; de='PHP-Frameworks'; cs='PHP frameworky' }
+    Install         = @{ fr='Installer'; de='Installieren'; cs='Instalovat' }
+    FrameworkHint   = @{ fr='Installation de frameworks PHP en un clic - gratuit dans WampDeck.'; de='PHP-Frameworks mit einem Klick - kostenlos in WampDeck.'; cs='Instalace PHP frameworků jedním klikem - zdarma ve WampDeck.' }
+    ProjectFolderName = @{ fr='Nom du dossier du projet'; de='Projektordnername'; cs='Název složky projektu' }
+    FirstRunTitle   = @{ fr='Bienvenue dans WampDeck - choisissez votre langue'; de='Willkommen bei WampDeck - Sprache wählen'; cs='Vítejte ve WampDeck - vyberte jazyk' }
+    FirstRunHint    = @{ fr='Choisissez la langue de l interface WampDeck.'; de='Wählen Sie die Sprache der WampDeck-Oberfläche.'; cs='Vyberte jazyk rozhraní WampDeck.' }
+    FirstRunRtlNote = @{ fr='L arabe utilise une disposition de droite à gauche. Définie une fois à l installation, elle ne change pas quand vous changez de langue dans Paramètres.'; de='Arabisch verwendet Rechts-nach-Links-Layout. Es wird einmal bei der Installation festgelegt und ändert sich nicht beim Sprachwechsel in den Einstellungen.'; cs='Arabština používá rozvržení zprava doleva. Nastavuje se jednou při instalaci a při změně jazyka v nastavení se nemění.' }
+    ProTitle        = @{ fr='WampDeck Pro - Boîte à outils développeur pour agences'; de='WampDeck Pro - Entwickler-Toolkit für Agenturen'; cs='WampDeck Pro - Vývojářská sada pro agentury' }
+    ProHealth       = @{ fr='Tableau de bord santé'; de='Health-Dashboard'; cs='Panel stavu' }
+    ProBackups      = @{ fr='Sauvegardes et planification'; de='Backups und Zeitplan'; cs='Zálohy a plánování' }
+    ProXdebug       = @{ fr='Bascule Xdebug'; de='Xdebug umschalten'; cs='Přepnout Xdebug' }
+    ProGit          = @{ fr='Outils Git'; de='Git-Werkzeuge'; cs='Git nástroje' }
+    ProMailpit      = @{ fr='Mailpit Pro'; de='Mailpit Pro'; cs='Mailpit Pro' }
+    ProMore         = @{ fr='Modules complémentaires, coffre et équipe'; de='Add-ons, Tresor und Team'; cs='Doplňky, trezor a tým' }
+    ProInstallSelected = @{ fr='Installer la sélection...'; de='Auswahl installieren...'; cs='Instalovat vybrané...' }
+    Cancel          = @{ fr='Annuler'; de='Abbrechen'; cs='Zrušit' }
+    ProBadge        = @{ fr='PRO'; de='PRO'; cs='PRO' }
+    CheckingShort   = @{ fr='VÉRIF.'; de='PRÜFE'; cs='KONTROLA' }
+}
+foreach ($key in $script:Phase2Strings.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:Phase2Strings[$key].Keys) { $script:UiStrings[$key][$lang] = $script:Phase2Strings[$key][$lang] }
+}
+$script:ExtraUiStrings4 = @{
+    ProBadge      = @{ en='PRO'; ur='PRO'; ar='PRO'; 'zh-CN'='PRO'; fr='PRO'; de='PRO'; cs='PRO' }
+    CheckingShort = @{ en='CHECKING'; ur='چیک'; ar='فحص'; 'zh-CN'='检查中'; fr='VÉRIF.'; de='PRÜFE'; cs='KONTROLA' }
+}
+foreach ($key in $script:ExtraUiStrings4.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:ExtraUiStrings4[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStrings4[$key][$lang] }
+}

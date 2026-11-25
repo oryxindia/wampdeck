@@ -22,6 +22,9 @@ $choices = @(
     @{ Code = 'ur';    Name = 'اردو (Urdu)' }
     @{ Code = 'ar';    Name = 'العربية (Arabic)' }
     @{ Code = 'zh-CN'; Name = '简体中文 (Chinese)' }
+    @{ Code = 'fr';    Name = 'FranÃ§ais (French)' }
+    @{ Code = 'de';    Name = 'Deutsch (German)' }
+    @{ Code = 'cs';    Name = 'ÄŒeÅ¡tina (Czech)' }
 )
 
 $form = New-Object System.Windows.Forms.Form

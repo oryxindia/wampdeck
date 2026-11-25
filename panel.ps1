@@ -715,7 +715,7 @@ $script:tabPages = @($projectTab, $servicesTab, $toolsTab, $frameworkTab)
 $projectTabButton = New-TabButton (Get-WampDeckString 'TabProjects') 0
 $servicesTabButton = New-TabButton (Get-WampDeckString 'TabServices') 110
 $toolsTabButton = New-TabButton (Get-WampDeckString 'TabTools') 220
-$frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
+$frameworkTabButton = New-TabButton (Get-WampDeckString 'FrameworkTab') 330 132
 $script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton, $frameworkTabButton)
 
 $projectTabButton.Add_Click({ Show-PageTab 0 })
@@ -756,11 +756,11 @@ $script:projectList.View = 'Details'
 $script:projectList.FullRowSelect = $true
 $script:projectList.MultiSelect = $false
 $script:projectList.HideSelection = $false
-[void]$script:projectList.Columns.Add('Project', 130)
-[void]$script:projectList.Columns.Add('PHP', 95)
-[void]$script:projectList.Columns.Add('Local URL', 195)
-[void]$script:projectList.Columns.Add('.test URL', 195)
-[void]$script:projectList.Columns.Add('Folder', 245)
+[void]$script:projectList.Columns.Add((Get-WampDeckString 'ColumnProject'), 130)
+[void]$script:projectList.Columns.Add((Get-WampDeckString 'ColumnPhp'), 95)
+[void]$script:projectList.Columns.Add((Get-WampDeckString 'ColumnLocalUrl'), 195)
+[void]$script:projectList.Columns.Add((Get-WampDeckString 'ColumnTestUrl'), 195)
+[void]$script:projectList.Columns.Add((Get-WampDeckString 'ColumnFolder'), 245)
 Enable-DarkListView $script:projectList
 $projectTab.Controls.Add($script:projectList)
 Add-DarkListHeader $script:projectList
@@ -1132,7 +1132,7 @@ function New-FrameworkCard {
     $label.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10, [System.Drawing.FontStyle]::Bold)
     $label.ForeColor = $script:GuiColors.Text
     $card.Controls.Add($label)
-    $install = New-FlatButton -Text ([string](Get-WampDeckString 'Install')) -Width 92 -Height 28 -Primary
+    $install = New-FlatButton -Text ([string](Get-WampDeckString 'InstallLabel')) -Width 92 -Height 28 -Primary
     $install.Location = New-Object System.Drawing.Point(74, 56)
     $install.Add_Click({
         $project = Show-FrameworkInputDialog -Title ('Install ' + $Name) -Default $Id
