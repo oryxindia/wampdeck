@@ -916,7 +916,6 @@ function New-ToolButton {
         $tip = New-Object System.Windows.Forms.ToolTip
         $tip.SetToolTip($button, $Hint)
         $script:toolTips += $tip
-    $tile.Add_MouseLeave({ param($sender, $eventArgs) $tip.Hide($form) })
     }
     $button.Add_Click($OnClick)
     $toolsTab.Controls.Add($button)
