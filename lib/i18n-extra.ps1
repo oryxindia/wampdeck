@@ -565,6 +565,7 @@ foreach ($key in $script:ExtraUiStringsHi.Keys) {
     if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
     foreach ($lang in $script:ExtraUiStringsHi[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStringsHi[$key][$lang] }
 }
+
 $script:PolishFix = @{
     InstallLabel = @{ pl = 'Zainstaluj' }
     Ready        = @{ pl = 'Gotowe' }
@@ -576,3 +577,173 @@ foreach ($key in $script:PolishFix.Keys) {
     if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
     foreach ($lang in $script:PolishFix[$key].Keys) { $script:UiStrings[$key][$lang] = $script:PolishFix[$key][$lang] }
 }
+
+$script:Phase2Remaining = @{    AppTitle = @{ sv='WampDeck'; el='WampDeck'; hu='WampDeck'; ro='WampDeck'; th='WampDeck'; vi='WampDeck'; 'zh-TW'='WampDeck' }
+    AppSubtitle = @{ sv='Bärbar PHP-utvecklingsmiljö'; el='Φορητή στοίβα ανάπτυξης PHP'; hu='Hordozható PHP fejlesztői környezet'; ro='Mediu de dezvoltare PHP portabil'; th='สแตกพัฒนา PHP แบบพกพา'; vi='Môi trường phát triển PHP di động'; 'zh-TW'='可攜式 PHP 開發環境' }
+    Stack = @{ sv='Stapel'; el='Στοίβα'; hu='Verem'; ro='Stivă'; th='สแตก'; vi='Ngăn xếp'; 'zh-TW'='環境' }
+    Project = @{ sv='Projekt'; el='Έργο'; hu='Projekt'; ro='Proiect'; th='โปรเจกต์'; vi='Dự án'; 'zh-TW'='專案' }
+    Services = @{ sv='Tjänster'; el='Υπηρεσίες'; hu='Szolgáltatások'; ro='Servicii'; th='บริการ'; vi='Dịch vụ'; 'zh-TW'='服務' }
+    Tools = @{ sv='Verktyg'; el='Εργαλεία'; hu='Eszközök'; ro='Instrumente'; th='เครื่องมือ'; vi='Công cụ'; 'zh-TW'='工具' }
+    Settings = @{ sv='Inställningar'; el='Ρυθμίσεις'; hu='Beállítások'; ro='Setări'; th='การตั้งค่า'; vi='Cài đặt'; 'zh-TW'='設定' }
+    Help = @{ sv='Hjälp'; el='Βοήθεια'; hu='Súgó'; ro='Ajutor'; th='ความช่วยเหลือ'; vi='Trợ giúp'; 'zh-TW'='說明' }
+    Language = @{ sv='Språk'; el='Γλώσσα'; hu='Nyelv'; ro='Limbă'; th='ภาษา'; vi='Ngôn ngữ'; 'zh-TW'='語言' }
+    Start = @{ sv='Start'; el='Έναρξη'; hu='Indít'; ro='Pornire'; th='เริ่ม'; vi='Bắt đầu'; 'zh-TW'='啟動' }
+    Stop = @{ sv='Stoppa'; el='Διακοπή'; hu='Leállít'; ro='Oprire'; th='หยุด'; vi='Dừng'; 'zh-TW'='停止' }
+    Restart = @{ sv='Starta om'; el='Επανεκκίνηση'; hu='Újraindít'; ro='Repornire'; th='รีสตาร์ท'; vi='Khởi động lại'; 'zh-TW'='重新啟動' }
+    Terminal = @{ sv='>_  Terminal'; el='>_  Τερματικό'; hu='>_  Terminál'; ro='>_  Terminal'; th='>_  เทอร์มินัล'; vi='>_  Terminal'; 'zh-TW'='>_  終端機' }
+    TerminalHint = @{ sv='Öppna en terminal i www med PHP, Composer, Git, Node och MySQL redo'; el='Άνοιγμα τερματικού στο www με PHP, Composer, Git, Node και MySQL έτοιμα'; hu='Terminál megnyitása a www-ben PHP, Composer, Git, Node és MySQL készen'; ro='Deschide terminal în www cu PHP, Composer, Git, Node și MySQL gata'; th='เปิดเทอร์มินัลใน www โดย PHP, Composer, Git, Node และ MySQL พร้อมแล้ว'; vi='Mở terminal trong www với PHP, Composer, Git, Node và MySQL sẵn sàng'; 'zh-TW'='在 www 中開啟終端機，PHP、Composer、Git、Node 和 MySQL 已就緒' }
+    StartStack = @{ sv='Starta stapeln'; el='Έναρξη στοίβας'; hu='Verem indítása'; ro='Pornire stivă'; th='เริ่มสแตก'; vi='Khởi động ngăn xếp'; 'zh-TW'='啟動環境' }
+    StopStack = @{ sv='Stoppa stapeln'; el='Διακοπή στοίβας'; hu='Verem leállítása'; ro='Oprire stivă'; th='หยุดสแตก'; vi='Dừng ngăn xếp'; 'zh-TW'='停止環境' }
+    RestartStack = @{ sv='Starta om stapeln'; el='Επανεκκίνηση στοίβας'; hu='Verem újraindítása'; ro='Repornire stivă'; th='รีสตาร์ทสแตก'; vi='Khởi động lại ngăn xếp'; 'zh-TW'='重新啟動環境' }
+    OpenPanelInBrowser = @{ sv='Öppna panelen i webbläsaren'; el='Άνοιγμα πίνακα στον browser'; hu='A panel megnyitása a böngészőben'; ro='Deschide panoul în browser'; th='เปิดแผงควบคุมในเบราว์เซอร์'; vi='Mở bảng điều khiển trong trình duyệt'; 'zh-TW'='在瀏覽器中開啟面板' }
+    OpenWwwFolder = @{ sv='Öppna www-mappen'; el='Άνοιγμα φακέλου www'; hu='www mappa megnyitása'; ro='Deschide dosarul www'; th='เปิดโฟลเดอร์ www'; vi='Mở thư mục www'; 'zh-TW'='開啟 www 資料夾' }
+    OpenLogsFolder = @{ sv='Öppna loggmappen'; el='Άνοιγμα φακέλου καταγραφών'; hu='Naplómappa megnyitása'; ro='Deschide dosarul jurnalelor'; th='เปิดโฟลเดอร์ล็อก'; vi='Mở thư mục nhật ký'; 'zh-TW'='開啟記錄檔資料夾' }
+    TerminalInWww = @{ sv='Terminal i www'; el='Τερματικό στο www'; hu='Terminál a www-ben'; ro='Terminal în www'; th='เทอร์มินัลใน www'; vi='Terminal trong www'; 'zh-TW'='www 中的終端機' }
+    Quit = @{ sv='Avsluta'; el='Έξοδος'; hu='Kilépés'; ro='Ieșire'; th='ออก'; vi='Có thoát'; 'zh-TW'='結束' }
+    NewProject = @{ sv='Nytt projekt...'; el='Νέο έργο...'; hu='Új projekt...'; ro='Proiect nou...'; th='โปรเจกต์ใหม่...'; vi='Dự án mới...'; 'zh-TW'='新增專案...' }
+    OpenInBrowser = @{ sv='Öppna i webbläsaren'; el='Άνοιγμα στον browser'; hu='Megnyitás böngészőben'; ro='Deschide în browser'; th='เปิดในเบราว์เซอร์'; vi='Mở trong trình duyệt'; 'zh-TW'='在瀏覽器中開啟' }
+    OpenTestUrl = @{ sv='Öppna .test-URL'; el='Άνοιγμα URL .test'; hu='.test URL megnyitása'; ro='Deschide URL .test'; th='เปิด URL .test'; vi='Mở URL .test'; 'zh-TW'='開啟 .test 網址' }
+    OpenFolder = @{ sv='Öppna mapp'; el='Άνοιγμα φακέλου'; hu='Mappa megnyitása'; ro='Deschide dosarul'; th='เปิดโฟลเดอร์'; vi='Mở thư mục'; 'zh-TW'='開啟資料夾' }
+    OpenTerminalHere = @{ sv='Öppna terminal här'; el='Άνοιγμα τερματικού εδώ'; hu='Terminál megnyitása itt'; ro='Deschide terminal aici'; th='เปิดเทอร์มินัลที่นี่'; vi='Mở terminal tại đây'; 'zh-TW'='在此開啟終端機' }
+    CopyLocalUrl = @{ sv='Kopiera lokal URL'; el='Αντιγραφή τοπικού URL'; hu='Helyi URL másolása'; ro='Copiază URL local'; th='คัดลอก URL ท้องถิ่น'; vi='Sao chép URL cục bộ'; 'zh-TW'='複製本機網址' }
+    DeleteProject = @{ sv='Ta bort projekt...'; el='Διαγραφή έργου...'; hu='Projekt törlése...'; ro='Șterge proiectul...'; th='ลบโปรเจกต์...'; vi='Xóa dự án...'; 'zh-TW'='刪除專案...' }
+    RefreshProjects = @{ sv='Uppdatera projektlistan'; el='Ανανέωση λίστας έργων'; hu='Projektek frissítése'; ro='Actualizează lista de proiecte'; th='รีเฟรชรายการโปรเจกต์'; vi='Làm mới danh sách dự án'; 'zh-TW'='重新整理專案清單' }
+    ProjectPhpVersion = @{ sv='PHP-version'; el='Έκδοση PHP'; hu='PHP verzió'; ro='Versiunea PHP'; th='เวอร์ชัน PHP'; vi='Phiên bản PHP'; 'zh-TW'='PHP 版本' }
+    ProjectPhpDefault = @{ sv='Stapelstandard ({0})'; el='Προεπιλογή στοίβας ({0})'; hu='Verem alapértelmezett ({0})'; ro='Implicit stivă ({0})'; th='ค่าเริ่มต้นของสแตก ({0})'; vi='Mặc định ngăn xếp ({0})'; 'zh-TW'='環境預設值 ({0})' }
+    ProjectPhpChanged = @{ sv='{0} kör nu PHP {1}.'; el='Το {0} χρησιμοποιεί πλέον PHP {1}.'; hu='A {0} most PHP {1}-et használ.'; ro='{0} rulează acum PHP {1}.'; th='ตอนนี้ {0} ใช้ PHP {1}'; vi='{0} hiện dùng PHP {1}.'; 'zh-TW'='{0} 現在使用 PHP {1}。' }
+    ProjectPhpColumn = @{ sv='PHP'; el='PHP'; hu='PHP'; ro='PHP'; th='PHP'; vi='PHP'; 'zh-TW'='PHP' }
+    HeidiSql = @{ sv='HeidiSQL'; el='HeidiSQL'; hu='HeidiSQL'; ro='HeidiSQL'; th='HeidiSQL'; vi='HeidiSQL'; 'zh-TW'='HeidiSQL' }
+    MailpitInbox = @{ sv='Mailpit (webbinkorg)'; el='Mailpit (web εισερχόμενα)'; hu='Mailpit (webes postaláda)'; ro='Mailpit (cutie web)'; th='Mailpit (กล่องจดหมายเว็บ)'; vi='Mailpit (hộp thư web)'; 'zh-TW'='Mailpit（網頁信箱）' }
+    Adminer = @{ sv='Adminer'; el='Adminer'; hu='Adminer'; ro='Adminer'; th='Adminer'; vi='Adminer'; 'zh-TW'='Adminer' }
+    Phpinfo = @{ sv='phpinfo()'; el='phpinfo()'; hu='phpinfo()'; ro='phpinfo()'; th='phpinfo()'; vi='phpinfo()'; 'zh-TW'='phpinfo()' }
+    Notepad = @{ sv='Notepad++'; el='Notepad++'; hu='Notepad++'; ro='Notepad++'; th='Notepad++'; vi='Notepad++'; 'zh-TW'='Notepad++' }
+    NgrokStart = @{ sv='Starta ngrok-tunnel'; el='Έναρξη σήραγγας ngrok'; hu='ngrok alagút indítása'; ro='Pornire tunel ngrok'; th='เริ่มอุโมงค์ ngrok'; vi='Khởi động đường hầm ngrok'; 'zh-TW'='啟動 ngrok 隧道' }
+    NgrokStop = @{ sv='Stoppa ngrok'; el='Διακοπή ngrok'; hu='ngrok leállítása'; ro='Oprire ngrok'; th='หยุด ngrok'; vi='Dừng ngrok'; 'zh-TW'='停止 ngrok' }
+    NgrokNoToken = @{ sv='ngrok har startat men ingen offentlig URL ännu. Lägg till authtoken först.'; el='Το ngrok ξεκίνησε αλλά δεν υπάρχει ακόμη δημόσιο URL. Προσθέστε πρώτα το authtoken.'; hu='A ngrok elindult, de még nincs nyilvános URL. Először adj hozzá authtoken-t.'; ro='ngrok a pornit, dar încă nu există URL public. Adaugă mai întâi authtoken.'; th='ngrok เริ่มแล้วแต่ยังไม่มี URL สาธารณะ กรุณาเพิ่ม authtoken ก่อน'; vi='ngrok đã khởi động nhưng chưa có URL công khai. Hãy thêm authtoken trước.'; 'zh-TW'='ngrok 已啟動，但尚無公開網址。請先新增 authtoken。' }
+    HostsChecking = @{ sv='hosts: kontrollerar'; el='hosts: έλεγχος'; hu='hosts: ellenőrzés'; ro='hosts: verificare'; th='hosts: กำลังตรวจสอบ'; vi='hosts: đang kiểm tra'; 'zh-TW'='hosts: 檢查中' }
+    HostsSyncing = @{ sv='Synkroniserar hosts-filen...'; el='Συγχώνευση αρχείου hosts...'; hu='hosts fájl szinkronizálása...'; ro='Sincronizare fișier hosts...'; th='กำลังซิงก์ไฟล์ hosts...'; vi='Đang đồng bộ tệp hosts...'; 'zh-TW'='正在同步 hosts 檔案...' }
+    HostsOpening = @{ sv='Öppnar hosts-filen...'; el='Άνοιγμα αρχείου hosts...'; hu='hosts fájl megnyitása...'; ro='Deschidere fișier hosts...'; th='กำลังเปิดไฟล์ hosts...'; vi='Đang mở tệp hosts...'; 'zh-TW'='正在開啟 hosts 檔案...' }
+    Cronical = @{ sv='Cronical-schemaläggare'; el='Χρονοδρομολογητής Cronical'; hu='Cronical ütemező'; ro='Planificator Cronical'; th='ตัวจัดตาราง Cronical'; vi='Bộ lập lịch Cronical'; 'zh-TW'='Cronical 排程器' }
+    SyncHosts = @{ sv='Synkronisera hosts (UAC)'; el='Συγχώνευση hosts (UAC)'; hu='hosts szinkronizálása (UAC)'; ro='Sincronizează hosts (UAC)'; th='ซิงก์ hosts (UAC)'; vi='Đồng bộ hosts (UAC)'; 'zh-TW'='同步 hosts (UAC)' }
+    EditHosts = @{ sv='Redigera hosts (UAC)'; el='Επεξεργασία hosts (UAC)'; hu='hosts szerkesztése (UAC)'; ro='Editează hosts (UAC)'; th='แก้ไข hosts (UAC)'; vi='Sửa hosts (UAC)'; 'zh-TW'='編輯 hosts (UAC)' }
+    CertificatesFolder = @{ sv='Certifikatmapp'; el='Φάκελος πιστοποιητικών'; hu='Tanúsítványok mappája'; ro='Dosar certificate'; th='โฟลเดอร์ใบรับรอง'; vi='Thư mục chứng chỉ'; 'zh-TW'='憑證資料夾' }
+    PhpExtensions = @{ sv='PHP-tillägg...'; el='Επεκτάσεις PHP...'; hu='PHP kiterjesztések...'; ro='Extensii PHP...'; th='ส่วนขยาย PHP...'; vi='Tiện ích PHP...'; 'zh-TW'='PHP 擴充功能...' }
+    StartStackWhenPanelOpens = @{ sv='Starta stapeln när panelen öppnas'; el='Έναρξη στοίβας κατά το άνοιγμα του πίνακα'; hu='Verem indítása a panel megnyitásakor'; ro='Pornire stivă la deschiderea panoului'; th='เริ่มสแตกเมื่อเปิดแผงควบคุม'; vi='Khởi động ngăn xếp khi mở bảng điều khiển'; 'zh-TW'='開啟面板時啟動環境' }
+    StartWithWindows = @{ sv='Starta med Windows'; el='Έναρξη με τα Windows'; hu='Indítás Windows-szal'; ro='Pornire cu Windows'; th='เริ่มพร้อม Windows'; vi='Khởi động cùng Windows'; 'zh-TW'='隨 Windows 啟動' }
+    RefreshConfigs = @{ sv='Uppdatera konfiguration'; el='Ανανέωση ρυθμίσεων'; hu='Konfiguráció frissítése'; ro='Actualizare configurare'; th='รีเฟรชการกำหนดค่า'; vi='Làm mới cấu hình'; 'zh-TW'='重新整理設定' }
+    About = @{ sv='Om WampDeck'; el='Σχετικά με το WampDeck'; hu='A WampDeck névjegye'; ro='Despre WampDeck'; th='เกี่ยวกับ WampDeck'; vi='Giới thiệu WampDeck'; 'zh-TW'='關於 WampDeck' }
+    Readme = @{ sv='README'; el='README'; hu='README'; ro='README'; th='README'; vi='README'; 'zh-TW'='README' }
+    OpenInstallFolder = @{ sv='Öppna installationsmappen'; el='Άνοιγμα φακέλου εγκατάστασης'; hu='Telepítési mappa megnyitása'; ro='Deschide dosarul de instalare'; th='เปิดโฟลเดอร์การติดตั้ง'; vi='Mở thư mục cài đặt'; 'zh-TW'='開啟安裝資料夾' }
+    EnableHttps = @{ sv='Aktivera HTTPS'; el='Ενεργοποίηση HTTPS'; hu='HTTPS engedélyezése'; ro='Activează HTTPS'; th='เปิดใช้งาน HTTPS'; vi='Bật HTTPS'; 'zh-TW'='啟用 HTTPS' }
+    DisableHttps = @{ sv='Inaktivera HTTPS'; el='Απενεργοποίηση HTTPS'; hu='HTTPS letiltása'; ro='Dezactivează HTTPS'; th='ปิดใช้งาน HTTPS'; vi='Tắt HTTPS'; 'zh-TW'='停用 HTTPS' }
+    TrustCert = @{ sv='Lita på certifikatet (Windows-dialog)'; el='Έμπιστο πιστοποιητικό (διάλογος Windows)'; hu='Megbízható tanúsítvány (Windows párbeszéd)'; ro='Certificat de încredere (dialog Windows)'; th='เชื่อถือใบรับรอง (กล่องโต้ตอบ Windows)'; vi='Tin cậy chứng chỉ (hộp thoại Windows)'; 'zh-TW'='信任憑證 (Windows 對話框)' }
+    RegenerateCert = @{ sv='Generera om certifikatet'; el='Επαναδημιουργία πιστοποιητικού'; hu='Tanúsítvány újragenerálása'; ro='Regenerare certificat'; th='สร้างใบรับรองใหม่'; vi='Tạo lại chứng chỉ'; 'zh-TW'='重新產生憑證' }
+    Php = @{ sv='PHP'; el='PHP'; hu='PHP'; ro='PHP'; th='PHP'; vi='PHP'; 'zh-TW'='PHP' }
+    WebServer = @{ sv='Webbserver'; el='Διακομιστής web'; hu='Webszerver'; ro='Server web'; th='เว็บเซิร์ฟเวอร์'; vi='Máy chủ web'; 'zh-TW'='網頁伺服器' }
+    Database = @{ sv='Databas'; el='Βάση δεδομένων'; hu='Adatbázis'; ro='Bază de date'; th='ฐานข้อมูล'; vi='Cơ sở dữ liệu'; 'zh-TW'='資料庫' }
+    ExtraServices = @{ sv='Extra tjänster'; el='Επιπλέον υπηρεσίες'; hu='További szolgáltatások'; ro='Servicii suplimentare'; th='บริการเพิ่มเติม'; vi='Dịch vụ bổ sung'; 'zh-TW'='其他服務' }
+    MySql = @{ sv='MySQL'; el='MySQL'; hu='MySQL'; ro='MySQL'; th='MySQL'; vi='MySQL'; 'zh-TW'='MySQL' }
+    Running = @{ sv='körs'; el='εκτελείται'; hu='fut'; ro='rulează'; th='กำลังทำงาน'; vi='đang chạy'; 'zh-TW'='執行中' }
+    Stopped = @{ sv='stoppad'; el='διακόπηκε'; hu='leállítva'; ro='oprit'; th='หยุดแล้ว'; vi='đã dừng'; 'zh-TW'='已停止' }
+    Starting = @{ sv='startar...'; el='εκκίνηση...'; hu='indul...'; ro='pornește...'; th='กำลังเริ่ม...'; vi='đang khởi động...'; 'zh-TW'='啟動中...' }
+    Stopping = @{ sv='stoppar...'; el='διακοπή...'; hu='leáll...'; ro='se oprește...'; th='กำลังหยุด...'; vi='đang dừng...'; 'zh-TW'='停止中...' }
+    StartingService = @{ sv='Startar tjänsten...'; el='Έναρξη υπηρεσίας...'; hu='Szolgáltatás indítása...'; ro='Pornire serviciu...'; th='กำลังเริ่มบริการ...'; vi='Đang khởi động dịch vụ...'; 'zh-TW'='正在啟動服務...' }
+    StoppingService = @{ sv='Stoppar tjänsten...'; el='Διακοπή υπηρεσίας...'; hu='Szolgáltatás leállítása...'; ro='Oprire serviciu...'; th='กำลังหยุดบริการ...'; vi='Đang dừng dịch vụ...'; 'zh-TW'='正在停止服務...' }
+    Ready = @{ sv='Redo'; el='Έτοιμο'; hu='Készen'; ro='Gata'; th='พร้อม'; vi='Sẵn sàng'; 'zh-TW'='就緒' }
+    StartingTheStack = @{ sv='Startar stapeln...'; el='Έναρξη στοίβας...'; hu='Verem indítása...'; ro='Pornire stivă...'; th='กำลังเริ่มสแตก...'; vi='Đang khởi động ngăn xếp...'; 'zh-TW'='正在啟動環境...' }
+    StoppingTheStack = @{ sv='Stoppar stapeln...'; el='Διακοπή στοίβας...'; hu='Verem leállítása...'; ro='Oprire stivă...'; th='กำลังหยุดสแตก...'; vi='Đang dừng ngăn xếp...'; 'zh-TW'='正在停止環境...' }
+    RestartingTheStack = @{ sv='Startar om stapeln...'; el='Επανεκκίνηση στοίβας...'; hu='Verem újraindítása...'; ro='Repornire stivă...'; th='กำลังรีสตาร์ทสแตก...'; vi='Đang khởi động lại ngăn xếp...'; 'zh-TW'='正在重新啟動環境...' }
+    AnotherTaskRunning = @{ sv='En annan WampDeck-uppgift körs fortfarande. Vänta tills den är klar.'; el='Μια άλλη εργασία WampDeck εκτελείται ακόμη. Περιμένετε να ολοκληρωθεί.'; hu='Egy másik WampDeck-feladat még fut. Várja meg a befejezését.'; ro='O altă sarcină WampDeck încă rulează. Așteptați finalizarea.'; th='มีงาน WampDeck อื่นกำลังทำงานอยู่ กรุณารอให้เสร็จ'; vi='Có tác vụ WampDeck khác đang chạy. Vui lòng đợi.'; 'zh-TW'='另一個 WampDeck 工作仍在執行，請稍候。' }
+    TaskFailed = @{ sv='WampDeck-uppgiften misslyckades (exit {0}).'; el='Η εργασία WampDeck απέτυχε (exit {0}).'; hu='A WampDeck-feladat nem sikerült (exit {0}).'; ro='Sarcina WampDeck a eșuat (exit {0}).'; th='งาน WampDeck ล้มเหลว (exit {0})'; vi='Tác vụ WampDeck thất bại (exit {0}).'; 'zh-TW'='WampDeck 工作失敗 (exit {0})。' }
+    CheckStatus = @{ sv='KONTROLLERAR'; el='ΕΛΕΓΧΟΣ'; hu='ELLENŐRZÉS'; ro='VERIFICARE'; th='กำลังตรวจสอบ'; vi='ĐANG KIỂM TRA'; 'zh-TW'='檢查中' }
+    SslChecking = @{ sv='ssl: kontrollerar'; el='ssl: έλεγχος'; hu='ssl: ellenőrzés'; ro='ssl: verificare'; th='ssl: กำลังตรวจสอบ'; vi='ssl: đang kiểm tra'; 'zh-TW'='ssl: 檢查中' }
+    SslOn = @{ sv='ssl: på, betrodd'; el='ssl: ενεργό, έμπιστο'; hu='ssl: bekapcsolva, megbízható'; ro='ssl: activ, de încredere'; th='ssl: เปิดแล้ว เชื่อถือได้'; vi='ssl: bật, đáng tin cậy'; 'zh-TW'='ssl: 已啟用，受信任' }
+    SslOnCaUntrusted = @{ sv='ssl: på, CA ej betrodd'; el='ssl: ενεργό, CA μη έμπιστο'; hu='ssl: bekapcsolva, CA nem megbízható'; ro='ssl: activ, CA neîncrezător'; th='ssl: เปิดแล้ว แต่ CA ไม่เชื่อถือ'; vi='ssl: bật, CA không đáng tin'; 'zh-TW'='ssl: 已啟用，CA 不受信任' }
+    SslOff = @{ sv='ssl: av'; el='ssl: ανενεργό'; hu='ssl: kikapcsolva'; ro='ssl: oprit'; th='ssl: ปิด'; vi='ssl: tắt'; 'zh-TW'='ssl: 已關閉' }
+    Online = @{ sv='ONLINE'; el='ΣΕ ΣΥΝΔΕΣΗ'; hu='ONLINE'; ro='ONLINE'; th='ออนไลน์'; vi='TRỰC TUYẾN'; 'zh-TW'='線上' }
+    Offline = @{ sv='OFFLINE'; el='ΕΚΤΟΣ ΣΥΝΔΕΣΗΣ'; hu='OFFLINE'; ro='OFFLINE'; th='ออฟไลน์'; vi='NGOẠI TUYẾN'; 'zh-TW'='離線' }
+    PortsBusy = @{ sv='Portarna är fortfarande upptagna. Stoppa det andra programmet eller ändra portarna.'; el='Οι θύρες είναι ακόμη κατειλημμένες. Σταματήστε την άλλη εφαρμογή ή αλλάξτε τις θύρες.'; hu='A portok még mindig foglaltak. Állítsd le a másik programot, vagy változtasd meg a portokat.'; ro='Porturile sunt încă ocupate. Oprește celălalt program sau schimbă porturile.'; th='พอร์ตยังถูกใช้งานอยู่ กรุณาหยุดโปรแกรมอื่นหรือเปลี่ยนพอร์ต'; vi='Các cổng vẫn đang bận. Hãy dừng chương trình khác hoặc đổi cổng.'; 'zh-TW'='連接埠仍被佔用。請停止其他程式或變更連接埠。' }
+    WwwHint = @{ sv='Dubbelklicka på ett projekt för att öppna det. Varje mapp i www\ får en lokal URL automatiskt.'; el='Κάντε διπλό κλικ σε έργο για να το ανοίξετε. Κάθε φάκελος στο www\ παίρνει αυτόματα τοπικό URL.'; hu='Kattintson duplán a projektre a megnyitáshoz. A www\ minden mappája automatikusan helyi URL-t kap.'; ro='Faceți dublu clic pe un proiect pentru a-l deschide. Fiecare dosar din www\ primește automat un URL local.'; th='ดับเบิลคลิกที่โปรเจกต์เพื่อเปิด โฟลเดอร์ทุกตัวใน www\ จะได้ URL ท้องถิ่นโดยอัตโนมัติ'; vi='Nhấp đúp vào dự án để mở. Mỗi thư mục trong www\ tự động có URL cục bộ.'; 'zh-TW'='按兩下專案即可開啟。www\ 中每個資料夾都會自動取得本機網址。' }
+    ServicesHint = @{ sv='Kärntjänsterna körs alltid. Aktivera Mailpit, Redis eller Memcached i Inställningar.'; el='Οι βασικές υπηρεσίες τρέχουν πάντα. Ενεργοποιήστε Mailpit, Redis ή Memcached στις Ρυθμίσεις.'; hu='A alapszolgáltatások mindig futnak. Engedélyezd a Mailpit, Redis vagy Memcached elemet a Beállításokban.'; ro='Serviciile de bază rulează întotdeauna. Activează Mailpit, Redis sau Memcached în Setări.'; th='บริการหลักทำงานเสมอ เปิดใช้งาน Mailpit, Redis หรือ Memcached ในการตั้งค่า'; vi='Các dịch vụ chính luôn chạy. Bật Mailpit, Redis hoặc Memcached trong Cài đặt.'; 'zh-TW'='核心服務始終執行。可在設定中啟用 Mailpit、Redis 或 Memcached。' }
+    AutoStartInfo = @{ sv='WampDeck startar med Windows (i meddelandeområdet).'; el='Το WampDeck θα ξεκινά με τα Windows (στην περιοχή ειδοποιήσεων).'; hu='A WampDeck a Windows-szal indul (az értesítési területen).'; ro='WampDeck va porni cu Windows (în zona de notificare).'; th='WampDeck จะเริ่มพร้อม Windows (ในพื้นที่แจ้งเตือน)'; vi='WampDeck sẽ khởi động cùng Windows (trong khu vực thông báo).'; 'zh-TW'='WampDeck 將隨 Windows 啟動（在通知區域）。' }
+    AutoStartOffInfo = @{ sv='WampDeck startar inte längre med Windows.'; el='Το WampDeck δεν θα ξεκινά πλέον με τα Windows.'; hu='A WampDeck többé nem indul a Windows-szal.'; ro='WampDeck nu va mai porni cu Windows.'; th='WampDeck จะไม่เริ่มพร้อม Windows อีกต่อไป'; vi='WampDeck sẽ không khởi động cùng Windows nữa.'; 'zh-TW'='WampDeck 將不再隨 Windows 啟動。' }
+    EnablingHttps = @{ sv='Aktiverar HTTPS...'; el='Ενεργοποίηση HTTPS...'; hu='HTTPS engedélyezése...'; ro='Activare HTTPS...'; th='กำลังเปิดใช้งาน HTTPS...'; vi='Đang bật HTTPS...'; 'zh-TW'='正在啟用 HTTPS...' }
+    DisablingHttps = @{ sv='Inaktiverar HTTPS...'; el='Απενεργοποίηση HTTPS...'; hu='HTTPS letiltása...'; ro='Dezactivare HTTPS...'; th='กำลังปิดใช้งาน HTTPS...'; vi='Đang tắt HTTPS...'; 'zh-TW'='正在停用 HTTPS...' }
+    WaitingForTrust = @{ sv='Väntar på Windows-bekräftelsen...'; el='Αναμονή επιβεβαίωσης Windows...'; hu='Várakozás a Windows megerősítésére...'; ro='Așteptare confirmare Windows...'; th='กำลังรอการยืนยันจาก Windows...'; vi='Đang chờ xác nhận từ Windows...'; 'zh-TW'='正在等待 Windows 確認...' }
+    RegeneratingCert = @{ sv='Genererar om certifikat...'; el='Επαναδημιουργία πιστοποιητικών...'; hu='Tanúsítványok újragenerálása...'; ro='Regenerare certificate...'; th='กำลังสร้างใบรับรองใหม่...'; vi='Đang tạo lại chứng chỉ...'; 'zh-TW'='正在重新產生憑證...' }
+    ServiceStart = @{ sv='Start'; el='Έναρξη'; hu='Indít'; ro='Pornire'; th='เริ่ม'; vi='Bắt đầu'; 'zh-TW'='啟動' }
+    ServiceStop = @{ sv='Stoppa'; el='Διακοπή'; hu='Leállít'; ro='Oprire'; th='หยุด'; vi='Dừng'; 'zh-TW'='停止' }
+    ServiceStartAll = @{ sv='Starta alla'; el='Έναρξη όλων'; hu='Minden indítása'; ro='Pornire toate'; th='เริ่มทั้งหมด'; vi='Khởi động tất cả'; 'zh-TW'='全部啟動' }
+    ServiceStopAll = @{ sv='Stoppa alla'; el='Διακοπή όλων'; hu='Minden leállítása'; ro='Oprire toate'; th='หยุดทั้งหมด'; vi='Dừng tất cả'; 'zh-TW'='全部停止' }
+    ServiceToggleStartup = @{ sv='Växla autostart'; el='Εναλλαγή αυτόματης εκκίνησης'; hu='Autostart váltása'; ro='Comută pornirea automată'; th='สลับการเริ่มอัตโนมัติ'; vi='Chuyển đổi tự khởi động'; 'zh-TW'='切換自動啟動' }
+    ServiceAlways = @{ sv='alltid'; el='πάντα'; hu='mindig'; ro='întotdeauna'; th='เสมอ'; vi='luôn luôn'; 'zh-TW'='始終' }
+    ServiceOff = @{ sv='av'; el='ανενεργό'; hu='kikapcsolva'; ro='oprit'; th='ปิด'; vi='tắt'; 'zh-TW'='關閉' }
+    TabProjects = @{ sv='Projekt'; el='Έργα'; hu='Projekte'; ro='Proiecte'; th='โปรเจกต์'; vi='Dự án'; 'zh-TW'='專案' }
+    TabServices = @{ sv='Tjänster'; el='Υπηρεσίες'; hu='Szolgáltatások'; ro='Servicii'; th='บริการ'; vi='Dịch vụ'; 'zh-TW'='服務' }
+    TabTools = @{ sv='Verktyg'; el='Εργαλεία'; hu='Eszközök'; ro='Instrumente'; th='เครื่องมือ'; vi='Công cụ'; 'zh-TW'='工具' }
+    TabNewProject = @{ sv='Nytt projekt'; el='Νέο έργο'; hu='Új projekt'; ro='Proiect nou'; th='โปรเจกต์ใหม่'; vi='Dự án mới'; 'zh-TW'='新增專案' }
+    TabOpen = @{ sv='Öppna'; el='Άνοιγμα'; hu='Megnyitás'; ro='Deschide'; th='เปิด'; vi='Mở'; 'zh-TW'='開啟' }
+    TabTestUrl = @{ sv='.test-URL'; el='URL .test'; hu='.test URL'; ro='URL .test'; th='URL .test'; vi='URL .test'; 'zh-TW'='.test 網址' }
+    TabFolder = @{ sv='Mapp'; el='Φάκελος'; hu='Mappa'; ro='Dosar'; th='โฟลเดอร์'; vi='Thư mục'; 'zh-TW'='資料夾' }
+    TabCopyUrl = @{ sv='Kopiera URL'; el='Αντιγραφή URL'; hu='URL másolása'; ro='Copiază URL'; th='คัดลอก URL'; vi='Sao chép URL'; 'zh-TW'='複製網址' }
+    TabDelete = @{ sv='Ta bort'; el='Διαγραφή'; hu='Törlés'; ro='Șterge'; th='ลบ'; vi='Xóa'; 'zh-TW'='刪除' }
+    TabRefresh = @{ sv='Uppdatera'; el='Ανανέωση'; hu='Frissítés'; ro='Actualizează'; th='รีเฟรช'; vi='Làm mới'; 'zh-TW'='重新整理' }
+    TabTerminal = @{ sv='Terminal'; el='Τερματικό'; hu='Terminál'; ro='Terminal'; th='เทอร์มินัล'; vi='Terminal'; 'zh-TW'='終端機' }
+    ProjectCount = @{ sv='{0} projekt'; el='{0} έργο'; hu='{0} projekt'; ro='{0} proiect'; th='{0} โปรเจกต์'; vi='{0} dự án'; 'zh-TW'='{0} 個專案' }
+    ProjectCountPlural = @{ sv='{0} projekt'; el='{0} έργα'; hu='{0} projektek'; ro='{0} proiecte'; th='{0} โปรเจกต์'; vi='{0} dự án'; 'zh-TW'='{0} 個專案' }
+    TrayBalloon = @{ sv='Körs fortfarande i meddelandeområdet.'; el='Εκτελείται ακόμη στην περιοχή ειδοποιήσεων.'; hu='Még mindig fut az értesítési területen.'; ro='Încă rulează în zona de notificare.'; th='ยังคงทำงานอยู่ในพื้นที่แจ้งเตือน'; vi='Vẫn chạy trong khu vực thông báo.'; 'zh-TW'='仍在通知區域中執行。' }
+    ColumnProject = @{ sv='Projekt'; el='Έργο'; hu='Projekt'; ro='Proiect'; th='โปรเจกต์'; vi='Dự án'; 'zh-TW'='專案' }
+    ColumnPhp = @{ sv='PHP'; el='PHP'; hu='PHP'; ro='PHP'; th='PHP'; vi='PHP'; 'zh-TW'='PHP' }
+    ColumnLocalUrl = @{ sv='Lokal URL'; el='Τοπικό URL'; hu='Helyi URL'; ro='URL local'; th='URL ท้องถิ่น'; vi='URL cục bộ'; 'zh-TW'='本機網址' }
+    ColumnTestUrl = @{ sv='.test-URL'; el='URL .test'; hu='.test URL'; ro='URL .test'; th='URL .test'; vi='URL .test'; 'zh-TW'='.test 網址' }
+    ColumnFolder = @{ sv='Mapp'; el='Φάκελος'; hu='Mappa'; ro='Dosar'; th='โฟลเดอร์'; vi='Thư mục'; 'zh-TW'='資料夾' }
+    ServiceCount = @{ sv='{0} tjänst'; el='{0} υπηρεσία'; hu='{0} szolgáltatás'; ro='{0} serviciu'; th='{0} บริการ'; vi='{0} dịch vụ'; 'zh-TW'='{0} 個服務' }
+    ServiceCountPl = @{ sv='{0} tjänster'; el='{0} υπηρεσίες'; hu='{0} szolgáltatások'; ro='{0} servicii'; th='{0} บริการ'; vi='{0} dịch vụ'; 'zh-TW'='{0} 個服務' }
+    FrontendTitle = @{ sv='PHP-ramverk - installering med ett klick'; el='PHP frameworks - εγκατάσταση με ένα κλικ'; hu='PHP keretrendszerek - telepítés egy kattintással'; ro='Frameworkuri PHP - instalare cu un clic'; th=' frameworks PHP - ติดตั้งด้วยคลิกเดียว'; vi='Framework PHP - cài đặt một nhấp'; 'zh-TW'='PHP 框架 - 一鍵安裝' }
+    InstallLabel = @{ sv='Installera'; el='Εγκατάσταση'; hu='Telepítés'; ro='Instalare'; th='ติดตั้ง'; vi='Cài đặt'; 'zh-TW'='安裝' }
+    FolderLabel = @{ sv='Projektmappnamn'; el='Όνομα φακέλου έργου'; hu='Projektmappa neve'; ro='Numele dosarului proiectului'; th='ชื่อโฟลเดอร์โปรเจกต์'; vi='Tên thư mục dự án'; 'zh-TW'='專案資料夾名稱' }
+    FrameworkHint2 = @{ sv='Installering av PHP-ramverk med ett klick - gratis i WampDeck.'; el='Εγκατάσταση PHP frameworks με ένα κλικ - δωρεάν στο WampDeck.'; hu='PHP keretrendszerek telepítése egy kattintással - ingyenes a WampDeck-ben.'; ro='Instalare frameworkuri PHP cu un clic - gratuit în WampDeck.'; th='ติดตั้ง framework PHP ด้วยคลิกเดียว - ฟรีใน WampDeck'; vi='Cài đặt framework PHP một nhấp - miễn phí trong WampDeck'; 'zh-TW'='一鍵安裝 PHP 框架 - WampDeck 免費提供。' }
+    DatabaseClient = @{ sv='Databasklient'; el='Πελάτης βάσης δεδομένων'; hu='Adatbázis-kliens'; ro='Client bază de date'; th='ไคลเอนต์ฐานข้อมูล'; vi='Khách cơ sở dữ liệu'; 'zh-TW'='資料庫用戶端' }
+    CapturedMail = @{ sv='Mail som fångats'; el='Καταγεγραμμένα μηνύματα'; hu='Rögzített levelek'; ro='Mesaje capturate'; th='อีเมลที่ถูกจับ'; vi='Thư đã bắt được'; 'zh-TW'='已擷取的郵件' }
+    WebDatabase = @{ sv='Webbdatabas'; el='Βάση δεδομένων web'; hu='Web adatbázis'; ro='Bază de date web'; th='ฐานข้อมูลเว็บ'; vi='Cơ sở dữ liệu web'; 'zh-TW'='網頁資料庫' }
+    PhpSettings = @{ sv='PHP-inställningar'; el='Ρυθμίσεις PHP'; hu='PHP beállítások'; ro='Setări PHP'; th='การตั้งค่า PHP'; vi='Cài đặt PHP'; 'zh-TW'='PHP 設定' }
+    TextEditor = @{ sv='Textredigerare'; el='Επεξεργαστής κειμένου'; hu='Szövegszerkesztő'; ro='Editor de text'; th='โปรแกรมแก้ไขข้อความ'; vi='Trình soạn thảo văn bản'; 'zh-TW'='文字編輯器' }
+    VersionCheck = @{ sv='Versionskontroll'; el='Έλεγχος έκδοσης'; hu='Verzióellenőrzés'; ro='Verificare versiune'; th='ตรวจสอบเวอร์ชัน'; vi='Kiểm tra phiên bản'; 'zh-TW'='版本檢查' }
+    CronScheduler = @{ sv='Uppgiftsschemaläggare'; el='Χρονοδρομολογητής εργασιών'; hu='Feladatütemező'; ro='Planificator sarcini'; th='ตัวจัดตารางงาน'; vi='Bộ lập lịch tác vụ'; 'zh-TW'='工作排程器' }
+    CloseTunnel = @{ sv='Stäng tunnelen'; el='Κλείσιμο σήραγγας'; hu='Alagút bezárása'; ro='Închide tunelul'; th='ปิดอุโมงค์'; vi='Đóng đường hầm'; 'zh-TW'='關閉隧道' }
+    HostsFile = @{ sv='hosts-fil'; el='Αρχείο hosts'; hu='hosts fájl'; ro='Fișier hosts'; th='ไฟล์ hosts'; vi='Tệp hosts'; 'zh-TW'='hosts 檔案' }
+    EditUac = @{ sv='Redigera med UAC'; el='Επεξεργασία με UAC'; hu='Szerkesztés UAC-val'; ro='Editează cu UAC'; th='แก้ไขด้วย UAC'; vi='Sửa với UAC'; 'zh-TW'='使用 UAC 編輯' }
+    SslFiles = @{ sv='SSL-filer'; el='Αρχεία SSL'; hu='SSL fájlok'; ro='Fișiere SSL'; th='ไฟล์ SSL'; vi='Tệp SSL'; 'zh-TW'='SSL 檔案' }
+    RebuildVhosts = @{ sv='Återskapa virtuella värdar'; el='Επαναδημιουργία εικονικών hosts'; hu='Virtuális gazdák újragenerálása'; ro='Recreează hosturile virtuale'; th='สร้างโฮสต์เสมือนใหม่'; vi='Tạo lại host ảo'; 'zh-TW'='重建虛擬主機' }
+    Versions = @{ sv='Versioner'; el='Εκδόσεις'; hu='Verziók'; ro='Versiuni'; th='เวอร์ชัน'; vi='Các phiên bản'; 'zh-TW'='版本' }
+    TabPhpFramework = @{ sv='PHP-ramverk'; el='PHP frameworks'; hu='PHP keretrendszerek'; ro='Frameworkuri PHP'; th='framework PHP'; vi='Framework PHP'; 'zh-TW'='PHP 框架' }
+    Install = @{ sv='Installera'; el='Εγκατάσταση'; hu='Telepítés'; ro='Instalare'; th='ติดตั้ง'; vi='Cài đặt'; 'zh-TW'='安裝' }
+    FrameworkHint = @{ sv='Installering av PHP-ramverk med ett klick - gratis i WampDeck.'; el='Εγκατάσταση PHP frameworks με ένα κλικ - δωρεάν στο WampDeck.'; hu='PHP keretrendszerek telepítése egy kattintással - ingyenes a WampDeck-ben.'; ro='Instalare frameworkuri PHP cu un clic - gratuit în WampDeck.'; th='ติดตั้ง framework PHP ด้วยคลิกเดียว - ฟรีใน WampDeck'; vi='Cài đặt framework PHP một nhấp - miễn phí trong WampDeck'; 'zh-TW'='一鍵安裝 PHP 框架 - WampDeck 免費提供。' }
+    ProjectFolderName = @{ sv='Projektmappnamn'; el='Όνομα φακέλου έργου'; hu='Projektmappa neve'; ro='Numele dosarului proiectului'; th='ชื่อโฟลเดอร์โปรเจกต์'; vi='Tên thư mục dự án'; 'zh-TW'='專案資料夾名稱' }
+    FirstRunTitle = @{ sv='Välkommen till WampDeck - välj ditt språk'; el='Καλώς ήρθατε στο WampDeck - επιλέξτε γλώσσα'; hu='Üdvözöljük a WampDeck-ben - válasszon nyelvet'; ro='Bine ați venit în WampDeck - alegeți limba'; th='ยินดีต้อนรับสู่ WampDeck - เลือกภาษาของคุณ'; vi='Chào mừng đến với WampDeck - chọn ngôn ngữ'; 'zh-TW'='歡迎使用 WampDeck - 請選擇語言' }
+    FirstRunHint = @{ sv='Välj språk för WampDeck-gränssnittet.'; el='Επιλέξτε γλώσσα για τη διεπαφή του WampDeck.'; hu='Válassza ki a WampDeck felület nyelvét.'; ro='Alegeți limba interfeței WampDeck.'; th='เลือกภาษาสำหรับอินเทอร์เฟซ WampDeck'; vi='Chọn ngôn ngữ cho giao diện WampDeck.'; 'zh-TW'='選擇 WampDeck 介面語言。' }
+    FirstRunRtlNote = @{ sv='Arabiska använder höger-till-vänster-layout. Den ställs in en gång vid installationen och ändras inte när du byter språk i Inställningar.'; el='Τα αραβικά χρησιμοποιούν διάταξη δεξιά προς τα αριστερή. Ρυθμίζεται μία φορά κατά την εγκατάσταση και δεν αλλάζει όταν αλλάζετε γλώσσα στις Ρυθμίσεις.'; hu='Az arab jobbról balra elrendezést használ.telepítéskor egyszer kerül beállításra, és nem változik a Beállításokban történő nyelvváltáskor.'; ro='Arabica folosește aspect de la dreapta la stânga. Se setează o dată la instalare și nu se schimbă când schimbați limba în Setări.'; th='ภาษาอาหรับใช้รูปแบบจากขวาไปซ้าย ตั้งค่าครั้งเดียวตอนติดตั้งและจะไม่เปลี่ยนเมื่อเปลี่ยนภาษาในการตั้งค่า'; vi='Tiếng Ả Rập dùng bố cục phải sang trái. Được đặt một lần khi cài đặt và không đổi khi đổi ngôn ngữ trong Cài đặt.'; 'zh-TW'='阿拉伯語使用由右至左版面。安裝時設定一次，在設定中切換語言時不會改變。' }
+    ProTitle = @{ sv='WampDeck Pro - Utvecklarverktyg för byråer'; el='WampDeck Pro - Εργαλεία προγραμματιστή για γραφεία'; hu='WampDeck Pro - Fejlesztői eszközkészlet ügynökségeknek'; ro='WampDeck Pro - Instrumente pentru agenții'; th='WampDeck Pro - ชุดเครื่องมือนักพัฒนาสำหรับเอเจนซี'; vi='WampDeck Pro - Bộ công cụ dành cho agency'; 'zh-TW'='WampDeck Pro - 面向團隊的開發者工具包' }
+    ProHealth = @{ sv='Hälsodashboard'; el='Πίνακας υγείας'; hu='Állapot irányítópult'; ro='Panou de sănătate'; th='แดชบอร์ดสุขภาพ'; vi='Bảng điều khiển sức khỏe'; 'zh-TW'='健康儀表板' }
+    ProBackups = @{ sv='Säkerhetskopior och schemaläggning'; el='Αντίγραφα ασφαλείας και χρονοδρομολόγηση'; hu='Biztonsági mentések és ütemezés'; ro='Backup-uri și programare'; th='การสำรองข้อมูลและตารางเวลา'; vi='Sao lưu và lập lịch'; 'zh-TW'='備份與排程' }
+    ProXdebug = @{ sv='Växla Xdebug'; el='Εναλλαγή Xdebug'; hu='Xdebug átváltása'; ro='Comută Xdebug'; th='สลับ Xdebug'; vi='Chuyển đổi Xdebug'; 'zh-TW'='切換 Xdebug' }
+    ProGit = @{ sv='Git-verktyg'; el='Εργαλεία Git'; hu='Git eszközök'; ro='Instrumente Git'; th='เครื่องมือ Git'; vi='Công cụ Git'; 'zh-TW'='Git 工具' }
+    ProMailpit = @{ sv='Mailpit Pro'; el='Mailpit Pro'; hu='Mailpit Pro'; ro='Mailpit Pro'; th='Mailpit Pro'; vi='Mailpit Pro'; 'zh-TW'='Mailpit Pro' }
+    ProMore = @{ sv='Tillägg, valv och team'; el='Πρόσθετα, θησαυροφυλάκιο και ομάδα'; hu='Kiegészítők, széf és csapat'; ro='Add-onuri, seif și echipă'; th='ส่วนเสริม, ห้องนิรภัย และทีม'; vi='Tiện ích, két sắt và nhóm'; 'zh-TW'='附加元件、保險庫與團隊' }
+    ProInstallSelected = @{ sv='Installera valda...'; el='Εγκατάσταση επιλεγμένου...'; hu='Kiválasztott telepítése...'; ro='Instalează selectatul...'; th='ติดตั้งที่เลือก...'; vi='Cài đặt mục đã chọn...'; 'zh-TW'='安裝所選...' }
+    Cancel = @{ sv='Avbryt'; el='Άκυρο'; hu='Mégse'; ro='Anulare'; th='ยกเลิก'; vi='Hủy'; 'zh-TW'='取消' }
+    ProBadge = @{ sv='PRO'; el='PRO'; hu='PRO'; ro='PRO'; th='PRO'; vi='PRO'; 'zh-TW'='PRO' }
+    CheckingShort = @{ sv='KONTROLL'; el='ΕΛΕΓΧΟΣ'; hu='ELLENŐRZÉS'; ro='VERIFICARE'; th='ตรวจสอบ'; vi='KIỂM TRA'; 'zh-TW'='檢查中' }}
+foreach ($key in $script:Phase2Remaining.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:Phase2Remaining[$key].Keys) { $script:UiStrings[$key][$lang] = $script:Phase2Remaining[$key][$lang] }
+}
+$script:CompleteLanguages += @(
+    @{ Code = 'sv';    Name = 'Svenska (Swedish)' }
+    @{ Code = 'el';    Name = 'Î•Î»Î»Î·Î½Î¹ÎºÎ¬ (Greek)' }
+    @{ Code = 'hu';    Name = 'Magyar (Hungarian)' }
+    @{ Code = 'ro';    Name = 'RomÃ¢nÄƒ (Romanian)' }
+    @{ Code = 'th';    Name = 'à¹„à¸—à¸¢ (Thai)' }
+    @{ Code = 'vi';    Name = 'Tiáº¿ng Viá»‡t (Vietnamese)' }
+    @{ Code = 'zh-TW'; Name = 'ç¹é«”ä¸­æ–‡ (Traditional Chinese)' }
+)
