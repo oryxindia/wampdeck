@@ -57,6 +57,10 @@ echo '<h1>Phalcon 6 is ready</h1><p>Your WampDeck Pro project is configured.</p>
 echo '</body></html>';
 '@
         }
+        'thinkphp' = [pscustomobject]@{
+            Name = 'ThinkPHP 8'; Package = 'topthink/think'; Color = [System.Drawing.Color]::FromArgb(45, 140, 240); Initial = 'TP'
+            Note = 'Fast MVC framework'; Db = $false; Kind = 'skeleton'
+        }
     }
 }
 
