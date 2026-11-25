@@ -16,16 +16,7 @@ $root = Split-Path -Parent $PSScriptRoot
 if ((-not $Force) -and $State['languageSelected']) { exit 0 }
 
 # Languages with complete translations in phase 1.
-$choices = @(
-    @{ Code = 'en';    Name = 'English' }
-    @{ Code = 'hi';    Name = 'हिन्दी (Hindi)' }
-    @{ Code = 'ur';    Name = 'اردو (Urdu)' }
-    @{ Code = 'ar';    Name = 'العربية (Arabic)' }
-    @{ Code = 'zh-CN'; Name = '简体中文 (Chinese)' }
-    @{ Code = 'fr';    Name = 'FranÃ§ais (French)' }
-    @{ Code = 'de';    Name = 'Deutsch (German)' }
-    @{ Code = 'cs';    Name = 'ÄŒeÅ¡tina (Czech)' }
-)
+$choices = @($script:CompleteLanguages)
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'WampDeck - ' + (Get-WampDeckString 'FirstRunTitle' -Language 'en')

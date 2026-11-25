@@ -360,3 +360,13 @@ foreach ($key in $script:ExtraUiStrings4.Keys) {
     if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
     foreach ($lang in $script:ExtraUiStrings4[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStrings4[$key][$lang] }
 }
+$script:CompleteLanguages = @(
+    @{ Code = 'en';    Name = 'English' }
+    @{ Code = 'hi';    Name = 'हिन्दी (Hindi)' }
+    @{ Code = 'ur';    Name = 'اردو (Urdu)' }
+    @{ Code = 'ar';    Name = 'العربية (Arabic)' }
+    @{ Code = 'zh-CN'; Name = '简体中文 (Chinese)' }
+    @{ Code = 'fr';    Name = 'Français (French)' }
+    @{ Code = 'de';    Name = 'Deutsch (German)' }
+    @{ Code = 'cs';    Name = 'Čeština (Czech)' }
+)

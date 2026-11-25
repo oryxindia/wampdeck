@@ -1,4 +1,4 @@
-# Modal dialogs: settings and PHP extensions.
+﻿# Modal dialogs: settings and PHP extensions.
 
 function Show-SettingsDialog {
     param($Owner)
@@ -72,9 +72,11 @@ function Show-SettingsDialog {
     $languageBox.Width = 300
     $languageBox.DropDownStyle = 'DropDownList'
     $languageBox.Font = $script:GuiFont
-    $languageBox.Items.AddRange(@($script:WampDeckLanguages | ForEach-Object { [string]$_.Name })) | Out-Null
-    $currentLangName = @($script:WampDeckLanguages | Where-Object { [string]$_.Code -eq (Get-WampDeckLanguage) } | ForEach-Object { [string]$_.Name })
-    if ($currentLangName.Count -gt 0) { $languageBox.SelectedItem = $currentLangName[0] }
+    $script:SettingsLanguageMap = @()
+    foreach ($entry in @($script:CompleteLanguages)) { [void]$languageBox.Items.Add([string]$entry.Name); $script:SettingsLanguageMap += [string]$entry.Code }
+    $currentCode = Get-WampDeckLanguage
+    for ($i = 0; $i -lt $script:SettingsLanguageMap.Count; $i++) { if ($script:SettingsLanguageMap[$i] -eq $currentCode) { $languageBox.SelectedIndex = $i; break } }
+    if ($languageBox.SelectedIndex -lt 0) { $languageBox.SelectedIndex = 0 }
     $y = $script:dialogY
     Add-Field (Get-WampDeckString 'Language') $languageBox
 
@@ -137,7 +139,7 @@ function Show-SettingsDialog {
             Memcached   = $boxes['memcached'].Checked
             AutoStart   = $boxes['autoStart'].Checked
             CloseToTray = $boxes['closeToTray'].Checked
-            Language    = if ($languageBox.SelectedIndex -ge 0) { [string]$script:WampDeckLanguages[$languageBox.SelectedIndex].Code } else { [string]$script:WampDeckFallbackLanguage }
+            Language    = if ($languageBox.SelectedIndex -ge 0) { [string]$script:SettingsLanguageMap[$languageBox.SelectedIndex] } else { [string]$script:WampDeckFallbackLanguage }
         }
         $form.Close()
     })

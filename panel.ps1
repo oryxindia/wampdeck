@@ -322,7 +322,8 @@ $null = Add-MenuItem $projectMenu 'Deploy pre-check...' { Deploy-SelectedProject
 $null = Add-MenuItem $projectMenu (Get-WampDeckString 'OpenInBrowser') { Open-SelectedProject } -Name 'projectOpen'
 $null = Add-MenuItem $projectMenu (Get-WampDeckString 'OpenTestUrl') {
     if ($script:projectList -and $script:projectList.SelectedItems.Count -gt 0) {
-        Open-Url $script:projectList.SelectedItems[0].Tag.TestUrl
+        $project = $script:projectList.SelectedItems[0].Tag
+        Open-Url (Get-ProjectTestUrl -Name $project.Name)
     }
 } -Name 'projectOpenTest'
 $null = Add-MenuItem $projectMenu (Get-WampDeckString 'OpenFolder') { Open-SelectedFolder } -Name 'projectOpenFolder'
@@ -777,7 +778,8 @@ $script:tabTextItems['TabNewProject'] = Add-TabButton $projectTab (Get-WampDeckS
 $script:tabTextItems['TabOpen'] = Add-TabButton $projectTab (Get-WampDeckString 'TabOpen') 132 322 90 { Open-SelectedProject }
 $script:tabTextItems['TabTestUrl'] = Add-TabButton $projectTab (Get-WampDeckString 'TabTestUrl') 230 322 100 {
     if ($script:projectList -and $script:projectList.SelectedItems.Count -gt 0) {
-        Open-Url $script:projectList.SelectedItems[0].Tag.TestUrl
+        $project = $script:projectList.SelectedItems[0].Tag
+        Open-Url (Get-ProjectTestUrl -Name $project.Name)
     }
 }
 $script:tabTextItems['TabFolder'] = Add-TabButton $projectTab (Get-WampDeckString 'TabFolder') 338 322 90 { Open-SelectedFolder }
@@ -840,7 +842,8 @@ foreach ($entry in @(
         @{ Text = 'Open in browser'; Action = { Open-SelectedProject } },
         @{ Text = 'Open .test URL'; Action = {
                 if ($script:projectList -and $script:projectList.SelectedItems.Count -gt 0) {
-                    Open-Url $script:projectList.SelectedItems[0].Tag.TestUrl
+                    $project = $script:projectList.SelectedItems[0].Tag
+        Open-Url (Get-ProjectTestUrl -Name $project.Name)
                 }
             } },
         @{ Text = 'Open folder'; Action = { Open-SelectedFolder } },
