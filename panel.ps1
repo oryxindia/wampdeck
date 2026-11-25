@@ -559,7 +559,7 @@ function New-CmsLaunchTile {
         $e.ToolTipLocation = New-Object System.Drawing.Point($x, ($screenPos.Y + $TileHeight + 4))
     })
     $script:toolTips += $tip
-    $tile.Add_MouseLeave({ param($sender, $eventArgs) $tip.Hide($form) })
+    $tile.Add_MouseLeave({ param($sender, $eventArgs) $tip.Hide($form) }.GetNewClosure())
 
     return $tile
 }
