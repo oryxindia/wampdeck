@@ -230,6 +230,14 @@ function Update-GuiLanguageTexts {
             $script:tabTextItems[$key].Text = Get-WampDeckString $key -Language $lang
         }
     }
+    if ($script:frameworkTabButton) { $script:frameworkTabButton.Text = Get-WampDeckString 'TabPhpFramework' -Language $lang }
+    if ($script:frameworkInstallButtons) {
+        foreach ($button in $script:frameworkInstallButtons) { $button.Text = Get-WampDeckString 'InstallLabel' -Language $lang }
+    }
+    if ($script:frameworkStatusLabel) {
+        $script:frameworkStatusLabel.Text = Get-WampDeckString 'FrameworkHint2' -Language $lang
+    }
+    Refresh-Ui
 }
 
 $menuStrip = New-Object System.Windows.Forms.MenuStrip
@@ -715,7 +723,7 @@ $script:tabPages = @($projectTab, $servicesTab, $toolsTab, $frameworkTab)
 $projectTabButton = New-TabButton (Get-WampDeckString 'TabProjects') 0
 $servicesTabButton = New-TabButton (Get-WampDeckString 'TabServices') 110
 $toolsTabButton = New-TabButton (Get-WampDeckString 'TabTools') 220
-$frameworkTabButton = New-TabButton (Get-WampDeckString 'FrameworkTab') 330 132
+$frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
 $script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton, $frameworkTabButton)
 
 $projectTabButton.Add_Click({ Show-PageTab 0 })
@@ -1143,16 +1151,19 @@ function New-FrameworkCard {
         } catch { $script:frameworkStatus.Text = $_.Exception.Message }
     }.GetNewClosure())
     $card.Controls.Add($install)
+    $script:frameworkInstallButtons += $install
     $frameworkTab.Controls.Add($card)
 }
 
+$script:frameworkInstallButtons = @()
 $frameworkStatus = New-Object System.Windows.Forms.Label
-$frameworkStatus.Text = 'One-click PHP framework install - free in WampDeck.'
+$frameworkStatus.Text = (Get-WampDeckString 'FrameworkHint2')
 $frameworkStatus.ForeColor = $script:GuiColors.Muted
 $frameworkStatus.Font = New-Object System.Drawing.Font('Segoe UI', 8)
 $frameworkStatus.AutoSize = $true
 $frameworkStatus.Location = New-Object System.Drawing.Point(16, 350)
 $frameworkTab.Controls.Add($frameworkStatus)
+$script:frameworkStatusLabel = $frameworkStatus
 
 $frameworkCatalog = Get-FrameworkCatalog
 $frameworkIndex = 0
