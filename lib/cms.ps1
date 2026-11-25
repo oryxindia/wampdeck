@@ -16,6 +16,9 @@ $script:CmsCatalog = @(
     [pscustomobject]@{ Id = 'grav';        Name = 'Grav';        Category = 'Lightweight sites';   Verified = $true;  Kind = 'download' }
     [pscustomobject]@{ Id = 'winter';      Name = 'Winter CMS';  Category = 'Laravel CMS';         Verified = $true; Kind = 'composer' }
     [pscustomobject]@{ Id = 'twill';       Name = 'Twill';       Category = 'Laravel admin/content'; Verified = $true; Kind = 'composer' }
+    [pscustomobject]@{ Id = 'craftcms';     Name = 'Craft CMS';   Category = 'Premium CMS';    Verified = $true; Kind = 'composer' }
+    [pscustomobject]@{ Id = 'statamic';     Name = 'Statamic';    Category = 'Flat-file CMS';  Verified = $true; Kind = 'composer' }
+    [pscustomobject]@{ Id = 'octobercms';   Name = 'October CMS'; Category = 'Laravel CMS';    Verified = $true; Kind = 'composer' }
 )
 
 $script:CmsJoomlaVersion = '5.4.10'
@@ -58,6 +61,11 @@ function Resolve-WampDeckCms {
         wintercms      = 'winter'
         twill          = 'twill'
         twillcms       = 'twill'
+        craft          = 'craftcms'
+        craftcms       = 'craftcms'
+        statamic       = 'statamic'
+        october        = 'octobercms'
+        octobercms     = 'octobercms'
     }
     $id = $null
     if ($aliases.ContainsKey($key)) { $id = $aliases[$key] } else { $id = $key }
@@ -802,6 +810,36 @@ function New-CmsInstallContext {
     }
 }
 
+function Install-CmsComposerStarter {
+    param(
+        $Ctx,
+        [Parameter(Mandatory = $true)][string]$Package,
+        [string]$AdminPath = '/admin',
+        [switch]$WithDb
+    )
+
+    Invoke-CmsComposer -Arguments @('create-project', $Package, $Ctx.Target, '--no-interaction', '--no-scripts', '--prefer-dist', '--no-progress') `
+        -WorkingDirectory $Root -Label ("composer create-project " + $Package)
+    if (-not (Test-Path (Join-Path $Ctx.Target 'composer.json'))) {
+        throw "Composer did not create the project from $Package."
+    }
+
+    $envLines = @('APP_ENV=local', 'APP_DEBUG=true')
+    if ($WithDb) {
+        $previous = $ErrorActionPreference
+        $ErrorActionPreference = 'Continue'
+        try {
+            & $MysqlCli "--defaults-file=$MyIni" -u root -N -B -e "CREATE DATABASE IF NOT EXISTS ``$($Ctx.Database)``;" 2>$null | Out-Null
+        } catch { } finally { $ErrorActionPreference = $previous }
+        $envLines += @(('DB_DATABASE=' + $Ctx.Database), 'DB_USERNAME=root', 'DB_PASSWORD=')
+        [void]$Ctx.Notes.Add(('Database {0} created. Finish the admin setup in the browser.' -f $Ctx.Database))
+    } else {
+        [void]$Ctx.Notes.Add('Flat-file install. Finish the admin setup in the browser.')
+    }
+    [IO.File]::WriteAllText((Join-Path $Ctx.Target '.env'), (($envLines -join "`r`n") + "`r`n"), [Text.Encoding]::UTF8)
+    $Ctx.DocRoot = ''
+    $Ctx.AdminUrl = $Ctx.Url.TrimEnd('/') + $AdminPath
+}
 function Install-WampDeckCms {
     param(
         [string]$Cms,
@@ -840,6 +878,9 @@ function Install-WampDeckCms {
             'grav'        { Install-CmsGrav $ctx }
             'winter'      { Install-CmsWinter $ctx }
             'twill'       { Install-CmsTwill $ctx }
+            'craftcms'    { Install-CmsComposerStarter -Ctx $ctx -Package 'craftcms/craft' -AdminPath '/admin' -WithDb }
+            'statamic'    { Install-CmsComposerStarter -Ctx $ctx -Package 'statamic/statamic' -AdminPath '/cp' }
+            'octobercms'  { Install-CmsComposerStarter -Ctx $ctx -Package 'october/october' -AdminPath '/backend' -WithDb }
             default       { throw "No installer for CMS '$($entry.Id)'." }
         }
     } catch {
