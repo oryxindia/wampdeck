@@ -100,10 +100,7 @@ $scheme = $isHttps ? 'https' : 'http';
   .wrap { width: min(1120px, 92vw); margin: 0 auto; padding: 56px 0 48px; }
   header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 34px; }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .logo {
-    width: 46px; height: 46px; border-radius: 14px; object-fit: cover;
-    box-shadow: 0 12px 30px rgba(52, 211, 153, .25);
-  }
+  .logo { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; box-shadow: 0 12px 30px rgba(52,211,153,.25); }
   h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
   .sub { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
   .badge {
