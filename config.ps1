@@ -1,4 +1,4 @@
-# WampDeck v2 configuration and state.
+﻿# WampDeck v2 configuration and state.
 # Every script dot-sources this file, then lib\common.ps1.
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -20,6 +20,8 @@ $DefaultState = [ordered]@{
     webServer  = 'nginx'
     phpVersion = '8.3.30'
     language   = 'en'
+    layout     = 'ltr'
+    languageSelected = $false
     httpPort   = 80
     httpsPort  = 443
     bind       = '127.0.0.1'

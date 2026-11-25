@@ -181,6 +181,7 @@ function Get-WampDeckString {
         [string]$Format
     )
     $text = $Key
+    if ([string]::IsNullOrEmpty([string]$Language)) { $Language = Get-WampDeckLanguage }
     if ($null -ne $script:UiStrings -and $script:UiStrings.ContainsKey($Key)) {
         $entry = $script:UiStrings[$Key]
         $value = $null

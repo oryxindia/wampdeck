@@ -103,6 +103,7 @@ Filename: "powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -Fil
 ; could not stop them). Explorer hands the request to the medium-integrity
 ; shell and starts the launcher there. The launcher also drops elevation
 ; itself as a second line of defence.
+Filename: "powershell.exe"; Parameters: "-Sta -NoProfile -ExecutionPolicy Bypass -File ""{app}\scripts\first-run-language.ps1"""; WorkingDir: "{app}"; Description: "Choose your language"; Flags: waituntilterminated
 Filename: "explorer.exe"; Parameters: """{app}\{#AppExe}"""; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]

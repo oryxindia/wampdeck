@@ -1,4 +1,4 @@
-# WampDeck control panel - native WinForms GUI.
+﻿# WampDeck control panel - native WinForms GUI.
 #
 #   .\panel.cmd
 #   powershell -Sta -ExecutionPolicy Bypass -File .\panel.ps1
@@ -13,6 +13,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib\gui-settings.ps1')
 . (Join-Path $PSScriptRoot 'lib\gui-panel.ps1')
 . (Join-Path $PSScriptRoot 'lib\i18n.ps1')
+. (Join-Path $PSScriptRoot 'lib\i18n-extra.ps1')
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
 [System.Windows.Forms.Application]::SetCompatibleTextRenderingDefault($false)
@@ -98,6 +99,11 @@ $form.Text = Get-WampDeckString 'AppTitle'
 $form.ClientSize = New-Object System.Drawing.Size(940, 668)
 $form.MinimumSize = New-Object System.Drawing.Size(900, 620)
 $form.StartPosition = 'CenterScreen'
+# RTL layout is fixed at install time only; Settings language changes do not touch it.
+if ([string]$State['layout'] -eq 'rtl') {
+    $form.RightToLeft = [System.Windows.Forms.RightToLeft]::Yes
+    $form.RightToLeftLayout = $false
+}
 $form.Icon = $script:appIcon
 $form.BackColor = $script:GuiColors.Background
 $form.ForeColor = $script:GuiColors.Text
@@ -709,7 +715,7 @@ $script:tabPages = @($projectTab, $servicesTab, $toolsTab, $frameworkTab)
 $projectTabButton = New-TabButton (Get-WampDeckString 'TabProjects') 0
 $servicesTabButton = New-TabButton (Get-WampDeckString 'TabServices') 110
 $toolsTabButton = New-TabButton (Get-WampDeckString 'TabTools') 220
-$frameworkTabButton = New-TabButton 'Php Framework' 330 132
+$frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
 $script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton, $frameworkTabButton)
 
 $projectTabButton.Add_Click({ Show-PageTab 0 })
@@ -924,27 +930,27 @@ function New-ToolButton {
     return $button
 }
 
-$null = New-ToolButton "HeidiSQL`r`nDatabase client" 14 14 {
+$null = New-ToolButton "HeidiSQL`r`n$([string](Get-WampDeckString 'DatabaseClient'))" 14 14 {
     try { Open-HeidiSql } catch { Show-GuiError $_.Exception.Message }
 } 'Open HeidiSQL on 127.0.0.1, user root, empty password'
-$null = New-ToolButton "Mailpit inbox`r`nCaptured mail" 225 14 { Open-Mailpit } 'Open the Mailpit web inbox'
-$null = New-ToolButton "Adminer`r`nWeb database" 436 14 { Open-Url "$PanelUrl/tools/adminer.php" } 'Manage MySQL in the browser'
-$null = New-ToolButton "phpinfo()`r`nPHP settings" 647 14 { Open-Url "$PanelUrl/info.php" } 'Show the loaded PHP configuration'
+$null = New-ToolButton "$([string](Get-WampDeckString 'MailpitInbox'))`r`n$([string](Get-WampDeckString 'CapturedMail'))" 225 14 { Open-Mailpit } 'Open the Mailpit web inbox'
+$null = New-ToolButton "Adminer`r`n$([string](Get-WampDeckString 'WebDatabase'))" 436 14 { Open-Url "$PanelUrl/tools/adminer.php" } 'Manage MySQL in the browser'
+$null = New-ToolButton "phpinfo()`r`n$([string](Get-WampDeckString 'PhpSettings'))" 647 14 { Open-Url "$PanelUrl/info.php" } 'Show the loaded PHP configuration'
 
 $null = New-ToolButton ">_  Terminal`r`nCmder in www" 14 84 {
     try { Open-Terminal } catch { Show-GuiError $_.Exception.Message }
 } 'Open a terminal in www with PHP, Composer, Git, Node and MySQL ready'
-$null = New-ToolButton "Notepad++`r`nText editor" 225 84 {
+$null = New-ToolButton "Notepad++`r`n$([string](Get-WampDeckString 'TextEditor'))" 225 84 {
     try { Open-Notepad } catch { Show-GuiError $_.Exception.Message }
 } 'Open Notepad++'
-$null = New-ToolButton "Composer`r`nVersion check" 436 84 {
+$null = New-ToolButton "Composer`r`n$([string](Get-WampDeckString 'VersionCheck'))" 436 84 {
     try {
         $env:PATH = "$PhpDir;$BinDir\composer;$env:PATH"
         $version = & $ComposerBat --version 2>&1 | Select-Object -First 1
         Show-GuiInfo "Composer`r`n$version" 'Composer'
     } catch { Show-GuiError $_.Exception.Message }
 } 'Check the bundled Composer'
-$null = New-ToolButton "Cronical`r`nTask scheduler" 647 84 {
+$null = New-ToolButton "Cronical`r`n$([string](Get-WampDeckString 'CronScheduler'))" 647 84 {
     try { Start-Cronical } catch { Show-GuiError $_.Exception.Message }
 } 'Open the Cronical scheduler'
 
@@ -955,18 +961,18 @@ $null = New-ToolButton "ngrok tunnel`r`nPublic HTTPS URL" 14 154 {
         else { Show-GuiInfo 'ngrok started, but no public URL yet. Add your authtoken first.' 'ngrok' }
     } catch { Show-GuiError $_.Exception.Message }
 } 'Expose the local web server through ngrok'
-$null = New-ToolButton "Stop ngrok`r`nClose the tunnel" 225 154 { Stop-NgrokTunnel } 'Stop the ngrok tunnel'
-$null = New-ToolButton "Hosts file`r`nEdit with UAC" 436 154 {
+$null = New-ToolButton "$([string](Get-WampDeckString 'NgrokStop'))`r`n$([string](Get-WampDeckString 'CloseTunnel'))" 225 154 { Stop-NgrokTunnel } 'Stop the ngrok tunnel'
+$null = New-ToolButton "$([string](Get-WampDeckString 'HostsFile'))`r`n$([string](Get-WampDeckString 'EditUac'))" 436 154 {
     Start-GuiScript -ScriptName 'hosts.ps1' -Arguments @('-Open') -Label 'Opening the hosts file...' | Out-Null
 } 'Open the Windows hosts file as administrator'
-$null = New-ToolButton "Certificates`r`nSSL files" 647 154 { Open-Folder $SslDir } 'Open the local CA and server certificate folder'
+$null = New-ToolButton "$([string](Get-WampDeckString 'CertificatesFolder'))`r`n$([string](Get-WampDeckString 'SslFiles'))" 647 154 { Open-Folder $SslDir } 'Open the local CA and server certificate folder'
 
-$null = New-ToolButton "Refresh configs`r`nRebuild vhosts" 14 224 {
+$null = New-ToolButton "$([string](Get-WampDeckString 'RefreshConfigs'))`r`n$([string](Get-WampDeckString 'RebuildVhosts'))" 14 224 {
     Start-GuiScript -ScriptName 'refresh.ps1' -Arguments @('-NoHosts') -Label 'Refreshing configs...' | Out-Null
 } 'Regenerate nginx/Apache/PHP configs and reload'
-$null = New-ToolButton "Logs folder`r`nOpen logs" 225 224 { Open-Folder $LogDir } 'Open the log folder'
-$null = New-ToolButton "www folder`r`nProjects" 436 224 { Open-Folder $WwwDir } 'Open the projects folder'
-$null = New-ToolButton "About`r`nVersions" 647 224 { Show-About } 'Show bundled tool versions'
+$null = New-ToolButton "$([string](Get-WampDeckString 'OpenLogsFolder'))`r`n$([string](Get-WampDeckString 'OpenLogsFolder'))" 225 224 { Open-Folder $LogDir } 'Open the log folder'
+$null = New-ToolButton "$([string](Get-WampDeckString 'OpenWwwFolder'))`r`n$([string](Get-WampDeckString 'TabProjects'))" 436 224 { Open-Folder $WwwDir } 'Open the projects folder'
+$null = New-ToolButton "$([string](Get-WampDeckString 'About'))`r`n$([string](Get-WampDeckString 'Versions'))" 647 224 { Show-About } 'Show bundled tool versions'
 
 # ---------------------------------------------------------------- status bar
 $statusStrip = New-Object System.Windows.Forms.StatusStrip
@@ -1126,7 +1132,7 @@ function New-FrameworkCard {
     $label.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10, [System.Drawing.FontStyle]::Bold)
     $label.ForeColor = $script:GuiColors.Text
     $card.Controls.Add($label)
-    $install = New-FlatButton -Text 'Install' -Width 92 -Height 28 -Primary
+    $install = New-FlatButton -Text ([string](Get-WampDeckString 'Install')) -Width 92 -Height 28 -Primary
     $install.Location = New-Object System.Drawing.Point(74, 56)
     $install.Add_Click({
         $project = Show-FrameworkInputDialog -Title ('Install ' + $Name) -Default $Id
@@ -1182,6 +1188,16 @@ $script:bgTimer.Add_Tick({
 })
 
 # ---------------------------------------------------------------- start
+# ---- first-run language picker (RTL is decided here, not in Settings)
+if (-not $State['languageSelected']) {
+    try {
+        & (Join-Path $PSScriptRoot 'scripts\first-run-language.ps1')
+        $saved = Get-Content $StateFile -Raw | ConvertFrom-Json
+        $State['language'] = [string]$saved.language
+        $State['layout'] = [string]$saved.layout
+        $State['languageSelected'] = $true
+    } catch { }
+}
 Set-GuiTheme $form
 # A ContextMenuStrip is not a child control, so the theme walk never reaches
 # it. Give it the same renderer as the menu bar, otherwise it pops up white.
