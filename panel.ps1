@@ -242,7 +242,6 @@ if ($proInstalled) {
     $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
     $proMenu.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
     $proTabs = @(
-    @{ Label = 'PHP Frameworks...'; Name = 'frameworks' },
         @{ Label = 'Health Dashboard...'; Name = 'health' },
     @{ Label = 'Backups & Schedule...'; Name = 'backups' },
     @{ Label = 'Xdebug Toggle...'; Name = 'xdebug' },
@@ -662,8 +661,8 @@ $script:tabPages = @()
 $script:tabButtons = @()
 
 function New-TabButton {
-    param([string]$Text, [int]$X)
-    $button = New-FlatButton -Text $Text -Width 104 -Height 34
+    param([string]$Text, [int]$X, [int]$Width = 104)
+    $button = New-FlatButton -Text $Text -Width $Width -Height 34
     $button.Location = New-Object System.Drawing.Point($X, 2)
     $button.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 9.5)
     $button.TextAlign = 'MiddleCenter'
@@ -704,16 +703,19 @@ function Show-PageTab {
 $projectTab = New-PagePanel
 $servicesTab = New-PagePanel
 $toolsTab = New-PagePanel
-$script:tabPages = @($projectTab, $servicesTab, $toolsTab)
+$frameworkTab = New-PagePanel
+$script:tabPages = @($projectTab, $servicesTab, $toolsTab, $frameworkTab)
 
 $projectTabButton = New-TabButton (Get-WampDeckString 'TabProjects') 0
 $servicesTabButton = New-TabButton (Get-WampDeckString 'TabServices') 110
 $toolsTabButton = New-TabButton (Get-WampDeckString 'TabTools') 220
-$script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton)
+$frameworkTabButton = New-TabButton 'Php Framework' 330 132
+$script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton, $frameworkTabButton)
 
 $projectTabButton.Add_Click({ Show-PageTab 0 })
 $servicesTabButton.Add_Click({ Show-PageTab 1 })
 $toolsTabButton.Add_Click({ Show-PageTab 2 })
+$frameworkTabButton.Add_Click({ Show-PageTab 3 })
 
 $script:tabUnderline = New-Object System.Windows.Forms.Panel
 $script:tabUnderline.Size = New-Object System.Drawing.Size(76, 3)
@@ -1063,6 +1065,97 @@ $trayExit.Add_Click({ Exit-WampDeck })
 $script:trayIcon.ContextMenuStrip = $trayMenu
 $script:trayIcon.Add_DoubleClick({ Show-PanelWindow })
 
+# ---------------------------------------------------------------- frameworks (free)
+function Show-FrameworkInputDialog {
+    param([string]$Title, [string]$Default)
+    $dlg = New-Object System.Windows.Forms.Form
+    $dlg.Text = $Title
+    $dlg.Size = New-Object System.Drawing.Size(420, 158)
+    $dlg.StartPosition = 'CenterParent'
+    $dlg.FormBorderStyle = 'FixedDialog'
+    $dlg.MaximizeBox = $false
+    $dlg.BackColor = $script:GuiColors.Background
+    $dlg.ForeColor = $script:GuiColors.Text
+    $lab = New-Object System.Windows.Forms.Label
+    $lab.Text = 'Project folder name'
+    $lab.Location = New-Object System.Drawing.Point(18, 20)
+    $lab.AutoSize = $true
+    $dlg.Controls.Add($lab)
+    $tb = New-Object System.Windows.Forms.TextBox
+    $tb.Location = New-Object System.Drawing.Point(18, 44)
+    $tb.Size = New-Object System.Drawing.Size(364, 28)
+    $tb.Text = $Default
+    $dlg.Controls.Add($tb)
+    $ok = New-FlatButton -Text 'OK' -Width 100 -Height 30 -Primary
+    $ok.Location = New-Object System.Drawing.Point(118, 86)
+    $ok.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $cancel = New-FlatButton -Text 'Cancel' -Width 100 -Height 30
+    $cancel.Location = New-Object System.Drawing.Point(238, 86)
+    $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $dlg.Controls.Add($ok); $dlg.Controls.Add($cancel)
+    $dlg.AcceptButton = $ok
+    if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) { return $tb.Text }
+    return $null
+}
+
+function New-FrameworkCard {
+    param([string]$Id, [string]$Name, [int]$X, [int]$Y)
+    $card = New-Object System.Windows.Forms.Panel
+    $card.Location = New-Object System.Drawing.Point($X, $Y)
+    $card.Size = New-Object System.Drawing.Size(206, 98)
+    $card.BackColor = $script:GuiColors.Surface
+    $card.Add_Paint({
+        param($sender, $e)
+        $pen = New-Object System.Drawing.Pen($script:GuiColors.Border)
+        $e.Graphics.DrawRectangle($pen, 0, 0, $sender.Width - 1, $sender.Height - 1)
+        $pen.Dispose()
+    })
+    $iconPath = Join-Path (Join-Path $Root 'assets\frameworks') ($Id + '.png')
+    if (Test-Path $iconPath) {
+        $pic = New-Object System.Windows.Forms.PictureBox
+        $pic.Location = New-Object System.Drawing.Point(12, 14)
+        $pic.Size = New-Object System.Drawing.Size(56, 56)
+        $pic.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
+        $pic.Image = [System.Drawing.Image]::FromFile($iconPath)
+        $card.Controls.Add($pic)
+    }
+    $label = New-Object System.Windows.Forms.Label
+    $label.Text = $Name
+    $label.Location = New-Object System.Drawing.Point(74, 20)
+    $label.Size = New-Object System.Drawing.Size(124, 24)
+    $label.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10, [System.Drawing.FontStyle]::Bold)
+    $label.ForeColor = $script:GuiColors.Text
+    $card.Controls.Add($label)
+    $install = New-FlatButton -Text 'Install' -Width 92 -Height 28 -Primary
+    $install.Location = New-Object System.Drawing.Point(74, 56)
+    $install.Add_Click({
+        $project = Show-FrameworkInputDialog -Title ('Install ' + $Name) -Default $Id
+        if (-not $project) { return }
+        try {
+            $result = Install-Framework -Id $Id -Name $project
+            $script:frameworkStatus.Text = ('Installed ' + $result.Framework + ' -> ' + $result.Url)
+        } catch { $script:frameworkStatus.Text = $_.Exception.Message }
+    }.GetNewClosure())
+    $card.Controls.Add($install)
+    $frameworkTab.Controls.Add($card)
+}
+
+$frameworkStatus = New-Object System.Windows.Forms.Label
+$frameworkStatus.Text = 'One-click PHP framework install - free in WampDeck.'
+$frameworkStatus.ForeColor = $script:GuiColors.Muted
+$frameworkStatus.Font = New-Object System.Drawing.Font('Segoe UI', 8)
+$frameworkStatus.AutoSize = $true
+$frameworkStatus.Location = New-Object System.Drawing.Point(16, 350)
+$frameworkTab.Controls.Add($frameworkStatus)
+
+$frameworkCatalog = Get-FrameworkCatalog
+$frameworkIndex = 0
+foreach ($frameworkKey in $frameworkCatalog.Keys) {
+    $col = $frameworkIndex % 4
+    $row = [int][Math]::Floor($frameworkIndex / 4)
+    New-FrameworkCard -Id $frameworkKey -Name $frameworkCatalog[$frameworkKey].Name -X (16 + ($col * 216)) -Y (12 + ($row * 108))
+    $frameworkIndex++
+}
 # ---------------------------------------------------------------- events
 $form.Add_FormClosing({
     param($sender, $eventArgs)
