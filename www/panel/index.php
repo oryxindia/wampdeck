@@ -74,7 +74,7 @@ $scheme = $isHttps ? 'https' : 'http';
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WampDeck</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%232ee6a8%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Segoe UI,Arial%27 font-size=%2728%27 font-weight=%27bold%27 text-anchor=%27middle%27 fill=%27%230b1320%27%3EWD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%232ee6a8%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Segoe UI,Arial%27 font-size=%2728%27 font-weight=%27bold%27 text-anchor=%27middle%27 fill=%27%230b1320%27%3EW%3C/text%3E%3C/svg%3E">
 <style>
   :root {
     color-scheme: dark;
@@ -103,7 +103,7 @@ $scheme = $isHttps ? 'https' : 'http';
   .logo {
     width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
     background: linear-gradient(135deg, #34d399, #3b82f6);
-    color: #04121a; font-weight: 800; font-size: 18px; letter-spacing: -.06em;
+    color: #f4fffb; font-weight: 800; font-size: 26px; letter-spacing: -.06em;
     box-shadow: 0 12px 30px rgba(52, 211, 153, .25);
   }
   h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
@@ -175,7 +175,7 @@ $scheme = $isHttps ? 'https' : 'http';
 <div class="wrap">
   <header>
     <div class="brand">
-      <div class="logo">WD</div>
+      <div class="logo">W</div>
       <div>
         <h1>WampDeck</h1>
         <p class="sub">PHP <?= htmlspecialchars($phpVersion) ?> &middot; <?= htmlspecialchars($webLabel) ?> &middot; MySQL &middot; Windows</p>
