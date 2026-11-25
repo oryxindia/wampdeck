@@ -74,6 +74,7 @@ $scheme = $isHttps ? 'https' : 'http';
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WampDeck</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%232ee6a8%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Segoe UI,Arial%27 font-size=%2728%27 font-weight=%27bold%27 text-anchor=%27middle%27 fill=%27%230b1320%27%3EWD%3C/text%3E%3C/svg%3E">
 <style>
   :root {
     color-scheme: dark;
