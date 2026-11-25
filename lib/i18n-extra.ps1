@@ -565,3 +565,14 @@ foreach ($key in $script:ExtraUiStringsHi.Keys) {
     if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
     foreach ($lang in $script:ExtraUiStringsHi[$key].Keys) { $script:UiStrings[$key][$lang] = $script:ExtraUiStringsHi[$key][$lang] }
 }
+$script:PolishFix = @{
+    InstallLabel = @{ pl = 'Zainstaluj' }
+    Ready        = @{ pl = 'Gotowe' }
+    ServiceStart = @{ pl = 'Uruchom' }
+    TabOpen      = @{ pl = 'Otwórz' }
+    TabDelete    = @{ pl = 'Usuń' }
+}
+foreach ($key in $script:PolishFix.Keys) {
+    if (-not $script:UiStrings.ContainsKey($key)) { $script:UiStrings[$key] = @{} }
+    foreach ($lang in $script:PolishFix[$key].Keys) { $script:UiStrings[$key][$lang] = $script:PolishFix[$key][$lang] }
+}
