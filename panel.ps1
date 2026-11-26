@@ -247,46 +247,9 @@ $projectMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (
 $toolsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Tools')
 $settingsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Settings')
 $helpMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Help')
-$proInstalled = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\wampdeck-pro-hub.ps1')))
-if ($proInstalled) {
-    try { . (Join-Path $Root 'pro\wampdeck-pro-windows.ps1') } catch { }
-    $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
-    $proMenu.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
-    $proTabs = @(
-        @{ Label = 'PHP Frameworks...'; Name = 'frameworks' },
-        @{ Label = 'Health Dashboard...'; Name = 'health' },
-    @{ Label = 'Backups & Schedule...'; Name = 'backups' },
-    @{ Label = 'Xdebug Toggle...'; Name = 'xdebug' },
-    @{ Label = 'Git Tools...'; Name = 'git' },
-    @{ Label = 'Mailpit Pro - captured mail...'; Name = 'mailpit' },
-    @{ Label = 'Add-ons, Vault & Team...'; Name = 'more' }
-)
-    foreach ($entry in $proTabs) {
-        $mi = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList $entry.Label
-        $winName = [string]$entry.Name
-        $clickBlock = { param($sender, $e) Show-ProWindow -Name $winName }.GetNewClosure()
-        $mi.Add_Click($clickBlock)
-        [void]$proMenu.DropDownItems.Add($mi)
-    }
-    [void]$proMenu.DropDownItems.Add((New-Object System.Windows.Forms.ToolStripSeparator))
-    $backupNow = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Run backup now'
-    $backupNow.Add_Click({
-        try { Invoke-ProBackup -Keep 7; [System.Windows.Forms.MessageBox]::Show('Backup completed.', 'WampDeck Pro') }
-        catch { Show-GuiError $_.Exception.Message }
-    })
-    [void]$proMenu.DropDownItems.Add($backupNow)
-    $licenceItem = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Licence info...'
-    $licenceItem.Add_Click({
-        $l = Test-ProLicense
-        $text = if ($l.Valid) { "Plan: $($l.Plan)`r`nSerial: $($l.Serial)`r`nSeats: $($l.Seats)`r`nExpires: $(if (-not $l.Expires) { 'lifetime' } else { $l.Expires.ToString('yyyy-MM-dd') })" } else { "Not valid: $($l.Reason)" }
-        [System.Windows.Forms.MessageBox]::Show($text, 'WampDeck Pro licence')
-    })
-    [void]$proMenu.DropDownItems.Add($licenceItem)
-}
 foreach ($item in @($stackMenu, $projectMenu, $toolsMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
-if ($proInstalled) { [void]$menuStrip.Items.Add($proMenu) }
 foreach ($item in @($settingsMenu, $helpMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
@@ -479,18 +442,18 @@ $headerHost = New-Object System.Windows.Forms.ToolStripControlHost($script:heade
 $headerHost.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
 $menuStrip.Items.Add($headerHost) | Out-Null
 
-# Paid add-on badge - visible only when Pro and a licence are installed.
+# Free-core badge - WampDeck core is 100% free.
 $script:proBadge = New-Object System.Windows.Forms.Label
 $script:proBadge.Name = 'proBadge'
-$script:proBadge.Text = 'PRO'
+$script:proBadge.Text = 'FREE'
 $script:proBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
-$script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
+$script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(52, 211, 153)
 $script:proBadge.BackColor = $menuStrip.BackColor
 $script:proBadge.AutoSize = $true
 $script:proBadge.Padding = New-Object System.Windows.Forms.Padding(0, 0, 8, 0)
 $proHost = New-Object System.Windows.Forms.ToolStripControlHost($script:proBadge)
 $proHost.Alignment = [System.Windows.Forms.ToolStripItemAlignment]::Right
-$proHost.Visible = ((Test-Path (Join-Path $Root 'pro\license.dat')) -and (Test-Path (Join-Path $Root 'pro\lib\ProValidator.dll')))
+$proHost.Visible = $true
 $menuStrip.Items.Add($proHost) | Out-Null
 
 
