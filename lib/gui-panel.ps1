@@ -336,7 +336,7 @@ function Set-SelectedProjectPhp {
 function Initialize-ServiceRows {
     if (-not $script:serviceList) { return }
     $script:serviceList.Items.Clear()
-    $webName = if ($State.webServer -eq 'apache') { 'Apache' } else { 'nginx' }
+    $webName = if ($State.webServer -eq 'apache') { 'Apache' } else { 'Nginx' }
     $rows = @(
         @{ Key = 'mysql'; Name = 'MySQL 8.4'; Port = "$MysqlPort"; Core = $true },
         @{ Key = 'php'; Name = "PHP $($State.phpVersion)"; Port = "9000-$($PhpPorts[-1])"; Core = $true },
@@ -359,7 +359,7 @@ function Refresh-ServiceRows {
     param($Status)
     if (-not $script:serviceList) { return }
 
-    $webName = if ($State.webServer -eq 'apache') { 'Apache' } else { 'nginx' }
+    $webName = if ($State.webServer -eq 'apache') { 'Apache' } else { 'Nginx' }
     foreach ($item in $script:serviceList.Items) {
         $row = $item.Tag
         if (-not $row) { continue }

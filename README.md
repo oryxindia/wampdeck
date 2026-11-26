@@ -1,53 +1,453 @@
 # WampDeck
 
-**WampDeck** is a free, portable local development stack for Windows â€” PHP, Apache/nginx, MySQL, Composer, Node and more, with a native tray panel and a Laragon-style terminal.
+A portable **PHP + Apache/Nginx + MySQL** development stack for Windows, modelled on Laragon: multi-PHP, automatic virtual hosts, trusted local HTTPS, Mailpit, Redis/Memcached, one-click WordPress/Laravel, a Laragon-style terminal, and a native tray panel.
 
-- Website: https://wampdeck.com
-- Publisher: **Oryx India** â€” https://oryxindia.in
-- Platform: Windows 10/11, x64
-- Price: **Free** for download and use
+No Windows services and no permanent admin rights. Everything lives inside one folder; an optional `WampDeck-Setup.exe` puts that folder in place and prepares it for you.
 
-## Download
+## What's inside
 
-Get the official release from the website. The installer is a single self-contained file; it copies the stack to C:\WampDeck and writes all configuration for the real install path.
+| Component | Version | Folder |
+|---|---|---|
+| PHP (FastCGI + mod_php) | 8.3.30 and 8.2.12 | `bin\php\<version>` |
+| Apache | 2.4.66 | `bin\apache` |
+| Nginx | 1.30.x | `bin\Nginx` |
+| MySQL Community | 8.4.3 | `bin\mysql` |
+| HeidiSQL | bundled | `bin\heidisql` |
+| Node.js | 22.x | `bin\nodejs` |
+| Python | 3.13 | `bin\python` |
+| Git + OpenSSL | bundled | `bin\git` |
+| Composer | bundled | `bin\composer` |
+| Mailpit | 1.22.x | `bin\mailpit` |
+| Redis | 5.0.14.1 | `bin\redis` |
+| Memcached | 1.6.8 | `bin\memcached` |
+| ngrok | 3.35 | `bin\ngrok` |
+| Cmder | bundled | `bin\cmder` |
+| Notepad++ | bundled | `bin\notepad++` |
+| Cronical | 1.3 | `bin\cronical` |
+| Adminer | bundled | `www\panel\tools\adminer.php` |
 
-> This repository contains **source code only**. Bundled runtimes (PHP, MySQL, nginx, Apache, Node, Python, Git) ship in the release installer, not here. A direct clone is meant for source review, not for running the app.
+> The binaries in this copy were taken from an existing local Laragon install because large downloads were failing with TLS errors on this network. `scripts\setup.ps1` only validates them; it never downloads anything.
 
-## What is inside
+## Quick start
 
-| Path | Contents |
+Double-click **`WampDeck.exe`** to open the panel without a console window. On a brand-new copy, run `setup.cmd` once first. If you have **`WampDeck-Setup.exe`**, just run that: it installs the stack and performs the one-time setup automatically.
+
+```bat
+WampDeck-Setup.exe   :: installer: copies the stack, writes configs, initializes MySQL
+setup.cmd            :: manual one-time setup for a portable copy
+start.cmd            :: start everything, then open the dashboard
+WampDeck.exe         :: native panel (recommended)
+WampDeck.exe -Tray   :: start minimized to the notification area
+panel.cmd            :: alias for WampDeck.exe
+```
+
+No administrator rights are needed for the stack itself. Two optional features ask for elevation or a Windows confirmation:
+
+- **`.test` domains** need a managed block in `C:\Windows\System32\drivers\etc\hosts` (one UAC prompt).
+- **Trusted HTTPS** needs the local CA added to the CurrentUser Root store (one Windows security dialog).
+
+## WampDeck.exe
+
+`WampDeck.exe` is the normal way to start the panel, the same way Laragon starts from its own launcher. It is a tiny native launcher (about 17 KB), not a copy of the stack: the binaries stay in `bin\`, the UI stays in `panel.ps1`, and the exe only starts PowerShell hidden.
+
+- Double-click it, or run `WampDeck.exe`.
+- If WampDeck is already running, it brings the existing window back instead of opening a second panel. This also works when the panel is hidden in the notification area.
+- `WampDeck.exe -Tray` starts hidden in the notification area. The **Start with Windows** setting uses exactly this command.
+- `panel.cmd` is a small alias for `WampDeck.exe`; it falls back to PowerShell if the exe is missing. To see PowerShell errors, run `powershell -Sta -ExecutionPolicy Bypass -File panel.ps1` directly.
+
+The launcher source is `launcher\WampDeckLauncher.cs`; rebuild it with `scripts\build-launcher.ps1`. The icon is `assets\wampdeck.ico`. The exe is unsigned, so Windows SmartScreen may warn when it is downloaded on another PC.
+
+## Installer
+
+`WampDeck-Setup.exe` is a normal Windows installer built with Inno Setup. It installs the portable stack to **`C:\WampDeck`** by default, runs `scripts\setup.ps1` once to write the configs for the real path and initialize MySQL, and adds Start menu entries plus an optional desktop shortcut and uninstaller. The installer needs administrator rights for `C:\WampDeck`; the installed stack itself still runs without admin.
+
+What the installer does **not** ship:
+
+- `data\`, `logs\`, `tmp\`, `backup\` — your databases, logs, caches and backups stay out.
+- `etc\ssl\` — private CA/server keys are never redistributed; SSL starts disabled and `ssl.cmd -Enable` creates a fresh CA.
+- `etc\stack.json`, `etc\extensions.json`, `etc\my.ini`, `etc\Nginx.conf`, `etc\redis.conf`, `etc\apache\httpd.conf`, `etc\apache\mod_php.conf`, `etc\apache\sites-enabled\*` — regenerated by `setup.ps1`.
+- Cmder's `clink_history`, `clink.log` and `user-ConEmu.xml` — user-specific terminal state.
+
+Installing over an existing `C:\WampDeck` keeps the existing `data\`, `www\` projects and logs; only program files and generated configs are refreshed. The install folder is granted normal-user write access, so the panel, MySQL and log files work without running as administrator.
+
+To install without admin rights (for example into your own profile), run the same setup with `/CURRENTUSER`:
+
+```bat
+WampDeck-Setup.exe /CURRENTUSER /DIR="%LOCALAPPDATA%\WampDeck"
+```
+
+Uninstalling removes the program files and the disposable `logs\`/`tmp\` folders; your databases (`data\`), projects (`www\`) and `etc\` state stay behind so nothing is lost. Delete the folder yourself if you want a completely clean removal.
+
+Build it from source with Inno Setup 6:
+
+```bat
+"C:\Users\<you>\AppData\Local\Programs\Inno Setup 6\ISCC.exe" installer\WampDeck.iss
+:: output: dist\WampDeck-Setup.exe
+```
+
+The installer script is `installer\WampDeck.iss`. Without a code-signing certificate the build is unsigned, so SmartScreen may warn on another PC; choose **More info → Run anyway** if you trust the build.
+
+To sign the installer and its uninstaller, use a code-signing certificate (OV or EV) and run:
+
+```powershell
+# certificate in CurrentUser\My (recommended: EV hardware token)
+.\scripts\sign-installer.ps1 -Thumbprint <thumbprint>
+
+# or a PFX file
+.\scripts\sign-installer.ps1 -Pfx .\wampdeck.pfx -Password <password>
+```
+
+The script locates `signtool.exe`, timestamps the signature and passes `/DSIGN` to Inno Setup, so `dist\WampDeck-Setup.exe` and `unins000.exe` are both signed. An unsigned build does not need `/DSIGN`.
+
+`signtool.exe` comes with the Windows SDK. If it is not installed, fetch it without admin rights:
+
+```powershell
+.\scripts\get-signtool.ps1
+```
+
+That extracts the Microsoft.Windows.SDK.BuildTools package into `%LOCALAPPDATA%\wampdeck-build-tools`, where `sign-installer.ps1` looks for it.
+
+A self-signed certificate is only useful to prove the signing pipeline works: `Get-AuthenticodeSignature` reports `UnknownError` (untrusted root) and SmartScreen still warns. Only a certificate from a public CA removes the warning.
+
+### Can the whole stack be a single .exe?
+
+Not as a practical single file. A 1.5 GB self-extracting exe would unpack to a folder on first run, double the disk use, slow down every start and make updates and antivirus scanning worse. Laragon itself is a launcher exe plus a folder. `WampDeck-Setup.exe` is the one-file download: it installs this folder once, and the installed app still starts through `WampDeck.exe`.
+
+## URLs
+
+| URL | What |
 |---|---|
-| `panel.ps1` | The WinForms tray panel and GUI |
-| `lib/` | Stack control, CMS installers, config generation, doctor, CLI modules |
-| `scripts/` | Setup, start/stop, hosts, SSL and helper scripts |
-| `installer/` | Inno Setup script and the elevated shutdown helper |
-| `launcher/` | C# launcher source (AppUserModelID, single-instance, elevation drop) |
-| `assets/` | Icons and images |
-| `www/` | Demo and panel web content |
-| `docs/` | Acceptance and QA documentation |
+| http://localhost | panel + tools |
+| https://localhost | panel over HTTPS (when SSL is enabled) |
+| http://localhost/tools/adminer.php | Adminer database client |
+| http://localhost/info.php | phpinfo() |
+| http://demo.localhost | example project |
+| http://\<folder\>.localhost | every folder inside `www\` |
+| http://\<folder\>.test | same project, needs the hosts block |
+| https://\<folder\>.test | trusted local HTTPS |
 
-## Features
+`*.localhost` resolves to `127.0.0.1` in Chrome, Edge and Firefox without touching the hosts file. `.test` names are added to the hosts file by WampDeck (and only WampDeck's marked block is ever edited).
 
-- Nine one-click CMS installers (Drupal, WordPress, TYPO3, Joomla, ProcessWire, Concrete CMS, Grav, Winter CMS, Twill) with credentials shown once and passwords redacted from logs.
-- Per-project PHP version pinning, database snapshots, export/import bundles.
-- `wampdeck` command line: `status`, `start`, `stop`, `doctor`, `doctor --fix` (safe config fixes), `update --check` (free public updater with SHA-256 verification), `cms`, `php`, `snapshot`, `deploy` and more.
-- Worker supervisor that restarts dead `php-cgi` processes.
-- 27 UI languages including Hindi.
+## Commands
 
-## Build from source
+| File | Purpose |
+|---|---|
+| `setup.cmd [-Ssl] [-Hosts]` | validate components, write all configs, initialize MySQL |
+| `start.cmd [-Open]` | start MySQL, PHP, web server and enabled services |
+| `stop.cmd` | stop everything |
+| `restart.cmd` | regenerate configs and restart |
+| `status.cmd [-Tools]` | show services, URLs, hosts, SSL, port conflicts |
+| `panel.cmd [-Tray]` | alias for WampDeck.exe (PowerShell fallback) |
+| `terminal.cmd` | open the Cmder terminal in `www\` with PHP, Composer, Git, Node and MySQL ready |
+| `WampDeck.exe [-Tray]` | native GUI launcher without a console window |
+| `new.cmd myapp [-Type blank\|wordpress\|laravel] [-Cms <id>]` | create a project; `-Cms` installs a CMS recipe |
+| `db.cmd` | interactive MySQL shell |
+| `db.cmd -List \| -Create name \| -Import dump.sql \| -Export dump.sql` | database helpers |
+| `ssl.cmd [-Enable\|-Disable\|-Reset\|-Trust]` | local HTTPS control |
+| `hosts.cmd [-Sync\|-Status\|-Open]` | managed hosts entries |
+| `switch.cmd -Php 8.2.12` | switch PHP version |
+| `switch.cmd -Web apache` | switch Nginx ↔ Apache |
+| `extensions.cmd [-Enable xsl,gd] [-Disable opcache]` | toggle PHP extensions |
+| `tools.cmd [-Heidi\|-Mailpit\|-Ngrok\|-Cmder\|-Notepad]` | launch bundled tools |
+| `refresh.cmd [-NoHosts] [-NoRestart]` | rebuild vhosts after editing `www\` by hand |
 
-Open a PowerShell prompt and run:
+PowerShell scripts live in `scripts\` and accept the same options.
 
-    & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\WampDeck.iss
+### wampdeck command line
 
-The bundled binaries under `bin\` must be present for a successful build; they are included only in the official release package.
+`wampdeck.cmd` is the short front end to the same scripts. It prints compact
+tables instead of log noise, so it is safe to run from any terminal.
 
-## Licence
+```bat
+wampdeck status                     :: services, ports, workers
+wampdeck list                       :: projects, PHP version, URLs
+wampdeck start | stop | restart
+wampdeck open blog                  :: open the .test URL
 
-**Source-available, proprietary. All rights reserved. Copyright (c) 2026 Oryx India.**
+wampdeck new shop --preset wordpress
+wampdeck php shop 8.2               :: pin this project to PHP 8.2
+wampdeck php shop --clear           :: back to the stack default
 
-The source is visible for inspection. You may not copy, modify, fork, redistribute or build a competing product from it without written permission. The compiled application is free to use. See LICENSE for the full terms.
+wampdeck cms list                   :: nine recipes, fixed order, verified status
+wampdeck cms install wordpress --name blog
+wampdeck new shop --cms joomla
 
-## Support
+wampdeck doctor                     :: full health check
+wampdeck doctor --json              :: machine-readable, exits 1 on failures
+wampdeck logs Nginx --tail 40
 
-support@wampdeck.com Â· support@oryxindia.in
+wampdeck snapshot blog --label before-upgrade
+wampdeck snapshots blog
+wampdeck restore blog 20261101-104613-before-upgrade.sql --yes
+
+wampdeck export blog --out D:\handoff\blog.zip
+wampdeck import D:\handoff\blog.zip --name blog-copy
+
+wampdeck deploy blog                :: VPS pre-check + deployment checklist
+wampdeck deploy blog --json          :: machine-readable report
+
+wampdeck hosts sync                 :: write the managed hosts block (UAC)
+wampdeck version
+```
+
+`doctor` checks the ports, generated configs, PHP pools, MySQL, each project's
+manifest, document root, database and HTTP response, the hosts block, the SSL
+certificate and the supervisor. A failed check is reported with the command
+that fixes it.
+
+Snapshots are plain `mysqldump` files in `www\<project>\snapshots\`. Restoring
+first saves the current data as `<timestamp>-before-restore.sql`, so a wrong
+restore is one more restore away.
+
+`export` builds a zip with the project files, the database dump and a
+`wampdeck-bundle.json` manifest. The manifest records the PHP version the
+project asked for (`8.2`) plus the exact build that produced the dump
+(`8.2.12`), so the receiving machine can use a different patch release.
+`import` writes a fresh `.wampdeck.json`, never copies the source manifest and
+keeps custom hostnames only when the project name is unchanged.
+
+`deploy` is a read-only pre-flight check for moving a finished CMS project to a
+VPS or online server. It detects the CMS from the project folder, checks the
+PHP version, required extensions (via `php -m`), web server, document root,
+local HTTP response, database reachability and writable folders, then prints a
+step-by-step VPS checklist (PHP, extensions, DB, vhost, permissions, cron,
+export/import, HTTPS). It never uploads or changes anything. The same check is
+available in the panel under **Project → Deploy pre-check...** and writes a
+report to `logs\deploy-<project>.txt`. Use `--json` for scripts.
+
+## The panel
+
+`WampDeck.exe` opens a native WinForms window with:
+
+- **Header cards** for PHP, web server, MySQL and optional services.
+- **Terminal button** in the header opens Cmder in `www\` with PHP, Composer, Git, Node, Python and MySQL already on `PATH`. It is also in the Stack/Tools menus, the tray menu, the Tools tab, and each project's right-click menu ("Open terminal here").
+- **Projects tab** — double-click to open, right-click to open the `.test` URL, copy the URL, open the folder, open a terminal, install a CMS, or delete.
+- **Services tab** — start/stop individual services, toggle optional startup, start/stop everything.
+- **Tools tab** — Terminal, HeidiSQL, Mailpit, Adminer, phpinfo, Notepad++, Composer, Cronical, ngrok, hosts editor, certificates folder, logs, config refresh.
+- **Menu bar** — switch PHP version and web server, enable/change HTTPS, PHP extensions, settings, projects and tools.
+- **Tray icon** — close the window and it keeps running; right-click for start/stop/restart, new project and quit.
+
+Settings cover HTTP/HTTPS/MySQL ports, PHP worker count, listen address (`127.0.0.1` or `0.0.0.0` for LAN), SSL, Mailpit, Redis, Memcached, auto-start with the panel, and starting with Windows.
+
+New-project and CMS jobs started from the panel pass `-NoHosts`. They use the
+`.localhost` URL immediately and never raise a UAC prompt from the background
+job. Use **Tools → Sync hosts** (or `hosts.cmd -Sync`) when you want the
+`.test` hostnames; the status bar shows how many entries are missing.
+
+## Terminal
+
+The green **`>_ Terminal`** button in the panel header opens the bundled Cmder in `www\`, the same way Laragon's terminal does. The window starts at the projects folder with the stack's tools already on `PATH`:
+
+- `php`, `php-cgi`, `composer`
+- `mysql`, `mysqladmin`, `mysqldump`
+- `git` (including Git Bash tools), `node`, `npm`, `python`
+
+Other ways to open it:
+
+- **Stack → Terminal in www**, **Tools → Terminal in www**, or `Ctrl+Alt+T`
+- **Tools tab → `>_ Terminal`**
+- **Projects tab → Terminal**, or right-click a project → **Open terminal here** (starts in that project's folder)
+- **Tray icon → Terminal in www**
+
+Closing the Cmder window does not stop the stack. If Cmder is missing from a copied install, WampDeck falls back to a normal PowerShell window in the same folder with the same `PATH`.
+
+## Multi-PHP and web servers
+
+- PHP versions live in `bin\php\<version>`; add another folder and it appears in the menu and in `wampdeck list`.
+- `switch.cmd -Php 8.2.12` changes the stack default, stops the workers, rewrites configs and restarts.
+- Each project can keep its own version. Add `"php": "8.2"` to `www\<project>\.wampdeck.json`, use **PHP version** in the project right-click menu, or run `wampdeck php <project> 8.2`. The Projects tab shows the version each project actually runs and marks pinned ones with `*`.
+- Nginx gets one upstream per installed build; Apache serves pinned projects through `mod_fcgid` with a per-vhost `FcgidWrapper`. Switching the stack default does not touch pinned projects.
+- A supervisor watches every `php-cgi` worker and restarts a dead one in a few seconds. A worker that is still binding its port is recognised, so a restart never leaves two `php-cgi` processes on one port (PHP's default `PHP_FCGI_MAX_REQUESTS=500` kills workers silently; WampDeck sets it to 10000).
+- Some PHP builds crash on start with opcache (`Opcode handlers are unusable due to ASLR`). WampDeck probes each build once (`etc\php-runtime.json`): shared memory first, then opcache's file cache. 8.2.12 runs with `opcache.file_cache` + `opcache.file_cache_fallback=1`, so it keeps compiled-script caching instead of running with opcache off. A worker that still dies at startup is retried without opcache.
+- Generated configs: `etc\Nginx.conf`, `etc\apache\httpd.conf`, `etc\apache\sites-enabled\*.conf`, `etc\apache\mod_fcgid.conf`, `bin\php\<version>\php.ini`, `etc\my.ini`, `etc\redis.conf`.
+
+## Local HTTPS
+
+```bat
+ssl.cmd -Enable      :: create CA + wildcard cert, enable HTTPS
+ssl.cmd -Trust       :: one Windows security dialog to trust the CA
+ssl.cmd -Reset       :: regenerate everything
+ssl.cmd -Disable     :: turn HTTPS off, keep the files
+```
+
+- The CA and wildcard certificate are stored in `etc\ssl\`.
+- Names covered: `*.test`, `*.localhost`, `test`, `localhost`, `127.0.0.1`, `::1`.
+- The CA is trusted for the current Windows user only (no machine-wide change). Firefox keeps its own store; import `etc\ssl\ca.crt` there if it warns.
+- Windows deliberately shows a security confirmation when a root certificate is added. WampDeck runs `certutil` in a visible window for it; it cannot be clicked for you.
+
+## Hosts and virtual hosts
+
+- Every folder inside `www\` becomes a virtual host. Projects created from the panel or `new.cmd` reload the web server automatically; after adding a folder by hand, run `refresh.cmd`.
+- `.localhost` needs no hosts entry.
+- `.test` entries are written inside a marked block:
+
+  ```
+  # WampDeck - start (managed block, do not edit)
+  127.0.0.1	demo.test
+  127.0.0.1	demo.localhost
+  # WampDeck - end
+  ```
+
+- `hosts.cmd -Sync` asks for UAC once. `hosts.cmd -Open` opens the file in Notepad as administrator.
+
+## Database
+
+- Host `127.0.0.1`, port `3306`, user `root`, **empty password**.
+- Bound to loopback by default.
+- HeidiSQL is in the panel/tray menu.
+- `new.cmd -Type wordpress` and `-Type laravel` create the database and write `wp-config.php` / `.env` automatically.
+
+```powershell
+.\db.cmd
+.\db.cmd -Query "SHOW DATABASES;"
+.\db.cmd -Database myapp_db -Export dump.sql
+.\db.cmd -Database myapp_db -Import dump.sql
+```
+
+## CMS installers
+
+The panel's **Project → Install CMS...** action and the CLI install a CMS into a
+new project. The catalog is fixed:
+
+| Order | CMS | Id | Category |
+|---|---|---|---|
+| 1 | Drupal | `drupal` | Enterprise CMS |
+| 2 | WordPress | `wordpress` | General websites |
+| 3 | TYPO3 | `typo3` | Corporate portals |
+| 4 | Joomla | `joomla` | Business portals |
+| 5 | ProcessWire | `processwire` | Custom development |
+| 6 | Concrete CMS | `concrete` | Visual editing |
+| 7 | Grav | `grav` | Lightweight sites |
+| 8 | Winter CMS | `winter` | Laravel CMS |
+| 9 | Twill | `twill` | Laravel admin/content |
+
+```bat
+wampdeck cms list
+wampdeck cms install drupal --name client-portal
+wampdeck cms install typo3 --name corp --password "WampTypo3#2345"
+wampdeck new blog --cms wordpress
+```
+
+Each recipe creates the database, writes the config, runs the installer without
+prompts and returns the site URL, admin URL, user, email and generated password.
+The panel shows the same details in a result dialog. Passwords are redacted from
+`logs\cms-<id>.log`.
+
+- Verified recipes passed install plus admin-login tests on the build machine.
+  The catalog marks unverified recipes as experimental in the UI and CLI.
+- Composer-based recipes use the bundled Composer with `--no-interaction` and
+  `--no-dev`.
+- Large downloads use `curl -C -` resume and are seeded into the Composer cache
+  when a dist download fails.
+- Winter CMS serves from the project root, not `public\`; Concrete CMS uses
+  `public\` with writable `public\application\files`, `public\application\config`
+  and `public\packages`.
+- GUI installs use `tmp\cms-result-*.json` for the credential handoff and delete
+  stale result files at startup.
+
+## Optional services
+
+Enable them in Settings or directly in `etc\stack.json`:
+
+| Service | Ports | Notes |
+|---|---|---|
+| Mailpit | SMTP 1025, UI 8025 | PHP `mail()` is already pointed at it |
+| Redis | 6379 | `redis-cli.exe` included |
+| Memcached | 11211 | 64 MB |
+
+## Folder layout
+
+```
+wamp-clone\
+  bin\            PHP versions, Apache, Nginx, MySQL, tools
+  etc\            generated configs, stack.json, extensions.json, ssl\
+  data\mysql\     MySQL data directory
+  logs\           web, PHP, MySQL and tool logs
+  tmp\            sessions, uploads, Nginx temp, downloads
+  www\            document roots
+    panel\        dashboard + Adminer
+    demo\         example project
+  lib\            PowerShell modules (config, services, SSL, hosts, GUI)
+  scripts\        CLI entry points
+  installer\      Inno Setup script (WampDeck.iss)
+  dist\           built installer (WampDeck-Setup.exe)
+  config.ps1      defaults, paths, ports
+  panel.ps1       WinForms tray app
+```
+
+## Configuration and state
+
+- Runtime state: `etc\stack.json` (ports, PHP version, web server, SSL, optional services).
+- PHP extensions: `etc\extensions.json`; php.ini is regenerated from it.
+- Defaults and paths: `config.ps1`.
+- All configs are generated; edit state/`config.ps1`, then run `refresh.cmd` or use the panel.
+
+To expose the stack on the LAN, choose `0.0.0.0` in Settings (or set `bind` in `etc\stack.json`), allow the port in Windows Firewall, and restart. Do not do this on untrusted networks: the database root account has no password.
+
+## Logs
+
+| File | Content |
+|---|---|
+| `logs\Nginx-error.log`, `logs\Nginx-access.log` | Nginx |
+| `logs\apache-error.log`, `logs\apache-access.log` | Apache |
+| `logs\php-9000.log` ... | php-cgi workers |
+| `logs\mysql-error.log` | MySQL |
+| `logs\gui-out.log`, `logs\gui-err.log` | last panel job; a per-job `gui-out-<timestamp>.log` is used when the shared file is locked |
+
+## Troubleshooting
+
+**502 Bad Gateway (Nginx)** — a php-cgi worker died. Check `logs\php-9000.log`, then `restart.cmd`.
+
+**Port already in use** — `status.cmd` lists the owning process. Stop it, or change the port in the panel's Settings.
+
+**The panel shows "CA not trusted"** — run `ssl.cmd -Trust` and confirm the Windows security dialog, or import `etc\ssl\ca.crt` manually.
+
+**A `.test` URL does not resolve** — run `hosts.cmd -Sync` and accept UAC. `.localhost` still works meanwhile.
+
+**A project shows 404** — make sure the folder is inside `www\`. After adding a folder by hand, run `refresh.cmd`; the panel reloads the web server when it creates or deletes a project.
+
+**Composer/Laravel fails with `mkdir()`, `Cannot open output file`, or uploads vanish** — Windows Defender Controlled Folder Access is blocking `php.exe`, `git.exe`, `7z.exe` or `cmd.exe` because the stack lives under `Documents`. Run `scripts\allow-cfa.ps1` as administrator (or move the stack outside Documents).
+
+**MySQL won't start** — read `logs\mysql-error.log`. If the data is disposable, delete `data\mysql` and run `setup.cmd`.
+
+**Apache does not stop** — use `stop.cmd`; the stack launches Apache detached on purpose so the console does not hang.
+
+## Acceptance test
+
+Before a build goes to testers, run the read-only smoke test on the target machine:
+
+```bat
+cd C:\WampDeck
+scripts\acceptance-test.cmd
+```
+
+It checks the installed files, CLI JSON, stack state, PHP workers and ports, the
+supervisor, MySQL, every project URL and (optionally) that project folders
+survived an upgrade untouched. The report lands in `logs\acceptance-*.json`.
+
+For the full clean-VM matrix, upgrade preservation, uninstall and per-user
+scenarios, see `docs\ACCEPTANCE-CLEAN-VM.md`.
+
+## Release artifacts
+
+Everything you publish lives in `dist\`:
+
+| File | Purpose |
+|---|---|
+| `WampDeck-Setup.exe` | the installer |
+| `RELEASE-NOTES-2.0.0.md` | what changed, how to install, upgrade and uninstall |
+| `SHA256SUMS.txt` | checksum to publish next to the download |
+
+Regenerate the checksum after any rebuild, then verify it on the machine that downloads the file:
+
+```powershell
+(Get-FileHash .\WampDeck-Setup.exe -Algorithm SHA256).Hash
+Get-Content .\SHA256SUMS.txt
+```
+
+## Security notes
+
+- This is a development stack. Do not expose it to the internet.
+- MySQL `root` has an empty password by design and accepts loopback connections only.
+- Adminer and phpinfo are dev-only; delete `www\panel\info.php` if you do not want phpinfo.
+- The local CA private key in `etc\ssl\ca.key` can sign certificates for your machine's trusted names. Keep the folder private.

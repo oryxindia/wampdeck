@@ -407,7 +407,7 @@ foreach ($version in $PhpVersions) {
 
 $webSubmenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Web server'
 foreach ($server in @('nginx', 'apache')) {
-    $label = if ($server -eq 'apache') { 'Apache' } else { 'nginx' }
+    $label = if ($server -eq 'apache') { 'Apache' } else { 'Nginx' }
     $serverItem = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList $label
     $serverItem.Tag = $server
     $serverItem.Add_Click({
@@ -991,7 +991,7 @@ $null = New-ToolButton "$([string](Get-WampDeckString 'CertificatesFolder'))`r`n
 
 $null = New-ToolButton "$([string](Get-WampDeckString 'RefreshConfigs'))`r`n$([string](Get-WampDeckString 'RebuildVhosts'))" 14 224 {
     Start-GuiScript -ScriptName 'refresh.ps1' -Arguments @('-NoHosts') -Label 'Refreshing configs...' | Out-Null
-} 'Regenerate nginx/Apache/PHP configs and reload'
+} 'Regenerate Nginx/Apache/PHP configs and reload'
 $null = New-ToolButton "$([string](Get-WampDeckString 'OpenLogsFolder'))`r`n$([string](Get-WampDeckString 'OpenLogsFolder'))" 225 224 { Open-Folder $LogDir } 'Open the log folder'
 $null = New-ToolButton "$([string](Get-WampDeckString 'OpenWwwFolder'))`r`n$([string](Get-WampDeckString 'TabProjects'))" 436 224 { Open-Folder $WwwDir } 'Open the projects folder'
 $null = New-ToolButton "$([string](Get-WampDeckString 'About'))`r`n$([string](Get-WampDeckString 'Versions'))" 647 224 { Show-About } 'Show bundled tool versions'

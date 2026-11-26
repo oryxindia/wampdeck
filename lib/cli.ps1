@@ -177,7 +177,7 @@ function Invoke-CliStatus {
     Write-Host "  $Root" -ForegroundColor DarkGray
 
     Write-Host ''
-    $webName = if ($status.WebServer -eq 'apache') { 'Apache' } else { 'nginx' }
+    $webName = if ($status.WebServer -eq 'apache') { 'Apache' } else { 'Nginx' }
     $webState = if ($status.WebRunning) { 'running' } else { 'stopped' }
     $webColor = if ($status.WebRunning) { 'Green' } else { 'Red' }
     Write-Host ('    {0,-11} ' -f $webName) -NoNewline
@@ -512,11 +512,11 @@ function Invoke-CliDeploy {
         "  1. PHP version : $phpVersion",
         "  2. Extensions  : $($required -join ', ')",
         "  3. Database    : $dbName (user/password from your CMS install)",
-        "  4. Web server  : nginx or Apache, docroot = $docRoot",
+        "  4. Web server  : Nginx or Apache, docroot = $docRoot",
         "  5. Permissions : make uploads/storage writable by www-data (Linux) or IIS_IUSRS (Windows)"
     )
     if ($cmsId -eq 'twill') { $checklist += '  6. Cron        : `* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1`' }
-    elseif ($cmsId -eq 'wordpress') { $checklist += '  6. Permalinks  : enable mod_rewrite (Apache) or try_files (nginx)' }
+    elseif ($cmsId -eq 'wordpress') { $checklist += '  6. Permalinks  : enable mod_rewrite (Apache) or try_files (Nginx)' }
     else { $checklist += '  6. Config      : set APP_ENV/SITE_URL and DB host to the VPS values' }
     $checklist += "  7. Upload      : export the project (`wampdeck export $projectName --out project.zip`) and extract on the VPS"
     $checklist += "  8. Database    : import the included SQL dump, update wp-config/.env with VPS DB credentials"
