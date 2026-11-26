@@ -773,3 +773,50 @@ $version
 "@
     Show-GuiInfo $text 'About WampDeck'
 }
+
+function Show-WampDeckUpdateCheck {
+    $current = [string]$WampDeckVersion
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $rel = Invoke-RestMethod -Uri 'https://api.github.com/repos/oryxindia/wampdeck/releases/latest' -TimeoutSec 15 -Headers @{ 'User-Agent' = 'WampDeckPanel' }
+        $latest = ([string]$rel.tag_name) -replace '^v',''
+        $url = [string]$rel.html_url
+        if (-not $latest) { throw 'empty tag' }
+        if ($latest -eq $current) {
+            Show-GuiInfo ("You are up to date.`r`n`r`nCurrent version: " + $current) 'WampDeck Update'
+            return
+        }
+        $f = New-Object System.Windows.Forms.Form
+        $f.Text = 'WampDeck Update'
+        $f.Size = New-Object System.Drawing.Size(460, 210)
+        $f.StartPosition = 'CenterParent'
+        $f.FormBorderStyle = 'FixedDialog'
+        $f.MaximizeBox = $false
+        $f.BackColor = $script:GuiColors.Background
+        $f.ForeColor = $script:GuiColors.Text
+        $lab = New-Object System.Windows.Forms.Label
+        $lab.Text = "A new version is available.`r`n`r`nCurrent: $current`r`nLatest: $latest`r`n`r`nDownload is optional - WampDeck never updates itself automatically."
+        $lab.Location = New-Object System.Drawing.Point(20, 20)
+        $lab.Size = New-Object System.Drawing.Size(410, 110)
+        $f.Controls.Add($lab)
+        $dl = New-Object System.Windows.Forms.Button
+        $dl.Text = 'Download'
+        $dl.Location = New-Object System.Drawing.Point(20, 145)
+        $dl.Size = New-Object System.Drawing.Size(130, 32)
+        $dl.FlatStyle = 'Flat'
+        $dl.BackColor = $script:GuiColors.Accent
+        $dl.ForeColor = $script:GuiColors.AccentDark
+        $dl.Add_Click({ try { Start-Process $url } catch { } })
+        $close = New-Object System.Windows.Forms.Button
+        $close.Text = 'Close'
+        $close.Location = New-Object System.Drawing.Point(165, 145)
+        $close.Size = New-Object System.Drawing.Size(100, 32)
+        $close.FlatStyle = 'Flat'
+        $close.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+        $f.Controls.Add($dl); $f.Controls.Add($close)
+        $f.CancelButton = $close
+        [void]$f.ShowDialog()
+    } catch {
+        Show-GuiError ("Could not check for updates.`r`n" + $_.Exception.Message + "`r`n`r`nVisit https://wampdeck.com for the latest release.")
+    }
+}

@@ -396,6 +396,7 @@ $script:startupMenuItem = Add-MenuItem $settingsMenu (Get-WampDeckString 'StartW
 Add-MenuSeparator $settingsMenu
 $null = Add-MenuItem $settingsMenu (Get-WampDeckString 'RefreshConfigs') { Start-GuiScript -ScriptName 'refresh.ps1' -Arguments @('-NoHosts') -Label (Get-WampDeckString 'RefreshConfigs') | Out-Null } -Name 'menuRefreshConfigs'
 
+$null = Add-MenuItem $helpMenu 'Check for updates...' { Show-WampDeckUpdateCheck } -Name 'helpUpdates'
 $null = Add-MenuItem $helpMenu (Get-WampDeckString 'About') { Show-About } -Name 'menuAbout'
 $null = Add-MenuItem $helpMenu 'WampDeck website' { Open-Url 'https://wampdeck.com' } -Name 'menuWebsite'
 $null = Add-MenuItem $helpMenu 'Oryx India website' { Open-Url 'https://oryxindia.in' } -Name 'menuCompany'
