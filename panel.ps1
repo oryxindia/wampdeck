@@ -154,7 +154,7 @@ function Add-MenuSeparator {
 function Set-MenuItemText {
     param([string]$Name, [string]$Text)
     $item = $script:menuItemRegistry[$Name]
-    if ($item) { $item.Text = $Text }
+    if ($null -ne $item) { $item.Text = [string]$Text }
 }
 
 function Update-GuiLanguageTexts {
@@ -238,7 +238,8 @@ function Update-GuiLanguageTexts {
         $script:frameworkStatusLabel.Text = Get-WampDeckString 'FrameworkHint2' -Language $lang
     }
         foreach ($binding in $script:LanguageBindings) {
-        try { $binding.C.Text = & $binding.S } catch { }
+        if ($null -eq $binding -or $null -eq $binding.C -or $null -eq $binding.S) { continue }
+        try { $value = & $binding.S; $binding.C.Text = [string]$value } catch { }
     }
     Refresh-Ui
 }
