@@ -253,6 +253,7 @@ if ($proInstalled) {
     $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro'
     $proMenu.ForeColor = [System.Drawing.Color]::FromArgb(255, 197, 66)
     $proTabs = @(
+        @{ Label = 'PHP Frameworks...'; Name = 'frameworks' },
         @{ Label = 'Health Dashboard...'; Name = 'health' },
     @{ Label = 'Backups & Schedule...'; Name = 'backups' },
     @{ Label = 'Xdebug Toggle...'; Name = 'xdebug' },
