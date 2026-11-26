@@ -403,12 +403,18 @@ $null = Add-MenuItem $helpMenu (Get-WampDeckString 'Readme') { try { Open-Notepa
 $null = Add-MenuItem $helpMenu (Get-WampDeckString 'OpenInstallFolder') { Open-Folder $Root } -Name 'menuOpenInstall'
 
 # ---------------------------------------------------------------- header
-$logo = New-Object System.Windows.Forms.Label
-$logo.Text = 'W'
-$logo.Font = New-Object System.Drawing.Font('Segoe UI', 20, [System.Drawing.FontStyle]::Bold)
-$logo.ForeColor = $script:GuiColors.AccentDark
-$logo.BackColor = $script:GuiColors.Accent
-$logo.TextAlign = 'MiddleCenter'
+$logoPath = Join-Path $Root 'www\panel\assets\wampdeck-logo.png'
+$logo = New-Object System.Windows.Forms.PictureBox
+if (Test-Path -LiteralPath $logoPath) {
+    try { $logo.Image = [System.Drawing.Image]::FromFile($logoPath) } catch { }
+    $logo.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
+} else {
+    $logo.Text = 'W'
+    $logo.Font = New-Object System.Drawing.Font('Segoe UI', 20, [System.Drawing.FontStyle]::Bold)
+    $logo.ForeColor = $script:GuiColors.AccentDark
+    $logo.TextAlign = 'MiddleCenter'
+}
+$logo.BackColor = [System.Drawing.Color]::Transparent
 $logo.Location = New-Object System.Drawing.Point(24, 30)
 $logo.Size = New-Object System.Drawing.Size(48, 48)
 $form.Controls.Add($logo)
