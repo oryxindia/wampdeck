@@ -230,13 +230,6 @@ function Update-GuiLanguageTexts {
             $script:tabTextItems[$key].Text = Get-WampDeckString $key -Language $lang
         }
     }
-    if ($script:frameworkTabButton) { $script:frameworkTabButton.Text = Get-WampDeckString 'TabPhpFramework' -Language $lang }
-    if ($script:frameworkInstallButtons) {
-        foreach ($button in $script:frameworkInstallButtons) { $button.Text = Get-WampDeckString 'InstallLabel' -Language $lang }
-    }
-    if ($script:frameworkStatusLabel) {
-        $script:frameworkStatusLabel.Text = Get-WampDeckString 'FrameworkHint2' -Language $lang
-    }
         foreach ($binding in $script:LanguageBindings) {
         if ($null -eq $binding -or $null -eq $binding.C -or $null -eq $binding.S) { continue }
         try { $value = & $binding.S; $binding.C.Text = [string]$value } catch { }
@@ -727,19 +720,16 @@ function Show-PageTab {
 $projectTab = New-PagePanel
 $servicesTab = New-PagePanel
 $toolsTab = New-PagePanel
-$frameworkTab = New-PagePanel
-$script:tabPages = @($projectTab, $servicesTab, $toolsTab, $frameworkTab)
+$script:tabPages = @($projectTab, $servicesTab, $toolsTab)
 
 $projectTabButton = New-TabButton (Get-WampDeckString 'TabProjects') 0
 $servicesTabButton = New-TabButton (Get-WampDeckString 'TabServices') 110
 $toolsTabButton = New-TabButton (Get-WampDeckString 'TabTools') 220
-$frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
-$script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton, $frameworkTabButton)
+$script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton)
 
 $projectTabButton.Add_Click({ Show-PageTab 0 })
 $servicesTabButton.Add_Click({ Show-PageTab 1 })
 $toolsTabButton.Add_Click({ Show-PageTab 2 })
-$frameworkTabButton.Add_Click({ Show-PageTab 3 })
 
 $script:tabUnderline = New-Object System.Windows.Forms.Panel
 $script:tabUnderline.Size = New-Object System.Drawing.Size(76, 3)
@@ -1093,121 +1083,6 @@ $trayExit.Add_Click({ Exit-WampDeck })
 $script:trayIcon.ContextMenuStrip = $trayMenu
 $script:trayIcon.Add_DoubleClick({ Show-PanelWindow })
 
-# ---------------------------------------------------------------- frameworks (free)
-function Show-FrameworkInputDialog {
-    param([string]$Title, [string]$Default)
-    $dlg = New-Object System.Windows.Forms.Form
-    $dlg.Text = $Title
-    $dlg.Size = New-Object System.Drawing.Size(420, 158)
-    $dlg.StartPosition = 'CenterParent'
-    $dlg.FormBorderStyle = 'FixedDialog'
-    $dlg.MaximizeBox = $false
-    $dlg.BackColor = $script:GuiColors.Background
-    $dlg.ForeColor = $script:GuiColors.Text
-    $lab = New-Object System.Windows.Forms.Label
-    $lab.Text = 'Project folder name'
-    $lab.Location = New-Object System.Drawing.Point(18, 20)
-    $lab.AutoSize = $true
-    $dlg.Controls.Add($lab)
-    $tb = New-Object System.Windows.Forms.TextBox
-    $tb.Location = New-Object System.Drawing.Point(18, 44)
-    $tb.Size = New-Object System.Drawing.Size(364, 28)
-    $tb.Text = $Default
-    $dlg.Controls.Add($tb)
-    $ok = New-FlatButton -Text 'OK' -Width 100 -Height 30 -Primary
-    $ok.Location = New-Object System.Drawing.Point(118, 86)
-    $ok.DialogResult = [System.Windows.Forms.DialogResult]::OK
-    $cancel = New-FlatButton -Text 'Cancel' -Width 100 -Height 30
-    $cancel.Location = New-Object System.Drawing.Point(238, 86)
-    $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-    $dlg.Controls.Add($ok); $dlg.Controls.Add($cancel)
-    $dlg.AcceptButton = $ok
-    if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) { return $tb.Text }
-    return $null
-}
-
-function New-FrameworkCard {
-    param([string]$Id, [string]$Name, [int]$X, [int]$Y)
-    $card = New-Object System.Windows.Forms.Panel
-    $card.Location = New-Object System.Drawing.Point($X, $Y)
-    $card.Size = New-Object System.Drawing.Size(206, 98)
-    $card.BackColor = $script:GuiColors.Surface
-    $card.Add_Paint({
-        param($sender, $e)
-        $pen = New-Object System.Drawing.Pen($script:GuiColors.Border)
-        $e.Graphics.DrawRectangle($pen, 0, 0, $sender.Width - 1, $sender.Height - 1)
-        $pen.Dispose()
-    })
-    $iconPath = Join-Path (Join-Path $Root 'assets\frameworks') ($Id + '.png')
-    if (Test-Path $iconPath) {
-        $pic = New-Object System.Windows.Forms.PictureBox
-        $pic.Location = New-Object System.Drawing.Point(12, 14)
-        $pic.Size = New-Object System.Drawing.Size(56, 56)
-        $pic.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
-        $pic.Image = [System.Drawing.Image]::FromFile($iconPath)
-        $card.Controls.Add($pic)
-    }
-    $label = New-Object System.Windows.Forms.Label
-    $label.Text = $Name
-    $label.Location = New-Object System.Drawing.Point(74, 20)
-    $label.Size = New-Object System.Drawing.Size(124, 24)
-    $label.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10, [System.Drawing.FontStyle]::Bold)
-    $label.ForeColor = $script:GuiColors.Text
-    $card.Controls.Add($label)
-    $install = New-FlatButton -Text ([string](Get-WampDeckString 'InstallLabel')) -Width 92 -Height 28 -Primary
-    $install.Location = New-Object System.Drawing.Point(74, 56)
-    $install.Add_Click({
-        $project = Show-FrameworkInputDialog -Title ('Install ' + $Name) -Default $Id
-        if (-not $project) { return }
-        try {
-            $result = Install-Framework -Id $Id -Name $project
-            $script:frameworkStatus.Text = ('Installed ' + $result.Framework + ' -> ' + $result.Url)
-        } catch { $script:frameworkStatus.Text = $_.Exception.Message }
-    }.GetNewClosure())
-    $card.Controls.Add($install)
-    $script:frameworkInstallButtons += $install
-    $frameworkTab.Controls.Add($card)
-}
-
-# tool button text bindings (creation order)
-$toolTextBindings = @(
-    { "HeidiSQL`r`n" + (Get-WampDeckString 'DatabaseClient') },
-    { (Get-WampDeckString 'MailpitInbox') + "`r`n" + (Get-WampDeckString 'CapturedMail') },
-    { "Adminer`r`n" + (Get-WampDeckString 'WebDatabase') },
-    { "phpinfo()`r`n" + (Get-WampDeckString 'PhpSettings') },
-    { ">_  Terminal`r`nCmder in www" },
-    { "Notepad++`r`n" + (Get-WampDeckString 'TextEditor') },
-    { "Composer`r`n" + (Get-WampDeckString 'VersionCheck') },
-    { "Cronical`r`n" + (Get-WampDeckString 'CronScheduler') },
-    { "ngrok tunnel`r`nPublic HTTPS URL" },
-    { (Get-WampDeckString 'NgrokStop') + "`r`n" + (Get-WampDeckString 'CloseTunnel') },
-    { (Get-WampDeckString 'HostsFile') + "`r`n" + (Get-WampDeckString 'EditUac') },
-    { (Get-WampDeckString 'CertificatesFolder') + "`r`n" + (Get-WampDeckString 'SslFiles') },
-    { (Get-WampDeckString 'RefreshConfigs') + "`r`n" + (Get-WampDeckString 'RebuildVhosts') },
-    { (Get-WampDeckString 'OpenLogsFolder') + "`r`n" + (Get-WampDeckString 'OpenLogsFolder') },
-    { (Get-WampDeckString 'OpenWwwFolder') + "`r`n" + (Get-WampDeckString 'TabProjects') },
-    { (Get-WampDeckString 'About') + "`r`n" + (Get-WampDeckString 'Versions') }
-)
-for ($i = 0; $i -lt $toolTextBindings.Count -and $i -lt $script:toolButtons.Count; $i++) {
-    $script:LanguageBindings += @{ C = $script:toolButtons[$i]; S = $toolTextBindings[$i] }
-}$script:frameworkInstallButtons = @()
-$frameworkStatus = New-Object System.Windows.Forms.Label
-$frameworkStatus.Text = (Get-WampDeckString 'FrameworkHint2')
-$frameworkStatus.ForeColor = $script:GuiColors.Muted
-$frameworkStatus.Font = New-Object System.Drawing.Font('Segoe UI', 8)
-$frameworkStatus.AutoSize = $true
-$frameworkStatus.Location = New-Object System.Drawing.Point(16, 350)
-$frameworkTab.Controls.Add($frameworkStatus)
-$script:frameworkStatusLabel = $frameworkStatus
-
-$frameworkCatalog = Get-FrameworkCatalog
-$frameworkIndex = 0
-foreach ($frameworkKey in $frameworkCatalog.Keys) {
-    $col = $frameworkIndex % 4
-    $row = [int][Math]::Floor($frameworkIndex / 4)
-    New-FrameworkCard -Id $frameworkKey -Name $frameworkCatalog[$frameworkKey].Name -X (16 + ($col * 216)) -Y (12 + ($row * 108))
-    $frameworkIndex++
-}
 # ---------------------------------------------------------------- events
 $form.Add_FormClosing({
     param($sender, $eventArgs)

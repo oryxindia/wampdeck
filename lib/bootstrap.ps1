@@ -7,7 +7,6 @@
 . (Join-Path $PSScriptRoot 'projects.ps1')
 . (Join-Path $PSScriptRoot 'recipes.ps1')
 . (Join-Path $PSScriptRoot 'cms.ps1')
-. (Join-Path $PSScriptRoot 'frameworks.ps1')
 . (Join-Path $PSScriptRoot 'extensions.ps1')
 . (Join-Path $PSScriptRoot 'configgen.ps1')
 . (Join-Path $PSScriptRoot 'ssl.ps1')
