@@ -146,7 +146,8 @@ function Import-ProjectBundle {
         [string]$Name = '',
         [string]$Php = '',
         [switch]$Force,
-        [switch]$NoHosts
+        [switch]$NoHosts,
+        [switch]$AllowScripts
     )
 
     if (-not (Test-Path $Path)) { throw "Bundle not found: $Path" }
@@ -248,7 +249,15 @@ function Import-ProjectBundle {
             try { $hostsSynced = Invoke-HostsSyncElevated } catch { $hostsSynced = $false }
         }
 
-        $postCreate = @(Invoke-ManifestPostCreate -ProjectDir $target)
+        $postCreate = @()
+        $importManifest = Read-WampDeckManifest -ProjectDir $target
+        $hasScripts = ($importManifest.Valid -and @($importManifest.Data.PostCreate).Count -gt 0)
+        if ($hasScripts -and -not $AllowScripts) {
+            Write-Host "  warning: bundle contains postCreate scripts - skipped." -ForegroundColor DarkYellow
+            Write-Host "  re-run with --allow-scripts only if you trust the bundle." -ForegroundColor DarkGray
+        } elseif ($hasScripts) {
+            $postCreate = @(Invoke-ManifestPostCreate -ProjectDir $target)
+        }
 
         $project = Get-ProjectByName $Name
         return [pscustomobject]@{

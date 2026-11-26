@@ -748,7 +748,7 @@ function Invoke-CliImport {
     param($Parsed)
 
     $path = $Parsed.Positional[1]
-    if (-not $path) { throw 'Usage: wampdeck import <zip|folder> [--name <name>]' }
+    if (-not $path) { throw 'Usage: wampdeck import <zip|folder> [--name <name>] [--allow-scripts]' }
     $name = ''
     if ($Parsed.Options.ContainsKey('name')) { $name = [string]$Parsed.Options['name'] }
     $php = ''
@@ -756,7 +756,7 @@ function Invoke-CliImport {
 
     Write-CliTitle "Import - $path"
     $result = Import-ProjectBundle -Path $path -Name $name -Php $php `
-        -Force:($Parsed.Options.ContainsKey('force')) -NoHosts:($Parsed.Options.ContainsKey('no-hosts'))
+        -Force:($Parsed.Options.ContainsKey('force')) -NoHosts:($Parsed.Options.ContainsKey('no-hosts')) -AllowScripts:($Parsed.Options.ContainsKey('allow-scripts'))
 
     Write-Host ''
     Write-Host "  Imported $($result.Name) with PHP $($result.Php)" -ForegroundColor Green
@@ -802,7 +802,7 @@ function Invoke-CliNew {
     } else {
         Write-CliTitle "New $preset project - $name"
         $project = New-WampDeckProject -Name $name -Type $preset `
-            -Force:($Parsed.Options.ContainsKey('force')) -NoHosts:($Parsed.Options.ContainsKey('no-hosts'))
+            -Force:($Parsed.Options.ContainsKey('force')) -NoHosts:($Parsed.Options.ContainsKey('no-hosts')) -AllowScripts:($Parsed.Options.ContainsKey('allow-scripts'))
     }
 
     Write-Host ''
