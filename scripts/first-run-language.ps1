@@ -1,4 +1,4 @@
-﻿# WampDeck first-run language picker.
+# WampDeck first-run language picker.
 # Runs once after installation. Chooses UI language and fixes the layout
 # (Arabic = RTL). Changing language later in Settings only changes text.
 param([switch]$Force)
@@ -44,8 +44,8 @@ $combo = New-Object System.Windows.Forms.ComboBox
 $combo.Location = New-Object System.Drawing.Point(22, 82)
 $combo.Size = New-Object System.Drawing.Size(456, 30)
 $combo.DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDownList
-foreach ($c in $choices) { [void]$combo.Items.Add($c) }
-$combo.DisplayMember = 'Name'
+$languageCodes = @()
+foreach ($entry in $choices) { [void]$combo.Items.Add([string]$entry.Name); $languageCodes += [string]$entry.Code }
 $current = [string]$State['language']
 for ($i = 0; $i -lt $choices.Count; $i++) { if ($choices[$i].Code -eq $current) { $combo.SelectedIndex = $i } }
 if ($combo.SelectedIndex -lt 0) { $combo.SelectedIndex = 0 }
@@ -69,7 +69,7 @@ $form.Controls.Add($ok)
 $form.AcceptButton = $ok
 
 if ($form.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { exit 0 }
-$code = [string]$combo.SelectedItem.Code
+$code = [string]$languageCodes[$combo.SelectedIndex]
 $State['language'] = $code
 $State['layout'] = if ($code -eq 'ar') { 'rtl' } else { 'ltr' }
 $State['languageSelected'] = $true

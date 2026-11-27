@@ -104,7 +104,7 @@ Filename: "powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -Fil
 ; shell and starts the launcher there. The launcher also drops elevation
 ; itself as a second line of defence.
 Filename: "powershell.exe"; Parameters: "-Sta -NoProfile -ExecutionPolicy Bypass -File ""{app}\scripts\first-run-language.ps1"""; WorkingDir: "{app}"; Description: "Choose your language"; Flags: waituntilterminated
-Filename: "explorer.exe"; Parameters: """{app}\{#AppExe}"""; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{win}\explorer.exe"; Parameters: """{app}\{#AppExe}"""; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 ; Disposable runtime folders. Databases (data) and projects (www) are kept.
