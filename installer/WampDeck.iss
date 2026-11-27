@@ -60,8 +60,39 @@ SignedUninstaller=yes
 #endif
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "English"; MessagesFile: "compiler:Default.isl"
+Name: "Hindi"; MessagesFile: "installer\lang\Hindi.isl"
+Name: "Urdu"; MessagesFile: "installer\lang\Urdu.isl"
+Name: "Arabic"; MessagesFile: "compiler:Languages\Arabic.isl"
+Name: "ChineseSimplified"; MessagesFile: "installer\lang\ChineseSimplified.isl"
+Name: "French"; MessagesFile: "compiler:Languages\French.isl"
+Name: "German"; MessagesFile: "compiler:Languages\German.isl"
+Name: "Czech"; MessagesFile: "compiler:Languages\Czech.isl"
+Name: "Spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: "Russian"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "Japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
+Name: "Korean"; MessagesFile: "compiler:Languages\Korean.isl"
+Name: "Portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
+Name: "Italian"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "Turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
+Name: "Dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
+Name: "Polish"; MessagesFile: "compiler:Languages\Polish.isl"
+Name: "Swedish"; MessagesFile: "compiler:Languages\Swedish.isl"
+Name: "Greek"; MessagesFile: "installer\lang\Greek.isl"
+Name: "Hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
+Name: "Romanian"; MessagesFile: "installer\lang\Romanian.isl"
+Name: "Thai"; MessagesFile: "compiler:Languages\Thai.isl"
+Name: "Vietnamese"; MessagesFile: "installer\lang\Vietnamese.isl"
+Name: "ChineseTraditional"; MessagesFile: "installer\lang\ChineseTraditional.isl"
+Name: "Catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
+Name: "Croatian"; MessagesFile: "installer\lang\Croatian.isl"
+Name: "Indonesian"; MessagesFile: "installer\lang\Indonesian.isl"
+Name: "Slovak"; MessagesFile: "compiler:Languages\Slovak.isl"
+Name: "Serbian"; MessagesFile: "installer\lang\Serbian.isl"
 
+[Components]
+Name: "core"; Description: "WampDeck Free core"; Flags: fixed
+Name: "pro"; Description: "WampDeck Pro add-on (paid, offline licence)"
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional shortcuts:"; Flags: unchecked
 
@@ -76,6 +107,7 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription:
 Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "\.git\*,\\.gitignore,\backup\*,\data\*,\logs\*,\tmp\*,\dist\*,\installer\*,\www\blog\*,\www\edupro\*,\bin\apache\include\*,\bin\apache\manual\*,\bin\apache\logs\*,\bin\nginx\logs\*,\bin\mysql\my.ini,\bin\php\8.2.12\php.ini,\bin\php\8.3.30\php.ini,\bin\cmder\config\clink_history,\bin\cmder\config\clink.log,\bin\cmder\config\user-ConEmu.xml,\etc\stack.json,\etc\extensions.json,\etc\my.ini,\etc\nginx.conf,\etc\redis.conf,\etc\php-runtime.json,\etc\ssl\*,\etc\apache\httpd.conf,\etc\apache\mod_fcgid.conf,\etc\apache\mod_php.conf,\etc\apache\sites-enabled\*"
 
 ; Extracted to {tmp} and run from PrepareToInstall; not copied into {app}.
+Source: "..\wampdeck-pro\*"; DestDir: "{app}\pro"; Components: pro; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "owner\*,dist\*,assets\frameworks\incoming\*,*.zip,license*.lic,keys\*,*.pfx,*.p12"
 Source: "installer\stop-running.ps1"; DestDir: "{tmp}"; Flags: dontcopy
 
 [Dirs]
@@ -90,6 +122,8 @@ Name: "{app}\backup"; Permissions: users-modify
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"; WorkingDir: "{app}"
+Name: "{group}\WampDeck Pro - Premium Toolkit"; Filename: "{app}\pro\pro-gui.cmd"; WorkingDir: "{app}\pro"; Components: pro
+Name: "{group}\WampDeck Pro - PHP Frameworks"; Filename: "{app}\pro\pro-frameworks.cmd"; WorkingDir: "{app}\pro"; Components: pro
 Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; WorkingDir: "{app}"; Tasks: desktopicon
 
@@ -138,6 +172,45 @@ begin
   end;
 end;
 
+function LanguageToCode(LangName: string): string;
+var
+  Names: array[0..28] of string;
+  Codes: array[0..28] of string;
+  i: Integer;
+begin
+  Names[0] := 'English'; Codes[0] := 'en';
+  Names[1] := 'Hindi'; Codes[1] := 'hi';
+  Names[2] := 'Urdu'; Codes[2] := 'ur';
+  Names[3] := 'Arabic'; Codes[3] := 'ar';
+  Names[4] := 'ChineseSimplified'; Codes[4] := 'zh-CN';
+  Names[5] := 'French'; Codes[5] := 'fr';
+  Names[6] := 'German'; Codes[6] := 'de';
+  Names[7] := 'Czech'; Codes[7] := 'cs';
+  Names[8] := 'Spanish'; Codes[8] := 'es';
+  Names[9] := 'Russian'; Codes[9] := 'ru';
+  Names[10] := 'Japanese'; Codes[10] := 'ja';
+  Names[11] := 'Korean'; Codes[11] := 'ko';
+  Names[12] := 'Portuguese'; Codes[12] := 'pt';
+  Names[13] := 'Italian'; Codes[13] := 'it';
+  Names[14] := 'Turkish'; Codes[14] := 'tr';
+  Names[15] := 'Dutch'; Codes[15] := 'nl';
+  Names[16] := 'Polish'; Codes[16] := 'pl';
+  Names[17] := 'Swedish'; Codes[17] := 'sv';
+  Names[18] := 'Greek'; Codes[18] := 'el';
+  Names[19] := 'Hungarian'; Codes[19] := 'hu';
+  Names[20] := 'Romanian'; Codes[20] := 'ro';
+  Names[21] := 'Thai'; Codes[21] := 'th';
+  Names[22] := 'Vietnamese'; Codes[22] := 'vi';
+  Names[23] := 'ChineseTraditional'; Codes[23] := 'zh-TW';
+  Names[24] := 'Catalan'; Codes[24] := 'ca';
+  Names[25] := 'Croatian'; Codes[25] := 'hr';
+  Names[26] := 'Indonesian'; Codes[26] := 'id';
+  Names[27] := 'Slovak'; Codes[27] := 'sk';
+  Names[28] := 'Serbian'; Codes[28] := 'sr';
+  Result := 'en';
+  for i := 0 to 28 do
+    if LangName = Names[i] then Result := Codes[i];
+end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
@@ -147,6 +220,7 @@ begin
     RemoveDir(ExpandConstant('{app}\dist'));
     RemoveDir(ExpandConstant('{app}\backup'));
     RemoveDir(ExpandConstant('{app}\.git'));
+    SaveStringToFile(ExpandConstant('{app}\etc\language.txt'), LanguageToCode(ActiveLanguage), False);
     RemoveDir(ExpandConstant('{app}\bin\apache\include'));
     RemoveDir(ExpandConstant('{app}\bin\apache\manual'));
   end;

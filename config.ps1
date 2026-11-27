@@ -1,4 +1,4 @@
-﻿# WampDeck v2 configuration and state.
+# WampDeck v2 configuration and state.
 # Every script dot-sources this file, then lib\common.ps1.
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -39,6 +39,7 @@ $DefaultState = [ordered]@{
 $State = [ordered]@{}
 foreach ($key in $DefaultState.Keys) { $State[$key] = $DefaultState[$key] }
 
+
 if (Test-Path $StateFile) {
     try {
         $loaded = Get-Content $StateFile -Raw | ConvertFrom-Json
@@ -48,6 +49,17 @@ if (Test-Path $StateFile) {
     } catch { }
 }
 
+# Language chosen in the installer wizard (Inno Setup writes this file).
+# Applied after stack.json so the installer choice wins on upgrade too.
+$installerLanguageFile = Join-Path $EtcDir 'language.txt'
+if (Test-Path $installerLanguageFile) {
+    $chosen = ([IO.File]::ReadAllText($installerLanguageFile)).Trim()
+    if ($chosen) {
+        $State['language'] = $chosen
+        $State['layout'] = if ($chosen -eq 'ar') { 'rtl' } else { 'ltr' }
+        $State['languageSelected'] = $true
+    }
+}
 # ---------------------------------------------------------------- versions
 $PhpRoot = Join-Path $BinDir 'php'
 $PhpVersions = @(
