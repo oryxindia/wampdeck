@@ -14,6 +14,21 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib\gui-panel.ps1')
 . (Join-Path $PSScriptRoot 'lib\i18n.ps1')
 . (Join-Path $PSScriptRoot 'lib\i18n-extra.ps1')
+# ---- Pro add-on (optional): framework tab + PRO badge ----
+# Free core stays clean: frameworks are loaded only when a valid Pro
+# licence is present in <root>\pro\license.dat.
+$script:HasPro = $false
+$proLicenseLib = Join-Path $Root 'pro\lib\pro-license.ps1'
+if (Test-Path $proLicenseLib) {
+    try {
+        . $proLicenseLib
+        $script:HasPro = [bool](Test-ProLicense).Valid
+    } catch { $script:HasPro = $false }
+}
+if ($script:HasPro) {
+    $frameworksLib = Join-Path $PSScriptRoot 'lib\frameworks.ps1'
+    if (Test-Path $frameworksLib) { . $frameworksLib }
+}
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
 [System.Windows.Forms.Application]::SetCompatibleTextRenderingDefault($false)
@@ -172,6 +187,7 @@ function Update-GuiLanguageTexts {
     if ($script:projectTabButton) { $script:projectTabButton.Text = Get-WampDeckString 'TabProjects' -Language $lang }
     if ($script:servicesTabButton) { $script:servicesTabButton.Text = Get-WampDeckString 'TabServices' -Language $lang }
     if ($script:toolsTabButton) { $script:toolsTabButton.Text = Get-WampDeckString 'TabTools' -Language $lang }
+    if ($script:frameworkTabButton) { $script:frameworkTabButton.Text = Get-WampDeckString 'TabPhpFramework' -Language $lang }
     if ($script:servicesHint) { $script:servicesHint.Text = Get-WampDeckString 'ServicesHint' -Language $lang }
     if ($script:projectHint) { $script:projectHint.Text = Get-WampDeckString 'WwwHint' -Language $lang }
     Set-MenuItemText -Name 'stackStart' -Text (Get-WampDeckString 'StartStack' -Language $lang)
@@ -452,7 +468,7 @@ $menuStrip.Items.Add($headerHost) | Out-Null
 # Free-core badge - WampDeck core is 100% free.
 $script:proBadge = New-Object System.Windows.Forms.Label
 $script:proBadge.Name = 'proBadge'
-$script:proBadge.Text = 'FREE'
+$script:proBadge.Text = if ($script:HasPro) { 'PRO' } else { 'FREE' }
 $script:proBadge.Font = New-Object System.Drawing.Font('Consolas', 9, [System.Drawing.FontStyle]::Bold)
 $script:proBadge.ForeColor = [System.Drawing.Color]::FromArgb(52, 211, 153)
 $script:proBadge.BackColor = $menuStrip.BackColor
@@ -701,6 +717,13 @@ $script:tabButtons = @($projectTabButton, $servicesTabButton, $toolsTabButton)
 $projectTabButton.Add_Click({ Show-PageTab 0 })
 $servicesTabButton.Add_Click({ Show-PageTab 1 })
 $toolsTabButton.Add_Click({ Show-PageTab 2 })
+if ($script:HasPro) {
+    $frameworkTab = New-PagePanel
+    $script:tabPages += $frameworkTab
+    $frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
+    $script:tabButtons += $frameworkTabButton
+    $frameworkTabButton.Add_Click({ Show-PageTab 3 })
+}
 
 $script:tabUnderline = New-Object System.Windows.Forms.Panel
 $script:tabUnderline.Size = New-Object System.Drawing.Size(76, 3)
@@ -1106,6 +1129,101 @@ Initialize-ServiceRows
 Refresh-Projects
 Refresh-Ui
 
+
+if ($script:HasPro) {
+# ---------------------------------------------------------------- frameworks (free)
+function Show-FrameworkInputDialog {
+    param([string]$Title, [string]$Default)
+    $dlg = New-Object System.Windows.Forms.Form
+    $dlg.Text = $Title
+    $dlg.Size = New-Object System.Drawing.Size(420, 158)
+    $dlg.StartPosition = 'CenterParent'
+    $dlg.FormBorderStyle = 'FixedDialog'
+    $dlg.MaximizeBox = $false
+    $dlg.BackColor = $script:GuiColors.Background
+    $dlg.ForeColor = $script:GuiColors.Text
+    $lab = New-Object System.Windows.Forms.Label
+    $lab.Text = 'Project folder name'
+    $lab.Location = New-Object System.Drawing.Point(18, 20)
+    $lab.AutoSize = $true
+    $dlg.Controls.Add($lab)
+    $tb = New-Object System.Windows.Forms.TextBox
+    $tb.Location = New-Object System.Drawing.Point(18, 44)
+    $tb.Size = New-Object System.Drawing.Size(364, 28)
+    $tb.Text = $Default
+    $dlg.Controls.Add($tb)
+    $ok = New-FlatButton -Text 'OK' -Width 100 -Height 30 -Primary
+    $ok.Location = New-Object System.Drawing.Point(118, 86)
+    $ok.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $cancel = New-FlatButton -Text 'Cancel' -Width 100 -Height 30
+    $cancel.Location = New-Object System.Drawing.Point(238, 86)
+    $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $dlg.Controls.Add($ok); $dlg.Controls.Add($cancel)
+    $dlg.AcceptButton = $ok
+    if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) { return $tb.Text }
+    return $null
+}
+
+function New-FrameworkCard {
+    param([string]$Id, [string]$Name, [int]$X, [int]$Y)
+    $card = New-Object System.Windows.Forms.Panel
+    $card.Location = New-Object System.Drawing.Point($X, $Y)
+    $card.Size = New-Object System.Drawing.Size(206, 98)
+    $card.BackColor = $script:GuiColors.Surface
+    $card.Add_Paint({
+        param($sender, $e)
+        $pen = New-Object System.Drawing.Pen($script:GuiColors.Border)
+        $e.Graphics.DrawRectangle($pen, 0, 0, $sender.Width - 1, $sender.Height - 1)
+        $pen.Dispose()
+    })
+    $iconPath = Join-Path (Join-Path $Root 'assets\frameworks') ($Id + '.png')
+    if (Test-Path $iconPath) {
+        $pic = New-Object System.Windows.Forms.PictureBox
+        $pic.Location = New-Object System.Drawing.Point(12, 14)
+        $pic.Size = New-Object System.Drawing.Size(56, 56)
+        $pic.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
+        $pic.Image = [System.Drawing.Image]::FromFile($iconPath)
+        $card.Controls.Add($pic)
+    }
+    $label = New-Object System.Windows.Forms.Label
+    $label.Text = $Name
+    $label.Location = New-Object System.Drawing.Point(74, 20)
+    $label.Size = New-Object System.Drawing.Size(124, 24)
+    $label.Font = New-Object System.Drawing.Font('Segoe UI Semibold', 10, [System.Drawing.FontStyle]::Bold)
+    $label.ForeColor = $script:GuiColors.Text
+    $card.Controls.Add($label)
+    $install = New-FlatButton -Text ([string](Get-WampDeckString 'InstallLabel')) -Width 92 -Height 28 -Primary
+    $install.Location = New-Object System.Drawing.Point(74, 56)
+    $install.Add_Click({
+        $project = Show-FrameworkInputDialog -Title ('Install ' + $Name) -Default $Id
+        if (-not $project) { return }
+        try {
+            $result = Install-Framework -Id $Id -Name $project
+            $script:frameworkStatus.Text = ('Installed ' + $result.Framework + ' -> ' + $result.Url)
+        } catch { $script:frameworkStatus.Text = $_.Exception.Message }
+    }.GetNewClosure())
+    $card.Controls.Add($install)
+    $frameworkTab.Controls.Add($card)
+}
+
+$frameworkStatus = New-Object System.Windows.Forms.Label
+$frameworkStatus.Text = 'One-click PHP framework install - WampDeck Pro.'
+$frameworkStatus.ForeColor = $script:GuiColors.Muted
+$frameworkStatus.Font = New-Object System.Drawing.Font('Segoe UI', 8)
+$frameworkStatus.AutoSize = $true
+$frameworkStatus.Location = New-Object System.Drawing.Point(16, 350)
+$frameworkTab.Controls.Add($frameworkStatus)
+
+$frameworkCatalog = Get-FrameworkCatalog
+$frameworkIndex = 0
+foreach ($frameworkKey in $frameworkCatalog.Keys) {
+    $col = $frameworkIndex % 4
+    $row = [int][Math]::Floor($frameworkIndex / 4)
+    New-FrameworkCard -Id $frameworkKey -Name $frameworkCatalog[$frameworkKey].Name -X (16 + ($col * 216)) -Y (12 + ($row * 108))
+    $frameworkIndex++
+}
+
+}
 # Keep the WampDeck window icon authoritative right before the window shows,
 # so the taskbar button never falls back to the process icon (PowerShell).
 $form.Icon = $script:appIcon
