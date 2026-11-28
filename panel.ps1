@@ -28,6 +28,10 @@ if (Test-Path $proLicenseLib) {
 if ($script:HasPro) {
     $frameworksLib = Join-Path $PSScriptRoot 'lib\frameworks.ps1'
     if (Test-Path $frameworksLib) { . $frameworksLib }
+    foreach ($pl in @('pro-health.ps1','pro-backup.ps1','pro-devtools.ps1','pro-xdebug.ps1')) {
+        $plPath = Join-Path $Root ('pro\lib\' + $pl)
+        if (Test-Path $plPath) { try { . $plPath } catch { } }
+    }
 }
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
@@ -280,20 +284,18 @@ $script:menuItemRegistry['menuTopSettings'] = $settingsMenu
 $script:menuItemRegistry['menuTopHelp'] = $helpMenu
 
 if ($script:HasPro) {
-    $launchHub = {
-        param([int]$Tab)
-        $ps = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
-        $hub = Join-Path $Root 'pro\wampdeck-pro-hub.ps1'
-        Start-Process -FilePath $ps -ArgumentList @('-Sta','-NoProfile','-ExecutionPolicy','Bypass','-File',('"' + $hub + '"'),'-StartTab',[string]$Tab)
+    $showPro = {
+        param([int]$Section)
+        Show-PageTab 4
+        if ($script:proInner) { $script:proInner.SelectedIndex = $Section }
     }.GetNewClosure()
-    $null = Add-MenuItem $proMenu 'Premium Toolkit' { & $launchHub 0 } -Name 'proToolkit'
+    $null = Add-MenuItem $proMenu 'Premium Toolkit' { & $showPro 0 } -Name 'proToolkit'
     $null = Add-MenuItem $proMenu 'PHP Frameworks' { Show-PageTab 3 } -Name 'proFrameworks'
     Add-MenuSeparator $proMenu
-    $null = Add-MenuItem $proMenu 'Backups' { & $launchHub 1 } -Name 'proBackups'
-    $null = Add-MenuItem $proMenu 'Xdebug' { & $launchHub 2 } -Name 'proXdebug'
-    $null = Add-MenuItem $proMenu 'Git' { & $launchHub 3 } -Name 'proGit'
-    $null = Add-MenuItem $proMenu 'Mailpit Web Inbox' { & $launchHub 4 } -Name 'proMailpit'
-    Add-MenuSeparator $proMenu
+    $null = Add-MenuItem $proMenu 'Backups' { & $showPro 1 } -Name 'proBackups'
+    $null = Add-MenuItem $proMenu 'Xdebug' { & $showPro 2 } -Name 'proXdebug'
+    $null = Add-MenuItem $proMenu 'Git' { & $showPro 3 } -Name 'proGit'
+    $null = Add-MenuItem $proMenu 'Mailpit Web Inbox' { & $showPro 4 } -Name 'proMailpit'
     $null = Add-MenuItem $proMenu 'Licence info' { Start-Process -FilePath (Join-Path $Root 'pro\wampdeck-pro.cmd') -ArgumentList 'license' -WorkingDirectory (Join-Path $Root 'pro') } -Name 'proLicence'
 }
 # ---------------------------------------------------------------- menus
@@ -744,6 +746,13 @@ if ($script:HasPro) {
     $frameworkTabButton = New-TabButton (Get-WampDeckString 'TabPhpFramework') 330 132
     $script:tabButtons += $frameworkTabButton
     $frameworkTabButton.Add_Click({ Show-PageTab 3 })
+if ($script:HasPro) {
+    $proTab = New-PagePanel
+    $script:tabPages += $proTab
+    $proTabButton = New-TabButton 'Pro' 440 70
+    $script:tabButtons += $proTabButton
+    $proTabButton.Add_Click({ Show-PageTab 4; if ($script:proRefreshButton) { try { $script:proRefreshButton.PerformClick() } catch { } } })
+}
 }
 
 $script:tabUnderline = New-Object System.Windows.Forms.Panel
@@ -1043,6 +1052,7 @@ function Show-PanelWindow {
     # always the WampDeck logo, never a fallback to the process icon.
     $form.Icon = $script:appIcon
     $form.Show()
+if ($script:HasPro) { try { $proRefresh.PerformClick() } catch { } }  # post-show Pro refresh
     $form.WindowState = 'Normal'
     $form.ShowInTaskbar = $true
     $form.Activate()
@@ -1245,11 +1255,54 @@ foreach ($frameworkKey in $frameworkCatalog.Keys) {
 }
 
 }
+if ($script:HasPro) {
+    $script:proInner = New-Object System.Windows.Forms.TabControl
+    $script:proInner.Location = New-Object System.Drawing.Point(12, 12)
+    $script:proInner.Size = New-Object System.Drawing.Size(860, 320)
+    $script:proInner.BackColor = $script:GuiColors.Background
+    $proTab.Controls.Add($script:proInner)
+    $script:proViews = @()
+    foreach ($section in @('Health','Backups','Xdebug','Git','Mailpit','More')) {
+        $pg = New-Object System.Windows.Forms.TabPage
+        $pg.Text = $section
+        $pg.BackColor = $script:GuiColors.Background
+        [void]$script:proInner.TabPages.Add($pg)
+        $view = New-Object System.Windows.Forms.TextBox
+        $view.Multiline = $true
+        $view.ReadOnly = $true
+        $view.ScrollBars = 'Vertical'
+        $view.Dock = 'Fill'
+        $view.BackColor = $script:GuiColors.Surface
+        $view.ForeColor = $script:GuiColors.Text
+        $view.Font = New-Object System.Drawing.Font('Consolas', 9)
+        $view.Text = 'Loading...'
+        $pg.Controls.Add($view)
+        $script:proViews += $view
+    }
+    $proRefresh = New-FlatButton -Text 'Refresh' -Width 100 -Height 30 -Primary
+    $proRefresh.Location = New-Object System.Drawing.Point(12, 340)
+    $proRefresh.Add_Click({
+        try { $script:proViews[0].Text = (Get-ProHealth | Format-Table -AutoSize | Out-String) } catch { $script:proViews[0].Text = $_.Exception.Message }
+        try { $script:proViews[1].Text = (Get-ProBackupList | Format-Table -AutoSize | Out-String) } catch { $script:proViews[1].Text = $_.Exception.Message }
+        try { $script:proViews[2].Text = (Get-ProXdebugStatus | Format-Table -AutoSize | Out-String) } catch { $script:proViews[2].Text = $_.Exception.Message }
+        try {
+            $lines = @()
+            foreach ($pr in @(Get-ProjectList)) { $lines += ('--- ' + $pr.Name + ' ---'); $lines += (Invoke-ProProjectGit -Project $pr.Name -Action status 2>&1 | Out-String) }
+            $script:proViews[3].Text = ($lines -join "`r`n")
+        } catch { $script:proViews[3].Text = $_.Exception.Message }
+        try { $script:proViews[4].Text = (Get-ProMailpitMessages -Limit 20 | Format-Table -AutoSize | Out-String) } catch { $script:proViews[4].Text = $_.Exception.Message }
+        $script:proViews[5].Text = "WampDeck Pro licensed`r`nMachine: $(Get-ProMachineId)`r`n`r`nFeatures: health, backups, xdebug, git, mailpit, vault, deploy, add-ons, 12 PHP frameworks."
+    })
+    $script:proRefreshButton = $proRefresh
+    $proTab.Controls.Add($proRefresh)
+    $proRefresh.PerformClick()
+}
 # Keep the WampDeck window icon authoritative right before the window shows,
 # so the taskbar button never falls back to the process icon (PowerShell).
 $form.Icon = $script:appIcon
 $form.ShowInTaskbar = -not $Tray
 $form.Show()
+if ($script:HasPro) { try { $proRefresh.PerformClick() } catch { } }  # post-show Pro refresh
 if ($Tray) {
     $form.Hide()
     $form.ShowInTaskbar = $false
