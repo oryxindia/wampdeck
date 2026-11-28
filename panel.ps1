@@ -291,12 +291,18 @@ if ($script:HasPro) {
         Start-Process -FilePath $ps -ArgumentList @('-Sta','-NoProfile','-ExecutionPolicy','Bypass','-File',('"' + $hub + '"'),'-StartTab',[string]$Tab)
     }.GetNewClosure()
     $null = Add-MenuItem $proMenu 'Premium Toolkit' { & $launchHub 0 } -Name 'proToolkit'
+    $launchWindow = {
+        param([string]$Feature)
+        $ps = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        $launcher = Join-Path $Root 'pro\launch-pro-window.ps1'
+        Start-Process -FilePath $ps -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',('"' + $launcher + '"'),'-Name',$Feature)
+    }.GetNewClosure()
     $null = Add-MenuItem $proMenu 'PHP Frameworks' { Show-PageTab 3 } -Name 'proFrameworks'
     Add-MenuSeparator $proMenu
-    $null = Add-MenuItem $proMenu 'Backups' { & $launchHub 1 } -Name 'proBackups'
-    $null = Add-MenuItem $proMenu 'Xdebug' { & $launchHub 2 } -Name 'proXdebug'
-    $null = Add-MenuItem $proMenu 'Git' { & $launchHub 3 } -Name 'proGit'
-    $null = Add-MenuItem $proMenu 'Mailpit Web Inbox' { & $launchHub 4 } -Name 'proMailpit'
+    $null = Add-MenuItem $proMenu 'Backups' { & $launchWindow 'backups' } -Name 'proBackups'
+    $null = Add-MenuItem $proMenu 'Xdebug' { & $launchWindow 'xdebug' } -Name 'proXdebug'
+    $null = Add-MenuItem $proMenu 'Git' { & $launchWindow 'git' } -Name 'proGit'
+    $null = Add-MenuItem $proMenu 'Mailpit Web Inbox' { & $launchWindow 'mailpit' } -Name 'proMailpit'
     $null = Add-MenuItem $proMenu 'Licence info' { Start-Process -FilePath (Join-Path $Root 'pro\wampdeck-pro.cmd') -ArgumentList 'license' -WorkingDirectory (Join-Path $Root 'pro') } -Name 'proLicence'
 }
 # ---------------------------------------------------------------- menus
