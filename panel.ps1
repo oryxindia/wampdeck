@@ -238,6 +238,7 @@ function Update-GuiLanguageTexts {
     Set-MenuItemText -Name 'menuTopStack' -Text (Get-WampDeckString 'Stack' -Language $lang)
     Set-MenuItemText -Name 'menuTopProject' -Text (Get-WampDeckString 'Project' -Language $lang)
     Set-MenuItemText -Name 'menuTopTools' -Text (Get-WampDeckString 'Tools' -Language $lang)
+    if ($script:HasPro) { Set-MenuItemText -Name 'menuTopPro' -Text 'Pro' }
     Set-MenuItemText -Name 'menuTopSettings' -Text (Get-WampDeckString 'Settings' -Language $lang)
     Set-MenuItemText -Name 'menuTopHelp' -Text (Get-WampDeckString 'Help' -Language $lang)
     Set-MenuItemText -Name 'menuLanguage' -Text (Get-WampDeckString 'Language' -Language $lang)
@@ -261,20 +262,34 @@ $form.Controls.Add($menuStrip)
 $stackMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Stack')
 $projectMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Project')
 $toolsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Tools')
+if ($script:HasPro) { $proMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList 'Pro' }
 $settingsMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Settings')
 $helpMenu = New-Object System.Windows.Forms.ToolStripMenuItem -ArgumentList (Get-WampDeckString 'Help')
 foreach ($item in @($stackMenu, $projectMenu, $toolsMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
+if ($script:HasPro) { [void]$menuStrip.Items.Add($proMenu) }
 foreach ($item in @($settingsMenu, $helpMenu)) {
     [void]$menuStrip.Items.Add($item)
 }
 $script:menuItemRegistry['menuTopStack'] = $stackMenu
 $script:menuItemRegistry['menuTopProject'] = $projectMenu
 $script:menuItemRegistry['menuTopTools'] = $toolsMenu
+if ($script:HasPro) { $script:menuItemRegistry['menuTopPro'] = $proMenu }
 $script:menuItemRegistry['menuTopSettings'] = $settingsMenu
 $script:menuItemRegistry['menuTopHelp'] = $helpMenu
 
+if ($script:HasPro) {
+    $null = Add-MenuItem $proMenu 'Premium Toolkit' { Start-ProHub } -Name 'proToolkit'
+    $null = Add-MenuItem $proMenu 'PHP Frameworks' { Show-PageTab 3 } -Name 'proFrameworks'
+    Add-MenuSeparator $proMenu
+    $null = Add-MenuItem $proMenu 'Backups' { Show-ProHubWindow -Tab 1 } -Name 'proBackups'
+    $null = Add-MenuItem $proMenu 'Xdebug' { Show-ProHubWindow -Tab 2 } -Name 'proXdebug'
+    $null = Add-MenuItem $proMenu 'Git' { Show-ProHubWindow -Tab 3 } -Name 'proGit'
+    $null = Add-MenuItem $proMenu 'Mailpit Web Inbox' { Show-ProHubWindow -Tab 4 } -Name 'proMailpit'
+    Add-MenuSeparator $proMenu
+    $null = Add-MenuItem $proMenu 'Licence info' { Start-Process -FilePath (Join-Path $Root 'pro\wampdeck-pro.cmd') -ArgumentList 'license' -WorkingDirectory (Join-Path $Root 'pro') } -Name 'proLicence'
+}
 # ---------------------------------------------------------------- menus
 function Open-Folder {
     param([string]$Path)
